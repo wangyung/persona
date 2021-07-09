@@ -1,0 +1,11 @@
+def includeAllModules(def moduleDirName = "modules") {
+    file("$rootDir/$moduleDirName").eachDir { dir ->
+        if (file("$dir/build.gradle").exists() || file("$dir/build.gradle.kts").exists()) {
+            include ":${dir.name}"
+            project(":${dir.name}").projectDir = dir
+        }
+    }
+}
+
+include ":app"
+includeAllModules()

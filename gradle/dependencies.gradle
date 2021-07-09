@@ -1,0 +1,69 @@
+apply from: "$rootDir/gradle/common_methods.gradle"
+
+ext {
+    versions = [
+            androidGradlePlugin  : '7.0.1',
+            androidBuildTool     : '30.0.3',
+            compileSdkVersion    : 31,
+            targetSdkVersion     : 30,
+            minSdkVersion        : 21,
+
+            // Kotlin
+            kotlin              : '1.5.21',
+            coroutines          : '1.5.1',
+
+            // AndroidX
+            androidx            : [
+                    constraintlayout  : '2.0.4',
+                    coordinatorlayout : '2.0.4',
+                    fragment          : '1.3.5',
+                    annotation        : '1.1.0',
+                    lifecycle         : '2.2.0',
+                    lifecycleRuntime  : '2.3.1',
+                    test              : '1.4.0',
+                    core              : '1.6.0',
+                    appcompat         : '1.3.1',
+                    room              : '2.2.5',
+                    arch              : [
+                        core    : '2.1.0',
+                    ],
+                    junit       : '1.1.3',
+            ],
+
+            // Jetpack Compose
+            compose                      : '1.0.1',
+            composeActivity              : '1.3.1',
+            composeConstraintLayout      : '1.0.0-beta02',
+            composeLifecycleViewModel    : '1.0.0-alpha07',
+            composeNavigation            : '2.4.0-alpha07',
+            accompanist                  : '0.16.0',
+
+            // Google material design library
+            materialComponents  : '1.4.0',
+
+            // Square's type-safe http client
+            // https://github.com/https://github.com/square/retrofit
+            retrofit            : '2.9.0',
+
+            // Airbnb Epoxy RecyclerView lib
+            // https://github.com/airbnb/epoxy
+            epoxy               : '4.6.2',
+
+            // Jackson
+            jackson             : '2.10.3',
+
+            // Leak Canary
+            leakcanary          : '2.7',
+
+            // Testing
+            jUnit               : '4.13.2',
+            mockitoKotlin      : '3.2.0',
+            robolectric         : '4.4',
+
+            // The static analysis tool for Kotlin
+            detekt              : '1.18.0-RC2',
+
+            //For code coverage
+            jacoco              : '0.8.6'
+    ]
+}

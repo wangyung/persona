@@ -1,0 +1,75 @@
+// About JaCoCo: https://docs.gradle.org/current/userguide/jacoco_plugin.htm
+apply plugin: "jacoco"
+
+// Source directories that coverage should be reported for.
+def coverageSourceDirs = [
+        "src/main/java",
+        "src/main/kotlin"
+]
+
+// Classes to be excluded from the reports.
+def excludedClasses = [
+        // Android generated classes.
+        '**/R.*',
+        '**/R$*.*',
+        '**/BuildConfig.*',
+        '**/Manifest*.*',
+        // Filter Epoxy synthetic classes.
+        '**/*Model_.*',
+        '**/*Model$Holder.*',
+        '**/EpoxyModelKotlinExtensionsKt.*'
+]
+
+jacoco {
+    toolVersion = versions.jacoco
+    reportsDir = file("${project.rootDir}/build/reports/jacoco")
+}
+
+tasks.withType(Test) {
+    jacoco {
+        enabled = true
+        includeNoLocationClasses = true
+        excludes = ['jdk.internal.*']
+    }
+}
+
+tasks.withType(Delete) {
+    delete jacoco.reportsDir
+}
+
+project.afterEvaluate {
+    // Ignore non Android projects.
+    if (!project.hasProperty("android")) return
+
+    def unitTestTaskName = "testDebugUnitTest"
+    def taskName = "jacocoDebugTestReport"
+
+    tasks.create(name: taskName, type: JacocoReport, dependsOn: [unitTestTaskName]) {
+        group = "reporting"
+        description = "Generate JaCoCo coverage reports after running tests."
+
+        // Configure JaCoCo reports.
+        reports {
+            xml.enabled = false
+            csv.enabled = true
+            html.enabled = true
+
+            csv.destination = file("${jacoco.reportsDir}/${project.name}.csv")
+            html.destination = file("${jacoco.reportsDir}/${project.name}.html")
+        }
+
+        // Directories to check for the generated .class files.
+        classDirectories.setFrom(files([
+                fileTree(dir: './build/intermediates/javac/googleDebug', excludes: excludedClasses),
+                fileTree(dir: './build/intermediates/javac/debug', excludes: excludedClasses),
+                fileTree(dir: './build/tmp/kotlin-classes/debug', excludes: excludedClasses),
+        ]))
+
+        sourceDirectories.setFrom(files(coverageSourceDirs))
+
+        // Execution data files to be used during coverage analysis.
+        executionData(files([
+                "build/jacoco/testDebugUnitTest.exec"
+        ]))
+    }
+}

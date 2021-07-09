@@ -1,0 +1,47 @@
+apply plugin: "io.gitlab.arturbosch.detekt"
+
+def reportsDir = file("$rootDir/build/reports/detekt")
+
+detekt {
+    input = files("src")
+
+    // Use default config with build.maxIssues = 1
+    // See: https://github.com/arturbosch/detekt/blob/master/detekt-cli/src/main/resources/default-detekt-config.yml
+    config = files("$rootDir/config/detekt/detekt-config.yml")
+
+    // Prevent the build to fail if the threshold set by build.maxIssues is exceeded, when the
+    // property detektIgnoreFailures is available. This should be used when running a sanity check
+    // on all the modules.
+    ignoreFailures = project.hasProperty("detektIgnoreFailures")
+
+    reports {
+        xml {
+            enabled = true
+            destination = file("$project.buildDir/reports/detekt/detekt.xml")
+        }
+
+        html {
+            enabled = true
+            destination = file("$project.buildDir/reports/detekt/detekt.html")
+        }
+
+        custom {
+            reportId = "JsonOutputReport"
+            destination = file("$reportsDir/${project.name}.json")
+        }
+    }
+}
+
+dependencies {
+    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:${versions.detekt}"
+}
+
+tasks.getByName("detekt") {
+    exclude("resources/")
+    exclude("build/")
+    exclude("tmp/")
+}
+
+tasks.withType(Delete) {
+    delete reportsDir
+}

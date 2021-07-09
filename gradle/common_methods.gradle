@@ -1,0 +1,23 @@
+def loadProperties(filename) {
+    def propertiesFile = file(filename)
+    if (!propertiesFile.exists()) {
+        throw new IllegalArgumentException("Can't find the property file from $filename.")
+    }
+    Properties props = new Properties()
+    props.load(new FileInputStream(propertiesFile))
+    return props
+}
+
+def outputAllProperties(theObject) {
+    def filtered = ['class', 'active']
+    println theObject.properties
+            .sort{it.key}
+            .collect{it}
+            .findAll{!filtered.contains(it.key)}
+            .join('\n')
+}
+
+ext {
+    loadProperties = this.&loadProperties
+    outputAllProperties = this.&outputAllProperties
+}
