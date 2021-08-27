@@ -1,6 +1,7 @@
 package com.github.wangyung.persona.particle
 
 import android.util.Log
+import android.util.Size
 import androidx.annotation.VisibleForTesting
 import androidx.compose.ui.util.fastForEach
 import com.github.wangyung.persona.particle.generator.ParticleGenerator
@@ -26,8 +27,7 @@ private const val ONE_SEC_MS = 1000L
  */
 @Suppress("LongParameterList")
 class ParticleSystem(
-    val width: Int,
-    val height: Int,
+    val size: Size,
     val parameters: ParticleSystemParameters,
     private val generator: ParticleGenerator,
     private val transformation: ParticleTransformation = LinearTranslateTransformation(),
@@ -93,7 +93,7 @@ class ParticleSystem(
         if (!isAlive) return
 
         this.iteration = iteration
-        if (isOutOfBound(width, height)) {
+        if (isOutOfBound(size.width, size.height)) {
             if (parameters.autoResetParticles) {
                 initialIteration = iteration
                 generator.resetParticle(this)

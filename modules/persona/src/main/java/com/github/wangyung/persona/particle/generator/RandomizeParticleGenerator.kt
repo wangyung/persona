@@ -1,5 +1,6 @@
 package com.github.wangyung.persona.particle.generator
 
+import android.util.Size
 import com.github.wangyung.persona.particle.Instinct
 import com.github.wangyung.persona.particle.MutableParticle
 import com.github.wangyung.persona.particle.ParticleShape
@@ -10,13 +11,11 @@ import kotlin.random.Random
 import kotlin.random.nextInt
 
 /**
- * The particle generator that generates the particle randomly in the given
- * [width] and [height].
+ * The particle generator that generates the particle randomly in the given [Size].
  */
 class RandomizeParticleGenerator(
     private val parameters: RandomizeParticleGeneratorParameters,
-    private val width: Int,
-    private val height: Int,
+    private val size: Size,
 ) : ParticleGenerator {
 
     private val sourceEdgeSet: List<SourceEdge> = parameters.sourceEdges.toList()
@@ -85,7 +84,7 @@ class RandomizeParticleGenerator(
 
         // If source edge set is empty, use TOP as fallback.
         if (sourceEdgeSet.isEmpty()) {
-            return Pair(getRandomX().coerceIn(halfWidth, width).toFloat(), 0f)
+            return Pair(getRandomX().coerceIn(halfWidth, size.width).toFloat(), 0f)
         }
 
         val edgeCount = sourceEdgeSet.count()
@@ -96,31 +95,31 @@ class RandomizeParticleGenerator(
         }
         return when (sourceEdgeSet[index]) {
             SourceEdge.TOP -> {
-                Pair(getRandomX().coerceIn(halfWidth, width).toFloat(), 0f)
+                Pair(getRandomX().coerceIn(halfWidth, size.width).toFloat(), 0f)
             }
             SourceEdge.BOTTOM -> {
                 Pair(
-                    getRandomX().coerceIn(halfWidth, width).toFloat(),
-                    height.toFloat()
+                    getRandomX().coerceIn(halfWidth, size.width).toFloat(),
+                    size.height.toFloat()
                 )
             }
             SourceEdge.LEFT -> {
                 Pair(
                     0f,
-                    getRandomY().coerceIn(halfHeight, height - halfHeight).toFloat()
+                    getRandomY().coerceIn(halfHeight, size.height - halfHeight).toFloat()
                 )
             }
             SourceEdge.RIGHT -> {
                 Pair(
-                    width.toFloat(),
-                    getRandomY().coerceIn(halfHeight, height - halfHeight).toFloat()
+                    size.width.toFloat(),
+                    getRandomY().coerceIn(halfHeight, size.height - halfHeight).toFloat()
                 )
             }
         }
     }
 
-    private fun getRandomX(): Int = Random.nextInt(width)
-    private fun getRandomY(): Int = Random.nextInt(height)
+    private fun getRandomX(): Int = Random.nextInt(size.width)
+    private fun getRandomY(): Int = Random.nextInt(size.height)
 
     private fun getRandomWidth(shape: ParticleShape): Int =
         when (shape) {

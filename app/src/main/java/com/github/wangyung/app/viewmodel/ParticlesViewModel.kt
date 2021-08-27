@@ -1,9 +1,10 @@
 package com.github.wangyung.app.viewmodel
 
+import android.util.Size
 import androidx.lifecycle.ViewModel
 import com.github.wangyung.persona.particle.ParticleSystem
-import com.github.wangyung.persona.particle.generator.RandomizeParticleGenerator
 import com.github.wangyung.persona.particle.ParticleSystemParameters
+import com.github.wangyung.persona.particle.generator.RandomizeParticleGenerator
 import com.github.wangyung.persona.particle.generator.parameter.RandomizeParticleGeneratorParameters
 import com.github.wangyung.persona.particle.transformation.ParticleTransformation
 
@@ -20,22 +21,19 @@ class ParticlesViewModel : ViewModel() {
         systemParameters: ParticleSystemParameters,
         generatorParameters: RandomizeParticleGeneratorParameters,
         transformation: ParticleTransformation,
-        width: Int,
-        height: Int
+        size: Size,
     ) {
         particleSystem?.stop()
         this.generatorParameters = generatorParameters
         this.particleSystemParameters = systemParameters
         particleSystem =
             ParticleSystem(
+                size = size,
                 parameters = systemParameters,
                 generator = RandomizeParticleGenerator(
                     parameters = generatorParameters,
-                    width = width,
-                    height = height
+                    size = size,
                 ),
-                width = width,
-                height = height,
                 transformation = transformation
             )
     }

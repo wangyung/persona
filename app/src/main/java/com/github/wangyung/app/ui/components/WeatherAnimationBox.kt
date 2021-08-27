@@ -1,5 +1,6 @@
 package com.github.wangyung.app.ui.components
 
+import android.util.Size
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
@@ -118,17 +119,16 @@ private fun WeatherAnimationInternal(
             viewModel.particleSystemParameters != parameterSet.particleSystemParameters
         ) {
             val theWidth = constraints.maxWidth
-            val theHeight = when (animationType) {
+            val theHeight: Int = when (animationType) {
                 is AnimationType.FlyingBird, is AnimationType.TwinkleStar ->
-                    constraints.maxHeight / 1.5f
+                    (constraints.maxHeight / 1.5f).toInt()
                 else -> constraints.maxHeight
             }
             viewModel.startNewParticlesSystem(
                 systemParameters = parameterSet.particleSystemParameters,
                 generatorParameters = parameterSet.generatorParameters,
                 transformation = animationType.toParticleTransformation(),
-                width = theWidth,
-                height = theHeight.toInt()
+                size = Size(theWidth, theHeight),
             )
         }
         val particleModifier = when (animationType) {
