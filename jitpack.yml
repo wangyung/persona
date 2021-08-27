@@ -1,2 +1,5 @@
 jdk:
   - openjdk11
+install:
+   - echo "Running lib module only"
+   - ./gradlew :persona:build :persona:publishReleasePublicationToMavenLocal
