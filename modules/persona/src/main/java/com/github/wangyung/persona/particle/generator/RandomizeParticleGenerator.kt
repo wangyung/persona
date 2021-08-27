@@ -166,6 +166,7 @@ class RandomizeParticleGenerator(
             else -> Random.nextInt(parameters.particleHeightRange)
         }
 
+    @Suppress("SwallowedException")
     private fun getRandomAngle(angleRange: IntRange): Int =
         try {
             Random.nextInt(angleRange)

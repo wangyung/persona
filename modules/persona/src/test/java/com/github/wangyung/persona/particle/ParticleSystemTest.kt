@@ -36,7 +36,7 @@ class ParticleSystemTest {
 
     @Before
     fun setUp() {
-        mockTransformation = mock {  }
+        mockTransformation = mock { }
     }
 
     @Test
@@ -108,7 +108,7 @@ class ParticleSystemTest {
         }
 
         while (testResult.count() < 10) {
-            delay( 10)
+            delay(10)
         }
         particleSystem.stop()
 
