@@ -40,17 +40,13 @@ class ParticleSystem(
     @VisibleForTesting
     internal val notAliveParticleIds: MutableSet<Long> = mutableSetOf()
 
-    var isRunning: Boolean = true
+    var isRunning: Boolean = false
         private set
 
     private val coroutineScope: CoroutineScope =
         CoroutineScope(coroutineDispatcher + SupervisorJob())
     private var mutableIterationStateFlow: MutableStateFlow<Long> = MutableStateFlow(0L)
     val iterationFlow: StateFlow<Long> = mutableIterationStateFlow
-
-    init {
-        start()
-    }
 
     /**
      * Stop the particle system.
@@ -59,7 +55,14 @@ class ParticleSystem(
         isRunning = false
     }
 
-    private fun start() {
+    /**
+     * Start the particle system.
+     */
+    fun start() {
+        if (isRunning) return
+
+        isRunning = true
+        Log.d(TAG, "The particle system is started")
         coroutineScope.launch {
             while (isRunning) {
                 val executedTimeMs = measureTimeMillis {
@@ -75,6 +78,7 @@ class ParticleSystem(
                     delay(timeMillis = ONE_SEC_MS / parameters.fps - executedTimeMs)
                 }
             }
+            Log.d(TAG, "The particle system is stopped")
         }
     }
 

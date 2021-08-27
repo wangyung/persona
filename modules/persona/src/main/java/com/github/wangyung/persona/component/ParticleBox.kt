@@ -4,6 +4,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,6 +36,7 @@ fun ParticleBox(
     modifier: Modifier,
     particleSystem: ParticleSystem,
 ) {
+    particleSystem.start()
     var iteration by remember {
         mutableStateOf(0L)
     }
@@ -48,6 +50,11 @@ fun ParticleBox(
             // the Box.
             onDraw = { clipRect { drawParticles(particleSystem.particles) } }
         )
+    }
+    DisposableEffect(Unit) {
+        onDispose {
+            particleSystem.stop()
+        }
     }
 }
 
