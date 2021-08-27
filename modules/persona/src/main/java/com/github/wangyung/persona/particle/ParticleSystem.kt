@@ -21,44 +21,97 @@ private const val TAG = "ParticlesSystem"
 private const val ONE_SEC_MS = 1000L
 
 /**
+ * The fundamental interface of the particle system.
+ */
+interface ParticleSystem {
+    /**
+     * The size of the particle system. All particles would only be alive in the area.
+     */
+    val area: Size
+
+    /**
+     * The [ParticleSystemParameters] to setup the particle system.
+     */
+    val parameters: ParticleSystemParameters
+
+    /**
+     * The list of the particles.
+     */
+    val particles: List<Particle>
+
+    /**
+     * It is true if the particle system is running.
+     */
+    val isRunning: Boolean
+
+    /**
+     * The flow of the iterations in the particle system. The system is using a [StateFlow] to
+     * update the state and trigger the [ParticleBox] to draw the state.
+     */
+    val iterationFlow: StateFlow<Long>
+
+    /**
+     * Stops the particle system.
+     */
+    fun stop()
+
+    /**
+     * Starts the particle system.
+     */
+    fun start()
+}
+
+/**
+ * Creates the particle system.
+ */
+fun ParticleSystem(
+    size: Size,
+    parameters: ParticleSystemParameters,
+    generator: ParticleGenerator,
+    transformation: ParticleTransformation = LinearTranslateTransformation(),
+    coroutineDispatcher: CoroutineDispatcher = Dispatchers.Default,
+): ParticleSystem =
+    DefaultParticleSystem(
+        area = size,
+        parameters = parameters,
+        generator = generator,
+        transformation = transformation,
+        coroutineDispatcher = coroutineDispatcher
+    )
+
+/**
  * A particles system that generates and manipulate particles within the size (width, height).
  * It updates the iteration as [StateFlow] in a coroutine according to the given coroutine
  * dispatcher. It updates all particles by [ParticleSystemParameters.fps] times per second.
  */
 @Suppress("LongParameterList")
-class ParticleSystem(
-    val size: Size,
-    val parameters: ParticleSystemParameters,
+class DefaultParticleSystem internal constructor(
+    override val area: Size,
+    override val parameters: ParticleSystemParameters,
     private val generator: ParticleGenerator,
-    private val transformation: ParticleTransformation = LinearTranslateTransformation(),
-    coroutineDispatcher: CoroutineDispatcher = Dispatchers.Default,
-) {
-    val particles: List<Particle>
+    private val transformation: ParticleTransformation,
+    coroutineDispatcher: CoroutineDispatcher,
+) : ParticleSystem {
+    override val particles: List<Particle>
         get() = mutableParticles
 
     private var mutableParticles: List<MutableParticle> = generator.createParticles()
     @VisibleForTesting
     internal val notAliveParticleIds: MutableSet<Long> = mutableSetOf()
 
-    var isRunning: Boolean = false
+    override var isRunning: Boolean = false
         private set
 
     private val coroutineScope: CoroutineScope =
         CoroutineScope(coroutineDispatcher + SupervisorJob())
     private var mutableIterationStateFlow: MutableStateFlow<Long> = MutableStateFlow(0L)
-    val iterationFlow: StateFlow<Long> = mutableIterationStateFlow
+    override val iterationFlow: StateFlow<Long> = mutableIterationStateFlow
 
-    /**
-     * Stop the particle system.
-     */
-    fun stop() {
+    override fun stop() {
         isRunning = false
     }
 
-    /**
-     * Start the particle system.
-     */
-    fun start() {
+    override fun start() {
         if (isRunning) return
 
         isRunning = true
@@ -97,7 +150,7 @@ class ParticleSystem(
         if (!isAlive) return
 
         this.iteration = iteration
-        if (isOutOfBound(size.width, size.height)) {
+        if (isOutOfBound(area.width, area.height)) {
             if (parameters.autoResetParticles) {
                 initialIteration = iteration
                 generator.resetParticle(this)
