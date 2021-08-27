@@ -31,7 +31,7 @@ fun PersonaDemoNavGraph(
         startDestination = startDestination,
     ) {
         addMain(navController)
-        addAnimationDemo(navController)
+        addAnimationDemo()
     }
 }
 
@@ -45,7 +45,7 @@ private fun NavGraphBuilder.addMain(navController: NavHostController) {
     }
 }
 
-private fun NavGraphBuilder.addAnimationDemo(navController: NavHostController) {
+private fun NavGraphBuilder.addAnimationDemo() {
     composable(
         route = Screen.AnimationDemo.route,
     ) { backStackEntry ->

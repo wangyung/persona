@@ -62,7 +62,7 @@ private fun Title(text: String) {
 private fun Description(text: String) {
     Text(
         text = text,
-        style =  MaterialTheme.typography.subtitle2,
+        style = MaterialTheme.typography.subtitle2,
         modifier = Modifier.padding(bottom = 8.dp)
     )
 }

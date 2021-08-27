@@ -109,11 +109,11 @@ complexity:
     threshold: 600
   LongMethod:
     active: true
-    threshold: 60
+    threshold: 150 # Adjust for Jetpack Compose
     ignoreAnnotated: []
   LongParameterList:
     active: true
-    functionThreshold: 6
+    functionThreshold: 8 # Adjust for Jetpack Compose
     constructorThreshold: 7
     ignoreDefaultParameters: false
     ignoreDataClasses: true
@@ -644,7 +644,7 @@ style:
     active: true
     maxJumpCount: 1
   MagicNumber:
-    active: true
+    active: false # Adjust for Jetpack Compose
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
     ignoreNumbers:
       - '-1'

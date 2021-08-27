@@ -34,6 +34,7 @@ internal fun createRainParticle(strokeRange: IntRange): ParticleShape.Line = Par
     color = Color.LightGray,
 )
 
+@Suppress("SwallowedException")
 internal fun createShowParticle(radiusRange: IntRange): ParticleShape.Circle = ParticleShape.Circle(
     color = Color.White,
     radius = try {

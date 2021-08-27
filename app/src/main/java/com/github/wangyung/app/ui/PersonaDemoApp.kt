@@ -1,6 +1,13 @@
 package com.github.wangyung.app.ui
 
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.contentColorFor
+import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
@@ -40,7 +47,7 @@ fun TopBar(title: String) {
         color = MaterialTheme.colors.primarySurface,
     ) {
         TopAppBar(
-            title = { Text(text = title)},
+            title = { Text(text = title) },
             navigationIcon = {
                 Icon(
                     painter = painterResource(R.drawable.sun),

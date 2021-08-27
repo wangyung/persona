@@ -1,7 +1,12 @@
 package com.github.wangyung.app.ui.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -24,6 +29,7 @@ private const val MOON_WIDTH = 64
 private const val MOON_POSITION = 0.5f
 private const val PADDING_FOR_MOON = 80
 
+@Suppress("ComplexMethod")
 @Composable
 fun WeatherAnimationBox(
     modifier: Modifier,
@@ -45,6 +51,7 @@ fun WeatherAnimationBox(
     }
 }
 
+@Suppress("ComplexMethod")
 @Composable
 private fun WeatherAnimationInternal(
     animationType: AnimationType,

@@ -10,12 +10,16 @@ import com.github.wangyung.persona.particle.ParticleShape
 import com.github.wangyung.persona.particle.ParticleSystemParameters
 import com.github.wangyung.persona.particle.generator.parameter.RandomizeParticleGeneratorParameters
 import com.github.wangyung.persona.particle.generator.parameter.SourceEdge
-import com.github.wangyung.persona.particle.transformation.*
 import com.github.wangyung.app.transformation.BlinkParticleTransformation
 import com.github.wangyung.app.transformation.HorizontalSpeedWithSinParticleTransformation
 import com.github.wangyung.app.transformation.LinearScaleParticleTransformation
 import com.github.wangyung.app.transformation.ScaleAndDimParticleTransformation
 import com.github.wangyung.persona.app.R
+import com.github.wangyung.persona.particle.transformation.CompositeTransformation
+import com.github.wangyung.persona.particle.transformation.LinearRotationTransformation
+import com.github.wangyung.persona.particle.transformation.LinearTranslateTransformation
+import com.github.wangyung.persona.particle.transformation.ParticleTransformation
+import com.github.wangyung.persona.particle.transformation.SequenceTransformation
 
 private const val RAIN = "Rain"
 private const val SNOW = "Snow"

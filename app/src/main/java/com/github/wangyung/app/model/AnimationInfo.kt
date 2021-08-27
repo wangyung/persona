@@ -10,6 +10,7 @@ data class AnimationInfo(
     val animationType: AnimationType
 )
 
+@Suppress("MaxLineLength")
 val animationDemos: List<AnimationInfo> = listOf(
     AnimationInfo(
         thumbnailId = R.drawable.sakura_animation,
