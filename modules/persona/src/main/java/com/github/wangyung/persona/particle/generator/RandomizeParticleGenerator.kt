@@ -27,14 +27,13 @@ class RandomizeParticleGenerator(
         particle.y = y
         val shape = particle.instinct.shape
         val particleInstinct = Instinct(
-            speed = Random.nextFloat(parameters.minSpeed, parameters.maxSpeed),
+            speed = getRandomFloatSafely(parameters.speedRange),
             angle = getRandomAngle(parameters.angleRange),
-            scaleX = Random.nextFloat(parameters.minScale, parameters.maxScale),
-            scaleY = Random.nextFloat(parameters.minScale, parameters.maxScale),
+            scaleX = getRandomFloatSafely(parameters.scaleRange),
+            scaleY = getRandomFloatSafely(parameters.scaleRange),
             width = getRandomWidth(shape),
             height = getRandomHeight(shape),
-            rotationalSpeed =
-            Random.nextFloat(parameters.minRotationalSpeed, parameters.maxRotationalSpeed),
+            rotationalSpeed = getRandomFloatSafely(parameters.rotationalSpeedRange),
             shape = shape
         )
         particle.rotation = 0f
@@ -54,14 +53,11 @@ class RandomizeParticleGenerator(
         val instinct = Instinct(
             width = getRandomWidth(shape),
             height = getRandomHeight(shape),
-            speed = Random.nextFloat(parameters.minSpeed, parameters.maxSpeed),
+            speed = getRandomFloatSafely(parameters.speedRange),
             angle = getRandomAngle(parameters.angleRange),
-            rotationalSpeed = Random.nextFloat(
-                parameters.minRotationalSpeed,
-                parameters.maxRotationalSpeed
-            ),
-            scaleX = Random.nextFloat(parameters.minScale, parameters.maxScale),
-            scaleY = Random.nextFloat(parameters.minScale, parameters.maxScale),
+            rotationalSpeed = getRandomFloatSafely(parameters.rotationalSpeedRange),
+            scaleX = getRandomFloatSafely(parameters.scaleRange),
+            scaleY = getRandomFloatSafely(parameters.scaleRange),
             startOffset = Random.nextInt(parameters.startOffsetRange),
             shape = shape
         )
@@ -171,5 +167,13 @@ class RandomizeParticleGenerator(
             Random.nextInt(angleRange)
         } catch (e: IllegalArgumentException) {
             Random.nextInt(IntRange(angleRange.first, parameters.angleRange.first))
+        }
+
+    @Suppress("SwallowedException")
+    private fun getRandomFloatSafely(speedRange: ClosedFloatingPointRange<Float>): Float =
+        try {
+            speedRange.nextFloat()
+        } catch (e: IllegalArgumentException) {
+            speedRange.start
         }
 }

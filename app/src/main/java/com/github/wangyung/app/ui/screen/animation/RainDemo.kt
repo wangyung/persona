@@ -58,7 +58,9 @@ fun RainDemo() {
             ) { newMinSpeed ->
                 parameterSet = parameterSet.copy(
                     generatorParameters = parameterSet.generatorParameters.copy(
-                        minSpeed = newMinSpeed.toFloat()
+                        speedRange = newMinSpeed.toFloat().rangeTo(
+                            parameterSet.generatorParameters.speedRange.endInclusive
+                        )
                     )
                 )
             }
@@ -70,7 +72,9 @@ fun RainDemo() {
             ) { newMaxSpeed ->
                 parameterSet = parameterSet.copy(
                     generatorParameters = parameterSet.generatorParameters.copy(
-                        maxSpeed = newMaxSpeed.toFloat()
+                        speedRange = parameterSet.generatorParameters.speedRange.start.rangeTo(
+                            newMaxSpeed.toFloat()
+                        )
                     )
                 )
             }

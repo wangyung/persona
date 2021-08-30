@@ -49,11 +49,13 @@ fun FlyingBirdDemo() {
                 title = "Min speed:",
                 modifier = modifier,
                 sliderRange = 2f..30f,
-                defaultSliderValue = parameterSet.generatorParameters.minSpeed
+                defaultSliderValue = parameterSet.generatorParameters.speedRange.start
             ) { newMinSpeed ->
                 parameterSet = parameterSet.copy(
                     generatorParameters = parameterSet.generatorParameters.copy(
-                        minSpeed = newMinSpeed.toFloat()
+                        speedRange = newMinSpeed.toFloat().rangeTo(
+                            parameterSet.generatorParameters.speedRange.endInclusive
+                        )
                     )
                 )
             }
@@ -61,11 +63,13 @@ fun FlyingBirdDemo() {
                 title = "Max speed:",
                 modifier = modifier,
                 sliderRange = 2f..30f,
-                defaultSliderValue = parameterSet.generatorParameters.maxSpeed
+                defaultSliderValue = parameterSet.generatorParameters.speedRange.endInclusive
             ) { newMaxSpeed ->
                 parameterSet = parameterSet.copy(
                     generatorParameters = parameterSet.generatorParameters.copy(
-                        maxSpeed = newMaxSpeed.toFloat()
+                        speedRange = parameterSet.generatorParameters.speedRange.start.rangeTo(
+                            newMaxSpeed.toFloat()
+                        )
                     )
                 )
             }

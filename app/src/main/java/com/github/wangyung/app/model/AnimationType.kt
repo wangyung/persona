@@ -105,10 +105,7 @@ sealed class AnimationType(val value: String) {
                 LinearScaleParticleTransformation()
             )
         )
-        TwinkleStar -> BlinkParticleTransformation(
-            minFrequencyFactor = 0.5f,
-            maxFrequencyFactor = 2f
-        )
+        TwinkleStar -> BlinkParticleTransformation(frequencyFactorRange = 0.5f..2f)
         Emotion -> SequenceTransformation().apply {
             val scaleDuration = 30L
             add(LinearTranslateTransformation(), 40L)
@@ -156,13 +153,10 @@ internal val sakuraParameters = RandomizeParticleGeneratorParameters(
     count = 40,
     particleWidthRange = IntRange(10, 20),
     particleHeightRange = IntRange(10, 15),
-    minSpeed = 2f,
-    maxSpeed = 8f,
-    minScale = 0.7f,
-    maxScale = 1.5f,
+    speedRange = 2f..8f,
+    scaleRange = 0.7f..1.5f,
     angleRange = IntRange(95, 140),
-    minRotationalSpeed = 0.5f,
-    maxRotationalSpeed = 3.5f,
+    rotationalSpeedRange = 0.5f..3.5f,
     sourceEdges = setOf(SourceEdge.TOP, SourceEdge.RIGHT),
     shapeProvider = { createSakuraParticle(strokeRange = IntRange(1, 3)) },
 )
@@ -170,11 +164,9 @@ internal val sakuraParameters = RandomizeParticleGeneratorParameters(
 internal val snowParameters = RandomizeParticleGeneratorParameters(
     randomizeInitialXY = true,
     count = 125,
-    minSpeed = 1.0f,
-    maxSpeed = 2.0f,
+    speedRange = 1f..2f,
     angleRange = IntRange(80, 100),
-    minRotationalSpeed = 0f,
-    maxRotationalSpeed = 0f,
+    rotationalSpeedRange = 0f..0f,
     sourceEdges = setOf(SourceEdge.TOP),
     shapeProvider = { createShowParticle(IntRange(DEFAULT_SNOW_MIN_RADIUS, DEFAULT_SNOW_MAX_RADIUS)) },
 )
@@ -183,11 +175,9 @@ internal val rainParameters = RandomizeParticleGeneratorParameters(
     count = 400,
     particleWidthRange = IntRange(1, 2),
     particleHeightRange = IntRange(10, 20),
-    minSpeed = DEFAULT_RAIN_MIN_SPEED,
-    maxSpeed = DEFAULT_RAIN_MAX_SPEED,
+    speedRange = DEFAULT_RAIN_MIN_SPEED..DEFAULT_RAIN_MAX_SPEED,
     angleRange = IntRange(DEFAULT_RAIN_ANGLE_FROM, DEFAULT_RAIN_ANGLE_TO),
-    minRotationalSpeed = 0f,
-    maxRotationalSpeed = 0f,
+    rotationalSpeedRange = 0f..0f,
     sourceEdges = setOf(SourceEdge.TOP),
     shapeProvider = { createRainParticle(IntRange(2, 6)) },
 )
@@ -195,11 +185,9 @@ internal val pooParameters = RandomizeParticleGeneratorParameters(
     count = 30,
     particleWidthRange = IntRange(1, 10),
     particleHeightRange = IntRange(1, 10),
-    minSpeed = 5f,
-    maxSpeed = 15f,
+    speedRange = 5f..15f,
     angleRange = IntRange(60, 120),
-    minRotationalSpeed = DEFAULT_POO_MIN_ROTATIONAL_SPEED,
-    maxRotationalSpeed = DEFAULT_POO_MAX_ROTATIONAL_SPEED,
+    rotationalSpeedRange = DEFAULT_POO_MIN_ROTATIONAL_SPEED..DEFAULT_POO_MAX_ROTATIONAL_SPEED,
     sourceEdges = setOf(SourceEdge.TOP, SourceEdge.LEFT, SourceEdge.RIGHT),
     shapeProvider = {
         ParticleShape.Text(
@@ -215,11 +203,9 @@ internal val moneyParameters = RandomizeParticleGeneratorParameters(
     count = 30,
     particleWidthRange = IntRange(1, 10),
     particleHeightRange = IntRange(1, 10),
-    minSpeed = 3f,
-    maxSpeed = 10f,
+    speedRange = 3f..10f,
     angleRange = IntRange(45, 135),
-    minRotationalSpeed = 1f,
-    maxRotationalSpeed = 3f,
+    rotationalSpeedRange = 1f..3f,
     sourceEdges = setOf(SourceEdge.TOP),
     shapeProvider = {
         createMoneyParticle(fontSizeRange = IntRange(9, 24))
@@ -232,11 +218,9 @@ internal fun createFlyingBirdParameters(resources: Resources) =
         randomizeInitialXY = false,
         particleWidthRange = IntRange(100, 200),
         particleHeightRange = IntRange(80, 100),
-        minSpeed = 5f,
-        maxSpeed = 30f,
+        speedRange = 5f..30f,
         angleRange = IntRange(175, 185),
-        minRotationalSpeed = 0f,
-        maxRotationalSpeed = 0f,
+        rotationalSpeedRange = 0f..0f,
         sourceEdges = setOf(SourceEdge.RIGHT),
         shapeProvider = {
             createBirdParticle(resources, R.drawable.flying_bird)
@@ -257,8 +241,7 @@ internal val emotionParameters = RandomizeParticleGeneratorParameters(
     randomizeInitialXY = false,
     particleWidthRange = IntRange(1, 10),
     particleHeightRange = IntRange(1, 10),
-    minSpeed = 10f,
-    maxSpeed = 15f,
+    speedRange = 10f..15f,
     angleRange = IntRange(265, 275),
     sourceEdges = setOf(SourceEdge.BOTTOM),
     startOffsetRange = IntRange(0, 30),

@@ -1,6 +1,5 @@
 package com.github.wangyung.persona.particle.generator.parameter
 
-import androidx.annotation.FloatRange
 import com.github.wangyung.persona.particle.ParticleShape
 import com.github.wangyung.persona.particle.ParticleSystem
 
@@ -35,22 +34,10 @@ data class RandomizeParticleGeneratorParameters(
     val particleHeightRange: IntRange = IntRange(DEFAULT_HEIGHT, DEFAULT_HEIGHT),
     val randomizeInitialXY: Boolean = true,
     val speedRange: ClosedFloatingPointRange<Float> = 0f..0f,
-    @FloatRange(from = 0.0)
-    val minSpeed: Float = 0f,
-    @FloatRange(from = 0.0)
-    val maxSpeed: Float = 0f,
+    // TODO: divide into scaleX and scaleY
     val scaleRange: ClosedFloatingPointRange<Float> = 1f..1f,
-    @FloatRange(from = 0.0)
-    val minScale: Float = 1f,
-    @FloatRange(from = 0.0)
-    val maxScale: Float = 1f,
     val angleRange: IntRange = IntRange(0, 0),
     val rotationalSpeedRange: ClosedFloatingPointRange<Float> = 0f..0f,
-    // TODO: Remove it later
-    @FloatRange(from = 0.0)
-    val minRotationalSpeed: Float = 0f,
-    @FloatRange(from = 0.0)
-    val maxRotationalSpeed: Float = 0f,
     val startOffsetRange: IntRange = IntRange(0, 0),
     val sourceEdges: Set<SourceEdge> = setOf(SourceEdge.TOP),
     val shapeProvider: () -> ParticleShape,
