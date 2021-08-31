@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,10 +22,14 @@ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.util.fastForEach
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 import com.github.wangyung.persona.particle.Instinct
 import com.github.wangyung.persona.particle.Particle
 import com.github.wangyung.persona.particle.ParticleShape
@@ -36,13 +41,16 @@ fun ParticleBox(
     modifier: Modifier,
     particleSystem: ParticleSystem,
 ) {
-    particleSystem.start()
+    val particleSystemState = remember {
+        mutableStateOf(particleSystem)
+    }
     var iteration by remember {
         mutableStateOf(0L)
     }
     val iterationState = particleSystem.iterationFlow.collectAsState()
     // trigger the recomposition
     iteration = iterationState.value
+    particleSystemState.value = particleSystem
     Box(modifier = modifier) {
         Canvas(
             modifier = modifier,
@@ -51,10 +59,34 @@ fun ParticleBox(
             onDraw = { clipRect { drawParticles(particleSystem.particles) } }
         )
     }
-    DisposableEffect(Unit) {
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(Unit, lifecycleOwner) {
+        val lifecycleObserver = ParticleBoxLifecycleObserver(particleSystemState)
+        lifecycleOwner.lifecycle.addObserver(lifecycleObserver)
         onDispose {
             particleSystem.stop()
+            lifecycleOwner.lifecycle.removeObserver(lifecycleObserver)
         }
+    }
+}
+
+/**
+ * A custom [LifecycleObserver] that handles OnPause and OnResume.
+ */
+private class ParticleBoxLifecycleObserver(
+    private val particleSystemState: State<ParticleSystem>
+) : LifecycleObserver {
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    fun onPause() {
+        particleSystemState.value.stop()
+        particleSystemState.value.iterationFlow
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    fun onResume() {
+        particleSystemState.value.start()
     }
 }
 

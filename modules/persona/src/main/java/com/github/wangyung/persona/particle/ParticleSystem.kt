@@ -68,6 +68,7 @@ fun ParticleSystem(
     size: Size,
     parameters: ParticleSystemParameters,
     generator: ParticleGenerator,
+    autoStart: Boolean = true,
     transformation: ParticleTransformation = LinearTranslateTransformation(),
     coroutineDispatcher: CoroutineDispatcher = Dispatchers.Default,
 ): ParticleSystem =
@@ -76,6 +77,7 @@ fun ParticleSystem(
         parameters = parameters,
         generator = generator,
         transformation = transformation,
+        autoStart = autoStart,
         coroutineDispatcher = coroutineDispatcher
     )
 
@@ -90,6 +92,7 @@ class DefaultParticleSystem internal constructor(
     override val parameters: ParticleSystemParameters,
     private val generator: ParticleGenerator,
     private val transformation: ParticleTransformation,
+    autoStart: Boolean,
     coroutineDispatcher: CoroutineDispatcher,
 ) : ParticleSystem {
     override val particles: List<Particle>
@@ -106,6 +109,12 @@ class DefaultParticleSystem internal constructor(
         CoroutineScope(coroutineDispatcher + SupervisorJob())
     private var mutableIterationStateFlow: MutableStateFlow<Long> = MutableStateFlow(0L)
     override val iterationFlow: StateFlow<Long> = mutableIterationStateFlow
+
+    init {
+        if (autoStart) {
+            start()
+        }
+    }
 
     override fun stop() {
         isRunning = false
@@ -141,10 +150,11 @@ class DefaultParticleSystem internal constructor(
         mutableIterationStateFlow.value = 0
     }
 
-    private fun updateParticles(iteration: Long) =
+    private fun updateParticles(iteration: Long) {
         mutableParticles.fastForEach {
             it.update(iteration)
         }
+    }
 
     private fun MutableParticle.update(iteration: Long) {
         if (!isAlive) return

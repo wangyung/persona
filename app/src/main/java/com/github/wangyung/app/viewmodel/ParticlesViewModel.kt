@@ -34,6 +34,7 @@ class ParticlesViewModel : ViewModel() {
                     parameters = generatorParameters,
                     size = size,
                 ),
+                autoStart = true,
                 transformation = transformation
             )
     }
