@@ -25,9 +25,9 @@ private const val ONE_SEC_MS = 1000L
  */
 interface ParticleSystem {
     /**
-     * The size of the particle system. All particles would only be alive in the area.
+     * The dimension of the particle system. All particles would only be alive in the area.
      */
-    val area: Size
+    val dimension: Size
 
     /**
      * The [ParticleSystemParameters] to setup the particle system.
@@ -65,7 +65,7 @@ interface ParticleSystem {
  * Creates the particle system.
  */
 fun ParticleSystem(
-    size: Size,
+    dimension: Size,
     parameters: ParticleSystemParameters,
     generator: ParticleGenerator,
     autoStart: Boolean = true,
@@ -73,7 +73,7 @@ fun ParticleSystem(
     coroutineDispatcher: CoroutineDispatcher = Dispatchers.Default,
 ): ParticleSystem =
     DefaultParticleSystem(
-        area = size,
+        dimension = dimension,
         parameters = parameters,
         generator = generator,
         transformation = transformation,
@@ -88,7 +88,7 @@ fun ParticleSystem(
  */
 @Suppress("LongParameterList")
 class DefaultParticleSystem internal constructor(
-    override val area: Size,
+    override val dimension: Size,
     override val parameters: ParticleSystemParameters,
     private val generator: ParticleGenerator,
     private val transformation: ParticleTransformation,
@@ -160,7 +160,7 @@ class DefaultParticleSystem internal constructor(
         if (!isAlive) return
 
         this.iteration = iteration
-        if (isOutOfBound(area.width, area.height)) {
+        if (isOutOfBound(dimension.width, dimension.height)) {
             if (parameters.autoResetParticles) {
                 initialIteration = iteration
                 generator.resetParticle(this)

@@ -128,7 +128,7 @@ private fun WeatherAnimationInternal(
                 systemParameters = parameterSet.particleSystemParameters,
                 generatorParameters = parameterSet.generatorParameters,
                 transformation = animationType.toParticleTransformation(),
-                size = Size(theWidth, theHeight),
+                dimension = Size(theWidth, theHeight),
             )
         }
         val particleModifier = when (animationType) {

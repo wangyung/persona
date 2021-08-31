@@ -15,7 +15,7 @@ import kotlin.random.nextInt
  */
 class RandomizeParticleGenerator(
     private val parameters: RandomizeParticleGeneratorParameters,
-    private val size: Size,
+    private val dimension: Size,
 ) : ParticleGenerator {
 
     private val sourceEdgeSet: List<SourceEdge> = parameters.sourceEdges.toList()
@@ -80,7 +80,7 @@ class RandomizeParticleGenerator(
 
         // If source edge set is empty, use TOP as fallback.
         if (sourceEdgeSet.isEmpty()) {
-            return Pair(getRandomX().coerceIn(halfWidth, size.width).toFloat(), 0f)
+            return Pair(getRandomX().coerceIn(halfWidth, dimension.width).toFloat(), 0f)
         }
 
         val edgeCount = sourceEdgeSet.count()
@@ -91,31 +91,31 @@ class RandomizeParticleGenerator(
         }
         return when (sourceEdgeSet[index]) {
             SourceEdge.TOP -> {
-                Pair(getRandomX().coerceIn(halfWidth, size.width).toFloat(), 0f)
+                Pair(getRandomX().coerceIn(halfWidth, dimension.width).toFloat(), 0f)
             }
             SourceEdge.BOTTOM -> {
                 Pair(
-                    getRandomX().coerceIn(halfWidth, size.width).toFloat(),
-                    size.height.toFloat()
+                    getRandomX().coerceIn(halfWidth, dimension.width).toFloat(),
+                    dimension.height.toFloat()
                 )
             }
             SourceEdge.LEFT -> {
                 Pair(
                     0f,
-                    getRandomY().coerceIn(halfHeight, size.height - halfHeight).toFloat()
+                    getRandomY().coerceIn(halfHeight, dimension.height - halfHeight).toFloat()
                 )
             }
             SourceEdge.RIGHT -> {
                 Pair(
-                    size.width.toFloat(),
-                    getRandomY().coerceIn(halfHeight, size.height - halfHeight).toFloat()
+                    dimension.width.toFloat(),
+                    getRandomY().coerceIn(halfHeight, dimension.height - halfHeight).toFloat()
                 )
             }
         }
     }
 
-    private fun getRandomX(): Int = Random.nextInt(size.width)
-    private fun getRandomY(): Int = Random.nextInt(size.height)
+    private fun getRandomX(): Int = Random.nextInt(dimension.width)
+    private fun getRandomY(): Int = Random.nextInt(dimension.height)
 
     private fun getRandomWidth(shape: ParticleShape): Int =
         when (shape) {

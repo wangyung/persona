@@ -21,18 +21,18 @@ class ParticlesViewModel : ViewModel() {
         systemParameters: ParticleSystemParameters,
         generatorParameters: RandomizeParticleGeneratorParameters,
         transformation: ParticleTransformation,
-        size: Size,
+        dimension: Size,
     ) {
         particleSystem?.stop()
         this.generatorParameters = generatorParameters
         this.particleSystemParameters = systemParameters
         particleSystem =
             ParticleSystem(
-                size = size,
+                dimension = dimension,
                 parameters = systemParameters,
                 generator = RandomizeParticleGenerator(
                     parameters = generatorParameters,
-                    size = size,
+                    dimension = dimension,
                 ),
                 autoStart = true,
                 transformation = transformation
