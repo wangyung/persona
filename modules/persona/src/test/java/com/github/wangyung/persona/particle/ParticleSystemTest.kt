@@ -1,10 +1,12 @@
 package com.github.wangyung.persona.particle
 
+import android.util.Size
 import androidx.compose.ui.graphics.Color
 import com.github.wangyung.persona.particle.generator.RandomizeParticleGenerator
 import com.github.wangyung.persona.particle.generator.parameter.RandomizeParticleGeneratorParameters
 import com.github.wangyung.persona.particle.mock.NotAliveTransformation
 import com.github.wangyung.persona.particle.transformation.ParticleTransformation
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.toList
@@ -13,26 +15,30 @@ import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
 @ExperimentalCoroutinesApi
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [29])
 class ParticleSystemTest {
 
     private val mockParameters: ParticleSystemParameters = ParticleSystemParameters()
     private val mockGenerator: RandomizeParticleGenerator = RandomizeParticleGenerator(
+        dimension = Size(10, 10),
         parameters = RandomizeParticleGeneratorParameters(
             count = 10,
             shapeProvider = { ParticleShape.Circle(color = Color.White, radius = 1) }
-        ),
-        width = 10,
-        height = 10,
+        )
     )
     private lateinit var mockTransformation: ParticleTransformation
-    private lateinit var particleSystem: ParticleSystem
+    private lateinit var particleSystem: DefaultParticleSystem
 
     @Before
     fun setUp() {
@@ -42,13 +48,13 @@ class ParticleSystemTest {
     @Test
     fun `The particle system is running when it is created`() {
         // given
-        particleSystem = ParticleSystem(
-            width = 10,
-            height = 10,
+        particleSystem = DefaultParticleSystem(
+            dimension = Size(10, 10),
             parameters = mockParameters,
             generator = mockGenerator,
             transformation = mockTransformation,
-            coroutineDispatcher = TestCoroutineDispatcher()
+            coroutineDispatcher = TestCoroutineDispatcher(),
+            autoStart = true,
         )
 
         // then
@@ -58,13 +64,13 @@ class ParticleSystemTest {
     @Test
     fun `The particle system is not running when stop() is invoked`() {
         // given
-        particleSystem = ParticleSystem(
-            width = 10,
-            height = 10,
+        particleSystem = DefaultParticleSystem(
+            dimension = Size(10, 10),
             parameters = mockParameters,
             generator = mockGenerator,
             transformation = mockTransformation,
-            coroutineDispatcher = TestCoroutineDispatcher()
+            coroutineDispatcher = TestCoroutineDispatcher(),
+            autoStart = true,
         )
         // when
         particleSystem.stop()
@@ -76,13 +82,13 @@ class ParticleSystemTest {
     @Test
     fun `The count of particles is the same as the count in the given parameter`() {
         // given
-        particleSystem = ParticleSystem(
-            width = 10,
-            height = 10,
+        particleSystem = DefaultParticleSystem(
+            dimension = Size(10, 10),
             parameters = mockParameters,
             generator = mockGenerator,
             transformation = mockTransformation,
-            coroutineDispatcher = TestCoroutineDispatcher()
+            coroutineDispatcher = TestCoroutineDispatcher(),
+            autoStart = true,
         )
 
         // then
@@ -94,16 +100,18 @@ class ParticleSystemTest {
         val testResult = mutableListOf<Long>()
         // given
         // use default dispatcher to get expected result.
-        particleSystem = ParticleSystem(
-            width = 10,
-            height = 10,
+        particleSystem = DefaultParticleSystem(
+            dimension = Size(10, 10),
             parameters = mockParameters,
             generator = mockGenerator,
             transformation = mockTransformation,
+            autoStart = false,
+            coroutineDispatcher = Dispatchers.Default
         )
 
         // when
         val job = launch {
+            particleSystem.start()
             particleSystem.iterationFlow.toList(testResult)
         }
 
@@ -113,10 +121,11 @@ class ParticleSystemTest {
         particleSystem.stop()
 
         // then
+        assertEquals(10, testResult.count())
+
         testResult.forEachIndexed { index, value ->
             assertEquals((index + 1).toLong(), value)
         }
-        assertEquals(10, testResult.count())
         job.cancel()
     }
 
@@ -125,12 +134,13 @@ class ParticleSystemTest {
         // given
         val iterations = mutableListOf<Long>()
         val notAliveTransformation = NotAliveTransformation(notAliveAtIteration = 9L)
-        particleSystem = ParticleSystem(
-            width = 10,
-            height = 10,
+        particleSystem = DefaultParticleSystem(
+            dimension = Size(10, 10),
             parameters = mockParameters,
             generator = mockGenerator,
             transformation = notAliveTransformation,
+            autoStart = true,
+            coroutineDispatcher = Dispatchers.Default
         )
         val originalParticles = particleSystem.particles
 
@@ -155,13 +165,13 @@ class ParticleSystemTest {
         // given
         val iterations = mutableListOf<Long>()
         val notAliveTransformation = NotAliveTransformation(notAliveAtIteration = 0L)
-        particleSystem = ParticleSystem(
+        particleSystem = DefaultParticleSystem(
             parameters = ParticleSystemParameters(restartWhenAllDead = false),
             generator = mockGenerator,
-            width = 10,
-            height = 10,
+            dimension = Size(10, 10),
             transformation = notAliveTransformation,
-            coroutineDispatcher = TestCoroutineDispatcher()
+            coroutineDispatcher = TestCoroutineDispatcher(),
+            autoStart = true,
         )
 
         // when
@@ -172,5 +182,18 @@ class ParticleSystemTest {
         assertFalse(particleSystem.isRunning)
         assertEquals(10, particleSystem.notAliveParticleIds.count())
         job.cancel()
+    }
+
+    @Test
+    fun `ParticleSystem factory method should return DefaultParticleSystem`() {
+        // given
+        val particleSystem = ParticleSystem(
+            dimension = Size(10, 10),
+            generator = mockGenerator,
+            parameters = mockParameters
+        )
+
+        // then
+        assertTrue(particleSystem is DefaultParticleSystem)
     }
 }

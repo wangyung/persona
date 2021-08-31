@@ -8,7 +8,9 @@ private const val TAG = "CompositeTransformation"
 /**
  * The particle transformation that composites other transformations.
  */
-class CompositeTransformation(initial: List<ParticleTransformation>) : ParticleTransformation {
+class CompositeTransformation(
+    initial: List<ParticleTransformation> = emptyList()
+) : ParticleTransformation {
 
     private val particleTransformations: MutableList<ParticleTransformation> = mutableListOf()
 

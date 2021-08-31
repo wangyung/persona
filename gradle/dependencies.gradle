@@ -58,12 +58,12 @@ ext {
             // Testing
             jUnit               : '4.13.2',
             mockitoKotlin      : '3.2.0',
-            robolectric         : '4.4',
+            robolectric         : '4.5.1',
 
             // The static analysis tool for Kotlin
             detekt              : '1.18.0-RC2',
 
             //For code coverage
-            jacoco              : '0.8.6'
+            jacoco              : '0.8.7'
     ]
 }
