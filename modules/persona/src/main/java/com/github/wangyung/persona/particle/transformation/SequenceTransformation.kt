@@ -15,6 +15,9 @@ class SequenceTransformation : ParticleTransformation, Durationable {
     override var duration: Long = 0
         private set
 
+    /**
+     * Adds a [ParticleTransformation] for the given [duration].
+     */
     fun add(particleTransformation: ParticleTransformation, duration: Long) {
         particleTransformations.add(
             DurationalDecoratorTransformation(
@@ -26,6 +29,9 @@ class SequenceTransformation : ParticleTransformation, Durationable {
         this.duration += duration
     }
 
+    /**
+     * Clears all [ParticleTransformation]s.
+     */
     fun clear() {
         particleTransformations.clear()
         duration = 0
@@ -56,7 +62,7 @@ class SequenceTransformation : ParticleTransformation, Durationable {
         return particleTransformations.firstOrNull { durationalTransformation ->
             val from = durationalTransformation.startFrom
             val to = from + durationalTransformation.duration
-            iteration in from until to + 1
+            iteration in from until to
         }
     }
 }

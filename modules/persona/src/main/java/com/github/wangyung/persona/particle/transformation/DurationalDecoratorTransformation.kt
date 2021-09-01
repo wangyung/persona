@@ -8,7 +8,7 @@ internal class DurationalDecoratorTransformation(
     private val particleTransformation: ParticleTransformation
 ) : ParticleTransformation, Durationable {
     override fun transform(particle: MutableParticle, iteration: Long) {
-        if (iteration < startFrom || iteration > startFrom + duration) {
+        if (iteration < startFrom || iteration >= startFrom + duration) {
             return
         }
 

@@ -14,19 +14,8 @@ class CompositeTransformationTest {
 
     lateinit var compositeTransformation: CompositeTransformation
     lateinit var mockParticle: MutableParticle
-
-    private val mockAlphaTransformation: ParticleTransformation = object : ParticleTransformation {
-        override fun transform(particle: MutableParticle, iteration: Long) {
-            particle.alpha = 0.5f
-        }
-    }
-
-    private val mockRotationTransformation: ParticleTransformation =
-        object : ParticleTransformation {
-            override fun transform(particle: MutableParticle, iteration: Long) {
-                particle.rotation = 180f
-            }
-        }
+    private val mockAlphaTransformation: ParticleTransformation = MockAlphaTransformation()
+    private val mockRotationTransformation: ParticleTransformation = MockRotationTransformation()
 
     @Before
     fun setUp() {
