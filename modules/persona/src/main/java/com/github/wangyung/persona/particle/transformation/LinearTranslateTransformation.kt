@@ -5,7 +5,9 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 /**
- * The transformation that translates (x, y) by the speed.
+ * The transformation that translates (x, y) by the speed. It only modifies the current particle
+ * state when everytime the [transform] is invoked.
+ * It would have different result even invokes [transform] multiple times with the same iteration.
  */
 class LinearTranslateTransformation : ParticleTransformation {
     override fun transform(particle: MutableParticle, iteration: Long) {
