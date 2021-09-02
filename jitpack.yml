@@ -2,4 +2,4 @@ jdk:
   - openjdk11
 install:
    - echo "Running lib module only"
-   - ./gradlew :persona:assembleRelease :persona:publishReleasePublicationToMavenLocal
+   - ./gradlew :persona:detekt :persona:assembleRelease :persona:publishReleasePublicationToMavenLocal
