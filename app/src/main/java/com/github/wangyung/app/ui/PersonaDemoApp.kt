@@ -50,7 +50,7 @@ fun TopBar(title: String) {
             title = { Text(text = title) },
             navigationIcon = {
                 Icon(
-                    painter = painterResource(R.drawable.sun),
+                    painter = painterResource(R.drawable.ic_launcher_foreground),
                     contentDescription = null
                 )
             },
