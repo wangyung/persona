@@ -64,6 +64,7 @@ interface ParticleSystem {
 /**
  * Creates the particle system.
  */
+@Suppress("FunctionNaming")
 fun ParticleSystem(
     dimension: Size,
     parameters: ParticleSystemParameters,

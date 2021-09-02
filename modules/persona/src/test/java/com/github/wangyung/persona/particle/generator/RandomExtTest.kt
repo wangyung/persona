@@ -16,7 +16,7 @@ class RandomExtTest {
     @Test
     fun `Throws an exception when the range is invalid`() {
         val floatRange = 10f.rangeTo(5f)
-        assertFailsWith<IllegalArgumentException> { floatRange.nextFloat()  }
+        assertFailsWith<IllegalArgumentException> { floatRange.nextFloat() }
     }
 
     @Test
