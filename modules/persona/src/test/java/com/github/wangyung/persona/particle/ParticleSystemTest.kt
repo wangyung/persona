@@ -187,7 +187,7 @@ class ParticleSystemTest {
     @Test
     fun `ParticleSystem factory method should return DefaultParticleSystem`() {
         // given
-        val particleSystem = ParticleSystem(
+        val particleSystem = particleSystem(
             dimension = Size(10, 10),
             generator = mockGenerator,
             parameters = mockParameters
