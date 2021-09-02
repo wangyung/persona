@@ -6,6 +6,7 @@ import com.github.wangyung.persona.particle.ParticleSystem
 import com.github.wangyung.persona.particle.ParticleSystemParameters
 import com.github.wangyung.persona.particle.generator.RandomizeParticleGenerator
 import com.github.wangyung.persona.particle.generator.parameter.RandomizeParticleGeneratorParameters
+import com.github.wangyung.persona.particle.particleSystem
 import com.github.wangyung.persona.particle.transformation.ParticleTransformation
 
 class ParticlesViewModel : ViewModel() {
@@ -27,7 +28,7 @@ class ParticlesViewModel : ViewModel() {
         this.generatorParameters = generatorParameters
         this.particleSystemParameters = systemParameters
         particleSystem =
-            ParticleSystem(
+            particleSystem(
                 dimension = dimension,
                 parameters = systemParameters,
                 generator = RandomizeParticleGenerator(
