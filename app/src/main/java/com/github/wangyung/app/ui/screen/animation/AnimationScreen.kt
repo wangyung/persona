@@ -17,6 +17,7 @@ fun AnimationScreen(animationType: AnimationType?) {
             is AnimationType.TwinkleStar -> TwinkleStarDemo()
             is AnimationType.FlyingPoo -> FlyingPooDemo()
             is AnimationType.FlyingBird -> FlyingBirdDemo()
+            is AnimationType.Confetti -> ConfettiDemo()
             else -> SnowDemo()
         }
     }

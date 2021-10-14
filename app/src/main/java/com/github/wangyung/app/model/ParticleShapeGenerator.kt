@@ -30,7 +30,7 @@ internal fun createSakuraParticle(strokeRange: IntRange): ParticleShape = Partic
 )
 
 internal fun createRainParticle(strokeRange: IntRange): ParticleShape.Line = ParticleShape.Line(
-    strokeWidth = Random.nextInt(strokeRange),
+    strokeWidth = Random.nextInt(strokeRange).toFloat(),
     color = Color.LightGray,
 )
 
@@ -47,7 +47,7 @@ internal fun createShowParticle(radiusRange: IntRange): ParticleShape.Circle = P
 internal fun createMoneyParticle(fontSizeRange: IntRange): ParticleShape = ParticleShape.Text(
     text = "\uD83D\uDCB5", // money
     fontSize = Random.nextInt(fontSizeRange).sp,
-    border = 1.dp,
+    borderWidth = 1.dp,
     color = Color.Blue,
 )
 
@@ -60,3 +60,6 @@ internal fun createStarParticle(color: Color, radiusRange: IntRange): ParticleSh
     color = color,
     radius = Random.nextInt(radiusRange)
 )
+
+internal fun createConfettiParticle(colors: List<Color>): ParticleShape.Rectangle =
+    ParticleShape.Rectangle(backgroundColor = colors.random())

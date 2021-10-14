@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -87,6 +88,8 @@ private class ParticleBoxLifecycleObserver(
     }
 }
 
+private val debugBorderStroke = Stroke(width = 1f)
+
 private fun DrawScope.drawParticles(particles: List<Particle>?) {
     particles?.fastForEach { particle ->
         if (!particle.shouldBeDraw) return@fastForEach
@@ -96,7 +99,7 @@ private fun DrawScope.drawParticles(particles: List<Particle>?) {
             is ParticleShape.Line -> particle.drawLine(this, shape)
             is ParticleShape.Text -> {
                 val paint = shape.nativePaint.apply {
-                    strokeWidth = shape.border.toPx()
+                    strokeWidth = shape.borderWidth.toPx()
                     color = shape.color.toArgb()
                     textSize = shape.fontSize.toPx()
                 }
@@ -104,6 +107,7 @@ private fun DrawScope.drawParticles(particles: List<Particle>?) {
             }
             is ParticleShape.Path -> particle.drawPath(this, shape)
             is ParticleShape.Image -> particle.drawImage(this, shape)
+            is ParticleShape.Rectangle -> particle.drawRectangle(this, shape)
         }
     }
 }
@@ -124,6 +128,7 @@ private fun Particle.drawCircle(drawScope: DrawScope, circle: ParticleShape.Circ
 private fun Particle.drawLine(drawScope: DrawScope, line: ParticleShape.Line) =
     drawScope.drawLine(
         color = line.color,
+        strokeWidth = line.strokeWidth,
         start = Offset(x - instinct.width / 2, y = y - instinct.height / 2),
         end = Offset(x + instinct.width / 2, y = y + instinct.height / 2)
     )
@@ -169,7 +174,7 @@ private fun Particle.drawPath(
     }) {
         drawPath(path = pathShape.path, color = pathShape.color)
         if (drawDebugBorder) {
-            drawRect(Color.Red, pathBound.topLeft, pathBound.size, style = Stroke(width = 1f))
+            drawRect(Color.Red, pathBound.topLeft, pathBound.size, style = debugBorderStroke)
         }
     }
 }
@@ -182,6 +187,20 @@ private fun Particle.drawImage(drawScope: DrawScope, imageShape: ParticleShape.I
         dstSize = IntSize(instinct.width, instinct.height),
         colorFilter = imageShape.colorFilter
     )
+}
+
+private fun Particle.drawRectangle(drawScope: DrawScope, rectangleShape: ParticleShape.Rectangle) {
+    drawScope.withTransform(transformBlock = {
+        val pivot = Offset(instinct.width / 2f, instinct.height / 2f)
+        translate(left = x, top = y)
+        rotate(rotation, pivot = pivot)
+        scale(scaleX = scaleX, scaleY = scaleY, pivot = pivot)
+    }) {
+        drawRect(
+            color = rectangleShape.backgroundColor,
+            size = Size(instinct.width.toFloat(), instinct.height.toFloat())
+        )
+    }
 }
 
 @Composable

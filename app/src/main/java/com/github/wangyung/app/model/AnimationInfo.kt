@@ -67,4 +67,13 @@ val animationDemos: List<AnimationInfo> = listOf(
         """.trimIndent(),
         animationType = AnimationType.Emotion,
     ),
+
+    AnimationInfo(
+        thumbnailId = R.drawable.confetti_animation,
+        title = AnimationType.Confetti.toTitle(),
+        description = """
+            The confetti effects. 
+        """.trimIndent(),
+        animationType = AnimationType.Confetti,
+    ),
 )

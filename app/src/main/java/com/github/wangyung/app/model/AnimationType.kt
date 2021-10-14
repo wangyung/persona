@@ -29,6 +29,7 @@ private const val FLYING_MONEY = "FlyingMoney"
 private const val FLYING_BIRD = "FlyingBird"
 private const val TWINKLE_STAR = "TwinkleStart"
 private const val EMOTION = "Emotion"
+private const val CONFETTI = "Confetti"
 
 internal const val DEFAULT_SNOW_MIN_RADIUS = 5
 internal const val DEFAULT_SNOW_MAX_RADIUS = 10
@@ -53,6 +54,7 @@ sealed class AnimationType(val value: String) {
     object FlyingBird : AnimationType(FLYING_BIRD)
     object TwinkleStar : AnimationType(TWINKLE_STAR)
     object Emotion : AnimationType(EMOTION)
+    object Confetti : AnimationType(CONFETTI)
 
     override fun toString(): String = this.value
 
@@ -69,6 +71,7 @@ sealed class AnimationType(val value: String) {
         is FlyingBird -> createFlyingBirdParameters(resources = resources)
         is TwinkleStar -> twinkleStarParameters
         is Emotion -> emotionParameters
+        is Confetti -> confettiParameters
     }
 
     fun toParticleSystemParameters(): ParticleSystemParameters = when (this) {
@@ -116,6 +119,12 @@ sealed class AnimationType(val value: String) {
                 scaleDuration
             )
         }
+        Confetti -> CompositeTransformation(
+            listOf(
+                LinearTranslateTransformation(),
+                LinearRotationTransformation(),
+            )
+        )
         else -> defaultTransformation
     }
 
@@ -129,6 +138,7 @@ sealed class AnimationType(val value: String) {
             is FlyingBird -> "Flying Bird"
             is TwinkleStar -> "Twinkle Star"
             is Emotion -> "Instagram-like emotion"
+            is Confetti -> "Confetti"
         }
 }
 
@@ -142,6 +152,7 @@ fun String.toAnimationType(): AnimationType? =
         FLYING_BIRD -> AnimationType.FlyingBird
         TWINKLE_STAR -> AnimationType.TwinkleStar
         EMOTION -> AnimationType.Emotion
+        CONFETTI -> AnimationType.Confetti
         else -> null
     }
 
@@ -149,43 +160,43 @@ private val defaultTransformation = LinearTranslateTransformation()
 
 internal val sakuraParameters = RandomizeParticleGeneratorParameters(
     count = 40,
-    particleWidthRange = IntRange(10, 20),
-    particleHeightRange = IntRange(10, 20),
+    particleWidthRange = 10..20,
+    particleHeightRange = 10..20,
     speedRange = 2f..8f,
     scaleRange = 1.0f..1.0f,
-    angleRange = IntRange(95, 140),
+    angleRange = 95..140,
     xRotationalSpeedRange = 0.1f..0.5f,
     zRotationalSpeedRange = -1f..-0.1f,
     sourceEdges = setOf(SourceEdge.TOP, SourceEdge.RIGHT),
-    shapeProvider = { createSakuraParticle(strokeRange = IntRange(1, 3)) },
+    shapeProvider = { createSakuraParticle(strokeRange = 1..3) },
 )
 
 internal val snowParameters = RandomizeParticleGeneratorParameters(
     randomizeInitialXY = true,
     count = 125,
     speedRange = 1f..2f,
-    angleRange = IntRange(80, 100),
+    angleRange = 80..100,
     zRotationalSpeedRange = 0f..0f,
     sourceEdges = setOf(SourceEdge.TOP),
-    shapeProvider = { createShowParticle(IntRange(DEFAULT_SNOW_MIN_RADIUS, DEFAULT_SNOW_MAX_RADIUS)) },
+    shapeProvider = { createShowParticle(DEFAULT_SNOW_MIN_RADIUS..DEFAULT_SNOW_MAX_RADIUS) },
 )
 
 internal val rainParameters = RandomizeParticleGeneratorParameters(
     count = 400,
-    particleWidthRange = IntRange(1, 2),
-    particleHeightRange = IntRange(10, 20),
+    particleWidthRange = 1..2,
+    particleHeightRange = 10..20,
     speedRange = DEFAULT_RAIN_MIN_SPEED..DEFAULT_RAIN_MAX_SPEED,
-    angleRange = IntRange(DEFAULT_RAIN_ANGLE_FROM, DEFAULT_RAIN_ANGLE_TO),
+    angleRange = DEFAULT_RAIN_ANGLE_FROM..DEFAULT_RAIN_ANGLE_TO,
     zRotationalSpeedRange = 0f..0f,
     sourceEdges = setOf(SourceEdge.TOP),
-    shapeProvider = { createRainParticle(IntRange(2, 6)) },
+    shapeProvider = { createRainParticle(2..6) },
 )
 internal val pooParameters = RandomizeParticleGeneratorParameters(
     count = 30,
-    particleWidthRange = IntRange(1, 10),
-    particleHeightRange = IntRange(1, 10),
+    particleWidthRange = 1..10,
+    particleHeightRange = 1..10,
     speedRange = 3f..10f,
-    angleRange = IntRange(60, 120),
+    angleRange = 60..120,
     xRotationalSpeedRange = 0.1f..0.5f,
     zRotationalSpeedRange = DEFAULT_POO_MIN_ROTATIONAL_SPEED..DEFAULT_POO_MAX_ROTATIONAL_SPEED,
     sourceEdges = setOf(SourceEdge.TOP, SourceEdge.LEFT, SourceEdge.RIGHT),
@@ -193,7 +204,7 @@ internal val pooParameters = RandomizeParticleGeneratorParameters(
         ParticleShape.Text(
             text = "\uD83D\uDCA9", // poopoo
             fontSize = 14.sp,
-            border = 1.dp,
+            borderWidth = 1.dp,
             color = Color.Black,
         )
     },
@@ -201,14 +212,14 @@ internal val pooParameters = RandomizeParticleGeneratorParameters(
 
 internal val moneyParameters = RandomizeParticleGeneratorParameters(
     count = 30,
-    particleWidthRange = IntRange(1, 10),
-    particleHeightRange = IntRange(1, 10),
+    particleWidthRange = 1..10,
+    particleHeightRange = 1..10,
     speedRange = 3f..10f,
-    angleRange = IntRange(45, 135),
+    angleRange = 45..135,
     zRotationalSpeedRange = 1f..3f,
     sourceEdges = setOf(SourceEdge.TOP),
     shapeProvider = {
-        createMoneyParticle(fontSizeRange = IntRange(9, 24))
+        createMoneyParticle(fontSizeRange = 9..24)
     },
 )
 
@@ -216,10 +227,10 @@ internal fun createFlyingBirdParameters(resources: Resources) =
     RandomizeParticleGeneratorParameters(
         count = 5,
         randomizeInitialXY = false,
-        particleWidthRange = IntRange(100, 200),
-        particleHeightRange = IntRange(80, 100),
+        particleWidthRange = 100..200,
+        particleHeightRange = 80..100,
         speedRange = 5f..30f,
-        angleRange = IntRange(175, 185),
+        angleRange = 175..185,
         zRotationalSpeedRange = 0f..0f,
         sourceEdges = setOf(SourceEdge.RIGHT),
         shapeProvider = {
@@ -229,28 +240,44 @@ internal fun createFlyingBirdParameters(resources: Resources) =
 
 internal val twinkleStarParameters = RandomizeParticleGeneratorParameters(
     count = 250,
-    particleWidthRange = IntRange(1, 4),
-    particleHeightRange = IntRange(1, 4),
+    particleWidthRange = 1..4,
+    particleHeightRange = 1..4,
     sourceEdges = setOf(SourceEdge.TOP),
-    startOffsetRange = IntRange(0, 60),
-    shapeProvider = { createStarParticle(Color(0xFFFAFFFF), IntRange(1, 4)) },
+    startOffsetRange = 0..60,
+    shapeProvider = { createStarParticle(Color(0xFFFAFFFF), 1..4) },
 )
 
 internal val emotionParameters = RandomizeParticleGeneratorParameters(
     count = 16,
     randomizeInitialXY = false,
-    particleWidthRange = IntRange(1, 10),
-    particleHeightRange = IntRange(1, 10),
+    particleWidthRange = 1..10,
+    particleHeightRange = 1..10,
     speedRange = 10f..15f,
-    angleRange = IntRange(265, 275),
+    angleRange = 265..275,
     sourceEdges = setOf(SourceEdge.BOTTOM),
-    startOffsetRange = IntRange(0, 30),
+    startOffsetRange = 0..30,
     shapeProvider = {
         ParticleShape.Text(
             text = "\uD83D\uDE0D", // heart-eyes emoji
             fontSize = 20.sp,
-            border = 1.dp,
+            borderWidth = 1.dp,
             color = Color.White.copy(alpha = 1f),
+        )
+    },
+)
+
+internal val confettiParameters = RandomizeParticleGeneratorParameters(
+    count = 200,
+    particleWidthRange = 10..20,
+    particleHeightRange = 10..20,
+    speedRange = 2f..8f,
+    angleRange = 80..100,
+    xRotationalSpeedRange = 0.1f..0.5f,
+    zRotationalSpeedRange = 0.1f..1f,
+    sourceEdges = setOf(SourceEdge.TOP),
+    shapeProvider = {
+        createConfettiParticle(
+            colors = listOf(Color.Red, Color.Green, Color.Blue, Color.Yellow)
         )
     },
 )

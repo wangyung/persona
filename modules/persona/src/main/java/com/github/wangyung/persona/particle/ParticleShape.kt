@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.NativePaint
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
@@ -33,7 +34,7 @@ sealed class ParticleShape {
      * The line style.
      */
     data class Line(
-        val strokeWidth: Int,
+        val strokeWidth: Float,
         val color: Color,
     ) : ParticleShape()
 
@@ -52,7 +53,7 @@ sealed class ParticleShape {
     data class Text(
         val text: String,
         val fontSize: TextUnit,
-        val border: Dp,
+        val borderWidth: Dp,
         val color: Color,
     ) : ParticleShape() {
         internal val textBounds: Rect = Rect()
@@ -60,4 +61,11 @@ sealed class ParticleShape {
             color = this@Text.color.toArgb()
         }
     }
+
+    /**
+     * The rectangle style.
+     */
+    data class Rectangle(
+        val backgroundColor: Color
+    ) : ParticleShape()
 }
