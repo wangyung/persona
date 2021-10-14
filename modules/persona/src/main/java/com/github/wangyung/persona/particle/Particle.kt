@@ -7,6 +7,8 @@ import androidx.compose.ui.graphics.Color
 /**
  * The particle is the basic unit that represents in the [ParticleSystem].
  * The [ParticlesBox] would draw it on the canvas.
+ *
+ * @property xRotationWidth Simulate the rotation on X axis.
  */
 interface Particle {
     val id: Long
@@ -23,6 +25,9 @@ interface Particle {
     val isAlive: Boolean
     val shouldBeDraw: Boolean
         get() = isAlive && iteration >= instinct.startOffset
+
+    // TODO: Replace it after using Matrix to handle the rotation.
+    val xRotationWidth: Float
 }
 
 /**
@@ -42,6 +47,7 @@ class MutableParticle(
     override var alpha: Float = 1f,
     override var color: Color = Color.Transparent,
     override var instinct: Instinct = Instinct(),
+    override var xRotationWidth: Float = instinct.width.toFloat(),
 ) : Particle {
     override var isAlive: Boolean = true
 }
@@ -63,7 +69,10 @@ data class Instinct(
     val angle: Int = 0,
 
     @FloatRange(from = 0.0)
-    val rotationalSpeed: Float = 0f,
+    val xRotationalSpeed: Float = 0f,
+
+    @FloatRange(from = 0.0)
+    val zRotationalSpeed: Float = 0f,
 
     @FloatRange(from = 0.0)
     val scaleX: Float = 1f,

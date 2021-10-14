@@ -36,9 +36,10 @@ data class RandomizeParticleGeneratorParameters(
     val speedRange: ClosedFloatingPointRange<Float> = 0f..0f,
     // TODO: divide into scaleX and scaleY
     val scaleRange: ClosedFloatingPointRange<Float> = 1f..1f,
-    val angleRange: IntRange = IntRange(0, 0),
-    val rotationalSpeedRange: ClosedFloatingPointRange<Float> = 0f..0f,
-    val startOffsetRange: IntRange = IntRange(0, 0),
+    val angleRange: IntRange = 0..0,
+    val xRotationalSpeedRange: ClosedFloatingPointRange<Float> = 0f..0f,
+    val zRotationalSpeedRange: ClosedFloatingPointRange<Float> = 0f..0f,
+    val startOffsetRange: IntRange = 0..0,
     val sourceEdges: Set<SourceEdge> = setOf(SourceEdge.TOP),
     val shapeProvider: () -> ParticleShape,
 )

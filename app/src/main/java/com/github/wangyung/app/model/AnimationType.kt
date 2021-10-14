@@ -95,7 +95,6 @@ sealed class AnimationType(val value: String) {
             listOf(
                 LinearTranslateTransformation(),
                 LinearRotationTransformation(),
-                LinearScaleParticleTransformation()
             )
         )
         FlyingPoo -> CompositeTransformation(
@@ -152,11 +151,12 @@ private val defaultTransformation = LinearTranslateTransformation()
 internal val sakuraParameters = RandomizeParticleGeneratorParameters(
     count = 40,
     particleWidthRange = IntRange(10, 20),
-    particleHeightRange = IntRange(10, 15),
+    particleHeightRange = IntRange(10, 20),
     speedRange = 2f..8f,
-    scaleRange = 0.7f..1.5f,
+    scaleRange = 1.0f..1.0f,
     angleRange = IntRange(95, 140),
-    rotationalSpeedRange = 0.5f..3.5f,
+    xRotationalSpeedRange = -0.5f..-0.1f,
+    zRotationalSpeedRange = -1f..-0.1f,
     sourceEdges = setOf(SourceEdge.TOP, SourceEdge.RIGHT),
     shapeProvider = { createSakuraParticle(strokeRange = IntRange(1, 3)) },
 )
@@ -166,7 +166,7 @@ internal val snowParameters = RandomizeParticleGeneratorParameters(
     count = 125,
     speedRange = 1f..2f,
     angleRange = IntRange(80, 100),
-    rotationalSpeedRange = 0f..0f,
+    zRotationalSpeedRange = 0f..0f,
     sourceEdges = setOf(SourceEdge.TOP),
     shapeProvider = { createShowParticle(IntRange(DEFAULT_SNOW_MIN_RADIUS, DEFAULT_SNOW_MAX_RADIUS)) },
 )
@@ -177,7 +177,7 @@ internal val rainParameters = RandomizeParticleGeneratorParameters(
     particleHeightRange = IntRange(10, 20),
     speedRange = DEFAULT_RAIN_MIN_SPEED..DEFAULT_RAIN_MAX_SPEED,
     angleRange = IntRange(DEFAULT_RAIN_ANGLE_FROM, DEFAULT_RAIN_ANGLE_TO),
-    rotationalSpeedRange = 0f..0f,
+    zRotationalSpeedRange = 0f..0f,
     sourceEdges = setOf(SourceEdge.TOP),
     shapeProvider = { createRainParticle(IntRange(2, 6)) },
 )
@@ -187,7 +187,7 @@ internal val pooParameters = RandomizeParticleGeneratorParameters(
     particleHeightRange = IntRange(1, 10),
     speedRange = 5f..15f,
     angleRange = IntRange(60, 120),
-    rotationalSpeedRange = DEFAULT_POO_MIN_ROTATIONAL_SPEED..DEFAULT_POO_MAX_ROTATIONAL_SPEED,
+    zRotationalSpeedRange = DEFAULT_POO_MIN_ROTATIONAL_SPEED..DEFAULT_POO_MAX_ROTATIONAL_SPEED,
     sourceEdges = setOf(SourceEdge.TOP, SourceEdge.LEFT, SourceEdge.RIGHT),
     shapeProvider = {
         ParticleShape.Text(
@@ -205,7 +205,7 @@ internal val moneyParameters = RandomizeParticleGeneratorParameters(
     particleHeightRange = IntRange(1, 10),
     speedRange = 3f..10f,
     angleRange = IntRange(45, 135),
-    rotationalSpeedRange = 1f..3f,
+    zRotationalSpeedRange = 1f..3f,
     sourceEdges = setOf(SourceEdge.TOP),
     shapeProvider = {
         createMoneyParticle(fontSizeRange = IntRange(9, 24))
@@ -220,7 +220,7 @@ internal fun createFlyingBirdParameters(resources: Resources) =
         particleHeightRange = IntRange(80, 100),
         speedRange = 5f..30f,
         angleRange = IntRange(175, 185),
-        rotationalSpeedRange = 0f..0f,
+        zRotationalSpeedRange = 0f..0f,
         sourceEdges = setOf(SourceEdge.RIGHT),
         shapeProvider = {
             createBirdParticle(resources, R.drawable.flying_bird)
@@ -256,7 +256,7 @@ internal val emotionParameters = RandomizeParticleGeneratorParameters(
 )
 
 internal val defaultSystemParameters = ParticleSystemParameters()
-internal val sakuraSystemParameters = ParticleSystemParameters(fps = 120)
+internal val sakuraSystemParameters = ParticleSystemParameters(fps = 60)
 internal val emotionSystemParameters = ParticleSystemParameters(
     autoResetParticles = false,
     restartWhenAllDead = false,

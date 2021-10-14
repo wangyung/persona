@@ -13,7 +13,7 @@ class LinearRotationTransformationTest {
 
     @Before
     fun setUp() {
-        mockParticle = MutableParticle(id = 300, instinct = Instinct(rotationalSpeed = 10f))
+        mockParticle = MutableParticle(id = 300, instinct = Instinct(zRotationalSpeed = 10f))
         linearRotationTransformation = LinearRotationTransformation()
     }
 

@@ -33,10 +33,12 @@ class RandomizeParticleGenerator(
             scaleY = getRandomFloatSafely(parameters.scaleRange),
             width = getRandomWidth(shape),
             height = getRandomHeight(shape),
-            rotationalSpeed = getRandomFloatSafely(parameters.rotationalSpeedRange),
+            xRotationalSpeed = getRandomFloatSafely(parameters.xRotationalSpeedRange),
+            zRotationalSpeed = getRandomFloatSafely(parameters.zRotationalSpeedRange),
             shape = shape
         )
         particle.rotation = 0f
+        particle.xRotationWidth = particleInstinct.width.toFloat()
         particle.instinct = particleInstinct
     }
 
@@ -55,7 +57,8 @@ class RandomizeParticleGenerator(
             height = getRandomHeight(shape),
             speed = getRandomFloatSafely(parameters.speedRange),
             angle = getRandomAngle(parameters.angleRange),
-            rotationalSpeed = getRandomFloatSafely(parameters.rotationalSpeedRange),
+            xRotationalSpeed = getRandomFloatSafely(parameters.xRotationalSpeedRange),
+            zRotationalSpeed = getRandomFloatSafely(parameters.zRotationalSpeedRange),
             scaleX = getRandomFloatSafely(parameters.scaleRange),
             scaleY = getRandomFloatSafely(parameters.scaleRange),
             startOffset = Random.nextInt(parameters.startOffsetRange),
@@ -70,7 +73,9 @@ class RandomizeParticleGenerator(
             id = autoIncrementId.getAndIncrement(),
             x = x,
             y = y,
-            instinct = instinct
+            scaleX = instinct.scaleX,
+            scaleY = instinct.scaleY,
+            instinct = instinct,
         )
     }
 

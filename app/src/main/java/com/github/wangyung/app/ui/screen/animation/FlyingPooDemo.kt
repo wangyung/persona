@@ -54,10 +54,10 @@ fun FlyingPooDemo() {
                 sliderRange = 1f..30f,
                 defaultSliderValue = DEFAULT_POO_MIN_ROTATIONAL_SPEED
             ) { newRotationalSpeed ->
-                val rangeEnd = parameterSet.generatorParameters.rotationalSpeedRange.endInclusive
+                val rangeEnd = parameterSet.generatorParameters.zRotationalSpeedRange.endInclusive
                 parameterSet = parameterSet.copy(
                     generatorParameters = parameterSet.generatorParameters.copy(
-                        rotationalSpeedRange = newRotationalSpeed.toFloat().rangeTo(rangeEnd),
+                        zRotationalSpeedRange = newRotationalSpeed.toFloat().rangeTo(rangeEnd),
                     )
                 )
             }
@@ -67,10 +67,10 @@ fun FlyingPooDemo() {
                 sliderRange = 1f..30f,
                 defaultSliderValue = DEFAULT_POO_MAX_ROTATIONAL_SPEED
             ) { newRotationalSpeed ->
-                val rangeStart = parameterSet.generatorParameters.rotationalSpeedRange.start
+                val rangeStart = parameterSet.generatorParameters.zRotationalSpeedRange.start
                 parameterSet = parameterSet.copy(
                     generatorParameters = parameterSet.generatorParameters.copy(
-                        rotationalSpeedRange = rangeStart.rangeTo(newRotationalSpeed.toFloat()),
+                        zRotationalSpeedRange = rangeStart.rangeTo(newRotationalSpeed.toFloat()),
                     )
                 )
             }
