@@ -38,8 +38,8 @@ internal const val DEFAULT_RAIN_MAX_SPEED = 30f
 internal const val DEFAULT_RAIN_ANGLE_FROM = 85
 internal const val DEFAULT_RAIN_ANGLE_TO = 95
 
-internal const val DEFAULT_POO_MIN_ROTATIONAL_SPEED = 1f
-internal const val DEFAULT_POO_MAX_ROTATIONAL_SPEED = 15f
+internal const val DEFAULT_POO_MIN_ROTATIONAL_SPEED = 0.5f
+internal const val DEFAULT_POO_MAX_ROTATIONAL_SPEED = 5f
 
 internal const val DEFAULT_FLYGINBIRD_ANGLE_FROM = 175
 internal const val DEFAULT_FLYGINBIRD_ANGLE_TO = 185
@@ -101,7 +101,6 @@ sealed class AnimationType(val value: String) {
             listOf(
                 LinearTranslateTransformation(),
                 LinearRotationTransformation(),
-                LinearScaleParticleTransformation()
             )
         )
         TwinkleStar -> BlinkParticleTransformation(frequencyFactorRange = 0.5f..2f)
@@ -155,7 +154,7 @@ internal val sakuraParameters = RandomizeParticleGeneratorParameters(
     speedRange = 2f..8f,
     scaleRange = 1.0f..1.0f,
     angleRange = IntRange(95, 140),
-    xRotationalSpeedRange = -0.5f..-0.1f,
+    xRotationalSpeedRange = 0.1f..0.5f,
     zRotationalSpeedRange = -1f..-0.1f,
     sourceEdges = setOf(SourceEdge.TOP, SourceEdge.RIGHT),
     shapeProvider = { createSakuraParticle(strokeRange = IntRange(1, 3)) },
@@ -185,8 +184,9 @@ internal val pooParameters = RandomizeParticleGeneratorParameters(
     count = 30,
     particleWidthRange = IntRange(1, 10),
     particleHeightRange = IntRange(1, 10),
-    speedRange = 5f..15f,
+    speedRange = 3f..10f,
     angleRange = IntRange(60, 120),
+    xRotationalSpeedRange = 0.1f..0.5f,
     zRotationalSpeedRange = DEFAULT_POO_MIN_ROTATIONAL_SPEED..DEFAULT_POO_MAX_ROTATIONAL_SPEED,
     sourceEdges = setOf(SourceEdge.TOP, SourceEdge.LEFT, SourceEdge.RIGHT),
     shapeProvider = {
