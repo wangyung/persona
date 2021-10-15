@@ -14,14 +14,14 @@ class LinearTranslateTransformationTest {
 
     @Before
     fun setUp() {
-        mockParticle = MutableParticle(id = 200, instinct = Instinct(speed = 10f, angle = 45))
+        mockParticle = MutableParticle(id = 200, instinct = Instinct(speed = 10f, angle = 45f))
         linearTranslateTransformation = LinearTranslateTransformation()
     }
 
     @Test
     fun `The x, y are updated correctly at angle 45`() {
         // when
-        mockParticle = MutableParticle(id = 200, instinct = Instinct(speed = 10f, angle = 45))
+        mockParticle = MutableParticle(id = 200, instinct = Instinct(speed = 10f, angle = 45f))
         linearTranslateTransformation.transform(mockParticle, 1)
 
         // then
@@ -32,7 +32,7 @@ class LinearTranslateTransformationTest {
     @Test
     fun `The x, y are updated correctly at angle 90`() {
         // when
-        mockParticle = MutableParticle(id = 200, instinct = Instinct(speed = 10f, angle = 90))
+        mockParticle = MutableParticle(id = 200, instinct = Instinct(speed = 10f, angle = 90f))
         linearTranslateTransformation.transform(mockParticle, 1)
 
         // then
