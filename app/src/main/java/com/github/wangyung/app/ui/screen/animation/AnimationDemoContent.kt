@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.github.wangyung.persona.particle.generator.parameter.SourceEdge
-import java.util.*
+import java.util.Locale
 import kotlin.math.abs
 
 private const val MIN_SLIDER_INTERVAL = 0.01f

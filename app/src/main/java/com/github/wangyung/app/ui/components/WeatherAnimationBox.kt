@@ -52,7 +52,7 @@ fun WeatherAnimationBox(
     }
 }
 
-@Suppress("ComplexMethod")
+@Suppress("ComplexMethod", "ComplexCondition")
 @Composable
 private fun WeatherAnimationInternal(
     animationType: AnimationType,

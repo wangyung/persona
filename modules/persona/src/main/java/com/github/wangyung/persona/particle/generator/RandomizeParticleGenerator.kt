@@ -82,6 +82,7 @@ class RandomizeParticleGenerator(
         )
     }
 
+    @Suppress("ForbiddenComment")
     private fun getRandomXY(
         instinct: Instinct,
         initialConstraints: List<InitialConstraints>?

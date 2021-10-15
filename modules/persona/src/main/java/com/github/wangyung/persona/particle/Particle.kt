@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
  *
  * @property xRotationWidth Simulate the rotation on X axis.
  */
+@Suppress("ForbiddenComment")
 interface Particle {
     val id: Long
     val initialIteration: Long

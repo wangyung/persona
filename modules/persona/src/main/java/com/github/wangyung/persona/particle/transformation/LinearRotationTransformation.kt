@@ -10,7 +10,7 @@ import java.lang.Math.abs
  */
 class LinearRotationTransformation : ParticleTransformation {
     override fun transform(particle: MutableParticle, iteration: Long) {
-        with (particle) {
+        with(particle) {
             xRotationWidth -= abs(instinct.xRotationalSpeed)
             if (xRotationWidth < 0) {
                 xRotationWidth = instinct.width.toFloat()

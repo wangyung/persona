@@ -1,7 +1,6 @@
 package com.github.wangyung.app.viewmodel
 
 import android.util.Size
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.lifecycle.ViewModel
 import com.github.wangyung.persona.particle.ParticleSystem
 import com.github.wangyung.persona.particle.ParticleSystemParameters
