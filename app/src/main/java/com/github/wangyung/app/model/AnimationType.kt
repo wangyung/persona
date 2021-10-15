@@ -271,10 +271,10 @@ internal val confettiParameters = RandomizeParticleGeneratorParameters(
     particleWidthRange = 10..20,
     particleHeightRange = 10..20,
     speedRange = 2f..8f,
-    angleRange = 80..100,
+    angleRange = -10..10,
     xRotationalSpeedRange = 0.1f..0.5f,
     zRotationalSpeedRange = 0.1f..1f,
-    sourceEdges = setOf(SourceEdge.TOP),
+    sourceEdges = setOf(SourceEdge.LEFT),
     shapeProvider = {
         createConfettiParticle(
             colors = listOf(Color.Red, Color.Green, Color.Blue, Color.Yellow)
