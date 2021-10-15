@@ -1,5 +1,6 @@
 package com.github.wangyung.persona.particle.transformation
 
+import androidx.annotation.FloatRange
 import com.github.wangyung.persona.particle.MutableParticle
 import kotlin.math.cos
 import kotlin.math.sin
@@ -9,16 +10,20 @@ import kotlin.math.sin
  * state when everytime the [transform] is invoked.
  * It would have different result even invokes [transform] multiple times with the same iteration.
  */
-class LinearTranslateTransformation : ParticleTransformation {
+class LinearTranslateTransformation(
+    @FloatRange(from = 0.0)
+    private val gravity: Float = 0.0f
+) : ParticleTransformation {
     override fun transform(particle: MutableParticle, iteration: Long) {
+        val duration = iteration - particle.initialIteration
         val speed = particle.instinct.speed
         val angle = particle.instinct.angle
         val horizontalSpeed =
-             speed * cos(Math.toRadians(angle.toDouble())).toFloat()
+            speed * cos(Math.toRadians(angle.toDouble())).toFloat()
         val verticalSpeed =
             speed * sin(Math.toRadians(angle.toDouble())).toFloat()
 
-        particle.y = particle.y + verticalSpeed
+        particle.y = particle.y + verticalSpeed + (gravity * duration)
         particle.x = particle.x + horizontalSpeed
     }
 }
