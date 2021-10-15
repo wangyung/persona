@@ -10,16 +10,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.github.wangyung.app.model.AnimationParameterSet
 import com.github.wangyung.app.model.AnimationType
-import com.github.wangyung.app.model.DEFAULT_FLYGINBIRD_ANGLE_FROM
-import com.github.wangyung.app.model.DEFAULT_FLYGINBIRD_ANGLE_TO
+import com.github.wangyung.app.model.DEFAULT_FLYGING_BIRD_ANGLE_FROM
+import com.github.wangyung.app.model.DEFAULT_FLYGING_BIRD_ANGLE_TO
 
 @Composable
 fun FlyingBirdDemo() {
     val animationType = AnimationType.FlyingBird
-    val generatorParameters = animationType.toGeneratorParameters()
+    val generatorParameters = animationType.toGeneratorParameters(LocalContext.current.resources)
     var parameterSet by remember {
         mutableStateOf(
             AnimationParameterSet(
@@ -78,7 +80,7 @@ fun FlyingBirdDemo() {
                 title = "Angle from:",
                 modifier = modifier,
                 sliderRange = 0f..359f,
-                defaultSliderValue = DEFAULT_FLYGINBIRD_ANGLE_FROM.toFloat()
+                defaultSliderValue = DEFAULT_FLYGING_BIRD_ANGLE_FROM.toFloat()
             ) { newFromAngle ->
                 parameterSet = parameterSet.copy(
                     generatorParameters = parameterSet.generatorParameters.copy(
@@ -93,7 +95,7 @@ fun FlyingBirdDemo() {
                 title = "Angle to:",
                 modifier = modifier,
                 sliderRange = 0f..359f,
-                defaultSliderValue = DEFAULT_FLYGINBIRD_ANGLE_TO.toFloat()
+                defaultSliderValue = DEFAULT_FLYGING_BIRD_ANGLE_TO.toFloat()
             ) { newToAngle ->
                 parameterSet = parameterSet.copy(
                     generatorParameters = parameterSet.generatorParameters.copy(

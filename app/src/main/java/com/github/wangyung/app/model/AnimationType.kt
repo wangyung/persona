@@ -3,18 +3,25 @@ package com.github.wangyung.app.model
 import android.content.res.Resources
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.github.wangyung.persona.particle.ParticleShape
-import com.github.wangyung.persona.particle.ParticleSystemParameters
-import com.github.wangyung.persona.particle.generator.parameter.RandomizeParticleGeneratorParameters
-import com.github.wangyung.persona.particle.generator.parameter.SourceEdge
 import com.github.wangyung.app.transformation.BlinkParticleTransformation
 import com.github.wangyung.app.transformation.HorizontalSpeedWithSinParticleTransformation
 import com.github.wangyung.app.transformation.LinearScaleParticleTransformation
 import com.github.wangyung.app.transformation.ScaleAndDimParticleTransformation
+import com.github.wangyung.app.ui.screen.animation.ConfettiDemo
+import com.github.wangyung.app.ui.screen.animation.EmotionDemo
+import com.github.wangyung.app.ui.screen.animation.FlyingBirdDemo
+import com.github.wangyung.app.ui.screen.animation.FlyingPooDemo
+import com.github.wangyung.app.ui.screen.animation.RainDemo
+import com.github.wangyung.app.ui.screen.animation.SakuraDemo
+import com.github.wangyung.app.ui.screen.animation.SnowDemo
+import com.github.wangyung.app.ui.screen.animation.TwinkleStarDemo
 import com.github.wangyung.persona.app.R
+import com.github.wangyung.persona.particle.ParticleShape
+import com.github.wangyung.persona.particle.ParticleSystemParameters
+import com.github.wangyung.persona.particle.generator.parameter.RandomizeParticleGeneratorParameters
+import com.github.wangyung.persona.particle.generator.parameter.SourceEdge
 import com.github.wangyung.persona.particle.transformation.CompositeTransformation
 import com.github.wangyung.persona.particle.transformation.LinearRotationTransformation
 import com.github.wangyung.persona.particle.transformation.LinearTranslateTransformation
@@ -42,104 +49,180 @@ internal const val DEFAULT_RAIN_ANGLE_TO = 95
 internal const val DEFAULT_POO_MIN_ROTATIONAL_SPEED = 0.5f
 internal const val DEFAULT_POO_MAX_ROTATIONAL_SPEED = 5f
 
-internal const val DEFAULT_FLYGINBIRD_ANGLE_FROM = 175
-internal const val DEFAULT_FLYGINBIRD_ANGLE_TO = 185
+internal const val DEFAULT_FLYGING_BIRD_ANGLE_FROM = 175
+internal const val DEFAULT_FLYGING_BIRD_ANGLE_TO = 185
 
 sealed class AnimationType(val value: String) {
-    object Rain : AnimationType(RAIN)
-    object Snow : AnimationType(SNOW)
-    object Sakura : AnimationType(SAKURA)
-    object FlyingPoo : AnimationType(FLYING_POO)
-    object FlyingMoney : AnimationType(FLYING_MONEY)
-    object FlyingBird : AnimationType(FLYING_BIRD)
-    object TwinkleStar : AnimationType(TWINKLE_STAR)
-    object Emotion : AnimationType(EMOTION)
-    object Confetti : AnimationType(CONFETTI)
-
-    override fun toString(): String = this.value
-
+    abstract fun toGeneratorParameters(resources: Resources): RandomizeParticleGeneratorParameters
+    abstract fun toTitle(): String
+    open fun toParticleSystemParameters(): ParticleSystemParameters = defaultSystemParameters
+    abstract fun toParticleTransformation(): ParticleTransformation
     @Composable
-    fun toGeneratorParameters(
-        resources: Resources = LocalContext.current.resources
-    ): RandomizeParticleGeneratorParameters =
-        when (this) {
-        is Snow -> snowParameters
-        is Sakura -> sakuraParameters
-        is Rain -> rainParameters
-        is FlyingPoo -> pooParameters
-        is FlyingMoney -> moneyParameters
-        is FlyingBird -> createFlyingBirdParameters(resources = resources)
-        is TwinkleStar -> twinkleStarParameters
-        is Emotion -> emotionParameters
-        is Confetti -> confettiParameters
+    abstract fun DemoScreen()
+
+    object Rain : AnimationType(RAIN) {
+        override fun toGeneratorParameters(
+            resources: Resources
+        ): RandomizeParticleGeneratorParameters = rainParameters
+
+        override fun toTitle(): String = "Rain"
+
+        override fun toParticleTransformation(): ParticleTransformation =
+            LinearTranslateTransformation()
+
+        @Composable
+        override fun DemoScreen() = RainDemo()
     }
 
-    fun toParticleSystemParameters(): ParticleSystemParameters = when (this) {
-        is Sakura -> sakuraSystemParameters
-        is Emotion -> emotionSystemParameters
-        else -> defaultSystemParameters
-    }
+    object Snow : AnimationType(SNOW) {
+        override fun toGeneratorParameters(
+            resources: Resources
+        ): RandomizeParticleGeneratorParameters = snowParameters
 
-    fun toParticleTransformation(): ParticleTransformation = when (this) {
-        Rain -> LinearTranslateTransformation()
-        FlyingMoney -> CompositeTransformation(
-            listOf(
-                LinearTranslateTransformation(),
-                LinearRotationTransformation()
-            )
-        )
-        Snow -> CompositeTransformation(
+        override fun toTitle(): String = "Snow"
+
+        override fun toParticleTransformation(): ParticleTransformation = CompositeTransformation(
             listOf(
                 HorizontalSpeedWithSinParticleTransformation(),
                 LinearScaleParticleTransformation(),
             )
         )
-        Sakura -> CompositeTransformation(
-            listOf(
-                LinearTranslateTransformation(),
-                LinearRotationTransformation(),
-            )
-        )
-        FlyingPoo -> CompositeTransformation(
-            listOf(
-                LinearTranslateTransformation(),
-                LinearRotationTransformation(),
-            )
-        )
-        TwinkleStar -> BlinkParticleTransformation(frequencyFactorRange = 0.5f..2f)
-        Emotion -> SequenceTransformation().apply {
-            val scaleDuration = 30L
-            add(LinearTranslateTransformation(), 40L)
-            add(
-                ScaleAndDimParticleTransformation(
-                    1f / scaleDuration,
-                    1f / scaleDuration,
-                    alphaDelta = 1f / scaleDuration
-                ),
-                scaleDuration
-            )
-        }
-        Confetti -> CompositeTransformation(
-            listOf(
-                LinearTranslateTransformation(),
-                LinearRotationTransformation(),
-            )
-        )
-        else -> defaultTransformation
+
+        @Composable
+        override fun DemoScreen() = SnowDemo()
     }
 
-    fun toTitle(): String =
-        when (this) {
-            is Snow -> "Snow"
-            is Sakura -> "Sakura (桜吹雪)"
-            is Rain -> "Rain"
-            is FlyingPoo -> "Flying Foo"
-            is FlyingMoney -> "Flying Money"
-            is FlyingBird -> "Flying Bird"
-            is TwinkleStar -> "Twinkle Star"
-            is Emotion -> "Instagram-like emotion"
-            is Confetti -> "Confetti"
-        }
+    object Sakura : AnimationType(SAKURA) {
+        override fun toGeneratorParameters(
+            resources: Resources
+        ): RandomizeParticleGeneratorParameters = sakuraParameters
+
+        override fun toParticleSystemParameters(): ParticleSystemParameters =
+            sakuraSystemParameters
+
+        override fun toTitle(): String = "Sakura (桜吹雪)"
+
+        override fun toParticleTransformation(): ParticleTransformation = CompositeTransformation(
+            listOf(
+                LinearTranslateTransformation(),
+                LinearRotationTransformation(),
+            )
+        )
+
+        @Composable
+        override fun DemoScreen() = SakuraDemo()
+    }
+
+    object FlyingPoo : AnimationType(FLYING_POO) {
+        override fun toGeneratorParameters(
+            resources: Resources
+        ): RandomizeParticleGeneratorParameters = pooParameters
+
+        override fun toTitle(): String = "Flying Foo"
+
+        override fun toParticleTransformation(): ParticleTransformation = CompositeTransformation(
+            listOf(
+                LinearTranslateTransformation(gravity = 0.1f),
+                LinearRotationTransformation(),
+            )
+        )
+
+        @Composable
+        override fun DemoScreen() = FlyingPooDemo()
+    }
+
+    object FlyingMoney : AnimationType(FLYING_MONEY) {
+        override fun toGeneratorParameters(
+            resources: Resources
+        ): RandomizeParticleGeneratorParameters = moneyParameters
+
+        override fun toTitle(): String = "Flying Money"
+
+        override fun toParticleTransformation(): ParticleTransformation = CompositeTransformation(
+            listOf(
+                LinearTranslateTransformation(),
+                LinearRotationTransformation()
+            )
+        )
+
+        @Composable
+        override fun DemoScreen() = TODO("Not yet implemented")
+    }
+
+    object FlyingBird : AnimationType(FLYING_BIRD) {
+        override fun toGeneratorParameters(
+            resources: Resources
+        ): RandomizeParticleGeneratorParameters = createFlyingBirdParameters(resources)
+
+        override fun toTitle(): String = "Flying Bird"
+
+        override fun toParticleTransformation(): ParticleTransformation = defaultTransformation
+
+        @Composable
+        override fun DemoScreen() = FlyingBirdDemo()
+    }
+
+    object TwinkleStar : AnimationType(TWINKLE_STAR) {
+        override fun toGeneratorParameters(
+            resources: Resources
+        ): RandomizeParticleGeneratorParameters = twinkleStarParameters
+
+        override fun toTitle(): String = "Twinkle Star"
+
+        override fun toParticleTransformation(): ParticleTransformation =
+            BlinkParticleTransformation(frequencyFactorRange = 0.5f..2f)
+
+        @Composable
+        override fun DemoScreen() = TwinkleStarDemo()
+    }
+
+    object Emotion : AnimationType(EMOTION) {
+        override fun toGeneratorParameters(
+            resources: Resources
+        ): RandomizeParticleGeneratorParameters = emotionParameters
+
+        override fun toParticleSystemParameters(): ParticleSystemParameters =
+            emotionSystemParameters
+
+        override fun toTitle(): String = "Instagram-like emotion"
+
+        override fun toParticleTransformation(): ParticleTransformation =
+            SequenceTransformation().apply {
+                val scaleDuration = 30L
+                add(LinearTranslateTransformation(), 40L)
+                add(
+                    ScaleAndDimParticleTransformation(
+                        1f / scaleDuration,
+                        1f / scaleDuration,
+                        alphaDelta = 1f / scaleDuration
+                    ),
+                    scaleDuration
+                )
+            }
+
+        @Composable
+        override fun DemoScreen() = EmotionDemo()
+    }
+
+    object Confetti : AnimationType(CONFETTI) {
+        override fun toGeneratorParameters(
+            resources: Resources
+        ): RandomizeParticleGeneratorParameters = confettiParameters
+
+        override fun toTitle(): String = "Confetti"
+
+        override fun toParticleTransformation(): ParticleTransformation = CompositeTransformation(
+            listOf(
+                LinearTranslateTransformation(gravity = 0.2f),
+                LinearRotationTransformation(),
+            )
+        )
+
+        @Composable
+        override fun DemoScreen() = ConfettiDemo()
+    }
+
+    override fun toString(): String = this.value
 }
 
 fun String.toAnimationType(): AnimationType? =
@@ -196,10 +279,11 @@ internal val pooParameters = RandomizeParticleGeneratorParameters(
     particleWidthRange = 1..10,
     particleHeightRange = 1..10,
     speedRange = 3f..10f,
-    angleRange = 60..120,
+    angleRange = 315..330,
+    randomizeInitialXY = false,
     xRotationalSpeedRange = 0.1f..0.5f,
     zRotationalSpeedRange = DEFAULT_POO_MIN_ROTATIONAL_SPEED..DEFAULT_POO_MAX_ROTATIONAL_SPEED,
-    sourceEdges = setOf(SourceEdge.TOP, SourceEdge.LEFT, SourceEdge.RIGHT),
+    sourceEdges = setOf(SourceEdge.LEFT),
     shapeProvider = {
         ParticleShape.Text(
             text = "\uD83D\uDCA9", // poopoo
@@ -271,7 +355,7 @@ internal val confettiParameters = RandomizeParticleGeneratorParameters(
     particleWidthRange = 10..20,
     particleHeightRange = 10..20,
     speedRange = 2f..8f,
-    angleRange = -10..10,
+    angleRange = 315..330,
     xRotationalSpeedRange = 0.1f..0.5f,
     zRotationalSpeedRange = 0.1f..1f,
     sourceEdges = setOf(SourceEdge.LEFT),

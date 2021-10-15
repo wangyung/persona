@@ -10,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.github.wangyung.app.model.AnimationParameterSet
 import com.github.wangyung.app.model.AnimationType
@@ -17,7 +18,7 @@ import com.github.wangyung.app.model.AnimationType
 @Composable
 fun SakuraDemo() {
     val animationType = AnimationType.Sakura
-    val generatorParameters = animationType.toGeneratorParameters()
+    val generatorParameters = animationType.toGeneratorParameters(LocalContext.current.resources)
     var parameterSet by remember {
         mutableStateOf(
             AnimationParameterSet(
