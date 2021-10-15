@@ -18,7 +18,7 @@ allprojects {
 Add the dependency
 ```
 dependencies {
-    implementation "com.github.wangyung:persona:0.5.1"
+    implementation "com.github.wangyung:persona:0.6.0"
 }
 
 ```
