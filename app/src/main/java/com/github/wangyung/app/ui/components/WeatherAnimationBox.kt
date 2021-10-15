@@ -116,7 +116,8 @@ private fun WeatherAnimationInternal(
         val viewModel: ParticlesViewModel = viewModel()
         if (viewModel.particleSystem?.isRunning == false ||
             viewModel.generatorParameters != parameterSet.generatorParameters ||
-            viewModel.particleSystemParameters != parameterSet.particleSystemParameters
+            viewModel.particleSystemParameters != parameterSet.particleSystemParameters ||
+            viewModel.transoformationParameters != parameterSet.transformationParameters
         ) {
             val theWidth = constraints.maxWidth
             val theHeight: Int = when (animationType) {
@@ -127,7 +128,9 @@ private fun WeatherAnimationInternal(
             viewModel.startNewParticlesSystem(
                 systemParameters = parameterSet.particleSystemParameters,
                 generatorParameters = parameterSet.generatorParameters,
-                transformation = animationType.toParticleTransformation(),
+                transformation = animationType.toParticleTransformation(
+                    parameterSet.transformationParameters
+                ),
                 dimension = Size(theWidth, theHeight),
             )
         }

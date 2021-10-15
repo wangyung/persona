@@ -25,6 +25,8 @@ private const val DEFAULT_HEIGHT = 12
  * @property sourceEdges The set of the edges where the particle would appear at the beginning.
  * For example, if the edges are [SourceEdge.TOP] and [SourceEdge.RIGHT], the particle will appear
  * from top or right of the [ParticleSystem].
+ * @property constraints The list of constraints that would be applied when generating the
+ * particles.
  * @property shapeProvider A lambda for creating the [ParticleShape]
  */
 @Suppress("ForbiddenComment")
@@ -36,10 +38,11 @@ data class RandomizeParticleGeneratorParameters(
     val speedRange: ClosedFloatingPointRange<Float> = 0f..0f,
     // TODO: divide into scaleX and scaleY
     val scaleRange: ClosedFloatingPointRange<Float> = 1f..1f,
-    val angleRange: IntRange = 0..0,
+    val angleRange: ClosedFloatingPointRange<Float> = 0f..0f,
     val xRotationalSpeedRange: ClosedFloatingPointRange<Float> = 0f..0f,
     val zRotationalSpeedRange: ClosedFloatingPointRange<Float> = 0f..0f,
     val startOffsetRange: IntRange = 0..0,
     val sourceEdges: Set<SourceEdge> = setOf(SourceEdge.TOP),
+    val constraints: List<Constraints>? = null,
     val shapeProvider: () -> ParticleShape,
 )

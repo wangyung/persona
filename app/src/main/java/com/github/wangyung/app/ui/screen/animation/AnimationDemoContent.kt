@@ -19,14 +19,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.github.wangyung.persona.particle.generator.parameter.SourceEdge
+import java.util.*
+import kotlin.math.abs
+
+private const val MIN_SLIDER_INTERVAL = 0.01f
 
 @Composable
 fun SliderWithValueText(
     title: String,
     modifier: Modifier,
     sliderRange: ClosedFloatingPointRange<Float> = 0f..1f,
+    intOnly: Boolean = false,
     defaultSliderValue: Float = sliderRange.start,
-    onValueChanged: ((Int) -> Unit)? = null
+    onValueChanged: ((Float) -> Unit)? = null
 ) {
     ComposableWithTextTitle(title = title, modifier = modifier) {
         Row(
@@ -36,21 +41,35 @@ fun SliderWithValueText(
         ) {
             var sliderPosition by remember { mutableStateOf(defaultSliderValue) }
             Slider(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp),
                 value = sliderPosition,
                 onValueChange = { newValue ->
-                    val newValueInt = newValue.toInt()
-                    if (sliderPosition.toInt() != newValueInt) {
-                        onValueChanged?.invoke(newValueInt)
+                    if (intOnly) {
+                        val newValueInt = newValue.toInt()
+                        if (sliderPosition.toInt() != newValueInt) {
+                            onValueChanged?.invoke(newValueInt.toFloat())
+                            sliderPosition = newValue
+                        }
+                    } else {
+                        if (abs(sliderPosition - newValue) >= MIN_SLIDER_INTERVAL) {
+                            onValueChanged?.invoke(newValue)
+                        }
+                        sliderPosition = newValue
                     }
-                    sliderPosition = newValue
                 },
                 valueRange = sliderRange
             )
+            val displayText = if (intOnly) {
+                sliderPosition.toInt().toString()
+            } else {
+                String.format(locale = Locale.US, "%.2f", sliderPosition)
+            }
             Text(
-                modifier = Modifier.fillMaxWidth(0.1f),
+                modifier = Modifier.fillMaxWidth(0.15f),
                 textAlign = TextAlign.Center,
-                text = sliderPosition.toInt().toString(),
+                text = displayText,
             )
         }
     }

@@ -27,16 +27,14 @@ fun RainDemo() {
         mutableStateOf(
             AnimationParameterSet(
                 generatorParameters = generatorParameters,
-                particleSystemParameters = animationType.toParticleSystemParameters()
+                particleSystemParameters = animationType.toParticleSystemParameters(),
+                transformationParameters = animationType.toTransformationSystemParameters()
             )
         )
     }
     AnimationDemo(
         animationType = animationType,
-        parameterSet = AnimationParameterSet(
-            generatorParameters = parameterSet.generatorParameters,
-            particleSystemParameters = parameterSet.particleSystemParameters
-        )
+        parameterSet = parameterSet
     ) {
         val modifier = Modifier.fillMaxWidth()
         Column(modifier = modifier) {
@@ -44,10 +42,13 @@ fun RainDemo() {
                 title = "Particle Count:",
                 modifier = modifier,
                 sliderRange = 25f..1000f,
+                intOnly = true,
                 defaultSliderValue = parameterSet.generatorParameters.count.toFloat()
             ) { newCount ->
                 parameterSet = parameterSet.copy(
-                    generatorParameters = parameterSet.generatorParameters.copy(count = newCount)
+                    generatorParameters = parameterSet.generatorParameters.copy(
+                        count = newCount.toInt()
+                    )
                 )
             }
 
@@ -86,12 +87,10 @@ fun RainDemo() {
                 sliderRange = 30f..150f,
                 defaultSliderValue = DEFAULT_RAIN_ANGLE_FROM.toFloat()
             ) { newFromAngle ->
+                val last = parameterSet.generatorParameters.angleRange.endInclusive
                 parameterSet = parameterSet.copy(
                     generatorParameters = parameterSet.generatorParameters.copy(
-                        angleRange = IntRange(
-                            newFromAngle,
-                            parameterSet.generatorParameters.angleRange.last
-                        )
+                        angleRange = newFromAngle..last
                     )
                 )
             }
@@ -101,12 +100,10 @@ fun RainDemo() {
                 sliderRange = 30f..150f,
                 defaultSliderValue = DEFAULT_RAIN_ANGLE_TO.toFloat()
             ) { newToAngle ->
+                val first = parameterSet.generatorParameters.angleRange.start
                 parameterSet = parameterSet.copy(
                     generatorParameters = parameterSet.generatorParameters.copy(
-                        angleRange = IntRange(
-                            parameterSet.generatorParameters.angleRange.first,
-                            newToAngle
-                        )
+                        angleRange = first..newToAngle
                     )
                 )
             }

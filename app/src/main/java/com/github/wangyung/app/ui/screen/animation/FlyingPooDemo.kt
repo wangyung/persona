@@ -25,16 +25,14 @@ fun FlyingPooDemo() {
         mutableStateOf(
             AnimationParameterSet(
                 generatorParameters = generatorParameters,
-                particleSystemParameters = animationType.toParticleSystemParameters()
+                particleSystemParameters = animationType.toParticleSystemParameters(),
+                transformationParameters = animationType.toTransformationSystemParameters()
             )
         )
     }
     AnimationDemo(
         animationType = animationType,
-        parameterSet = AnimationParameterSet(
-            generatorParameters = parameterSet.generatorParameters,
-            particleSystemParameters = parameterSet.particleSystemParameters
-        )
+        parameterSet = parameterSet
     ) {
         val modifier = Modifier.fillMaxWidth()
         Column(modifier = modifier) {
@@ -42,10 +40,13 @@ fun FlyingPooDemo() {
                 title = "Particle Count:",
                 modifier = modifier,
                 sliderRange = 1f..50f,
+                intOnly = true,
                 defaultSliderValue = parameterSet.generatorParameters.count.toFloat()
             ) { newCount ->
                 parameterSet = parameterSet.copy(
-                    generatorParameters = parameterSet.generatorParameters.copy(count = newCount)
+                    generatorParameters = parameterSet.generatorParameters.copy(
+                        count = newCount.toInt()
+                    )
                 )
             }
 

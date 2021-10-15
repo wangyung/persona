@@ -4,6 +4,7 @@ import android.util.Size
 import com.github.wangyung.persona.particle.Instinct
 import com.github.wangyung.persona.particle.MutableParticle
 import com.github.wangyung.persona.particle.ParticleShape
+import com.github.wangyung.persona.particle.generator.parameter.InitialConstraints
 import com.github.wangyung.persona.particle.generator.parameter.RandomizeParticleGeneratorParameters
 import com.github.wangyung.persona.particle.generator.parameter.SourceEdge
 import java.util.concurrent.atomic.AtomicLong
@@ -20,15 +21,17 @@ class RandomizeParticleGenerator(
 
     private val sourceEdgeSet: List<SourceEdge> = parameters.sourceEdges.toList()
     private var autoIncrementId: AtomicLong = AtomicLong(0)
+    private val initialConstraints: List<InitialConstraints>? =
+        parameters.constraints?.filterIsInstance(InitialConstraints::class.java)
 
     override fun resetParticle(particle: MutableParticle) {
-        val (x, y) = getRandomXY(particle.instinct)
+        val (x, y) = getRandomXY(particle.instinct, initialConstraints = initialConstraints)
         particle.x = x
         particle.y = y
         val shape = particle.instinct.shape
         val particleInstinct = Instinct(
             speed = getRandomFloatSafely(parameters.speedRange),
-            angle = getRandomAngle(parameters.angleRange),
+            angle = getRandomFloatSafely(parameters.angleRange),
             scaleX = getRandomFloatSafely(parameters.scaleRange),
             scaleY = getRandomFloatSafely(parameters.scaleRange),
             width = getRandomWidth(shape),
@@ -56,7 +59,7 @@ class RandomizeParticleGenerator(
             width = getRandomWidth(shape),
             height = getRandomHeight(shape),
             speed = getRandomFloatSafely(parameters.speedRange),
-            angle = getRandomAngle(parameters.angleRange),
+            angle = getRandomFloatSafely(parameters.angleRange),
             xRotationalSpeed = getRandomFloatSafely(parameters.xRotationalSpeedRange),
             zRotationalSpeed = getRandomFloatSafely(parameters.zRotationalSpeedRange),
             scaleX = getRandomFloatSafely(parameters.scaleRange),
@@ -67,7 +70,7 @@ class RandomizeParticleGenerator(
         val (x, y) = if (randomizeInitialXY) {
             Pair(getRandomX().toFloat(), getRandomY().toFloat())
         } else {
-            getRandomXY(instinct)
+            getRandomXY(instinct, initialConstraints = initialConstraints)
         }
         return MutableParticle(
             id = autoIncrementId.getAndIncrement(),
@@ -79,7 +82,10 @@ class RandomizeParticleGenerator(
         )
     }
 
-    private fun getRandomXY(instinct: Instinct): Pair<Float, Float> {
+    private fun getRandomXY(
+        instinct: Instinct,
+        initialConstraints: List<InitialConstraints>?
+    ): Pair<Float, Float> {
         val halfWidth = instinct.width / 2
         val halfHeight = instinct.height / 2
 
@@ -94,26 +100,38 @@ class RandomizeParticleGenerator(
         } else {
             edgeCount - 1
         }
+        // TODO: Support multiple constraints later.
         return when (sourceEdgeSet[index]) {
             SourceEdge.TOP -> {
-                Pair(getRandomX().coerceIn(halfWidth, dimension.width).toFloat(), 0f)
+                Pair(
+                    if (initialConstraints.isNullOrEmpty()) {
+                        (getRandomX() - halfWidth).toFloat()
+                    } else {
+                        (getRandomFloatSafely(initialConstraints[0].limitRange) * dimension.width) - halfWidth
+                    },
+                    -halfHeight.toFloat()
+                )
             }
             SourceEdge.BOTTOM -> {
                 Pair(
-                    getRandomX().coerceIn(halfWidth, dimension.width).toFloat(),
+                    (getRandomX() - halfWidth).toFloat(),
                     dimension.height.toFloat()
                 )
             }
             SourceEdge.LEFT -> {
                 Pair(
                     0f,
-                    getRandomY().coerceIn(halfHeight, dimension.height - halfHeight).toFloat()
+                    if (initialConstraints == null) {
+                        (getRandomY() - halfHeight).toFloat()
+                    } else {
+                        getRandomFloatSafely(initialConstraints[0].limitRange) * dimension.height - halfHeight
+                    }
                 )
             }
             SourceEdge.RIGHT -> {
                 Pair(
                     dimension.width.toFloat(),
-                    getRandomY().coerceIn(halfHeight, dimension.height - halfHeight).toFloat()
+                    (getRandomY() - halfHeight).toFloat()
                 )
             }
         }
@@ -166,19 +184,19 @@ class RandomizeParticleGenerator(
             else -> Random.nextInt(parameters.particleHeightRange)
         }
 
-    @Suppress("SwallowedException")
-    private fun getRandomAngle(angleRange: IntRange): Int =
-        try {
-            Random.nextInt(angleRange)
-        } catch (e: IllegalArgumentException) {
-            Random.nextInt(IntRange(angleRange.first, parameters.angleRange.first))
-        }
+//    @Suppress("SwallowedException")
+//    private fun getRandomAngle(angleRange: IntRange): Float =
+//        try {
+//            Random.nextInt(angleRange)
+//        } catch (e: IllegalArgumentException) {
+//            Random.nextInt(IntRange(angleRange.first, parameters.angleRange.first))
+//        }
 
     @Suppress("SwallowedException")
-    private fun getRandomFloatSafely(speedRange: ClosedFloatingPointRange<Float>): Float =
+    private fun getRandomFloatSafely(floatRange: ClosedFloatingPointRange<Float>): Float =
         try {
-            speedRange.nextFloat()
+            floatRange.nextFloat()
         } catch (e: IllegalArgumentException) {
-            speedRange.start
+            floatRange.start
         }
 }

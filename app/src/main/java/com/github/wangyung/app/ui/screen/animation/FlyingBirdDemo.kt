@@ -11,7 +11,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.github.wangyung.app.model.AnimationParameterSet
 import com.github.wangyung.app.model.AnimationType
@@ -26,7 +25,8 @@ fun FlyingBirdDemo() {
         mutableStateOf(
             AnimationParameterSet(
                 generatorParameters = generatorParameters,
-                particleSystemParameters = animationType.toParticleSystemParameters()
+                particleSystemParameters = animationType.toParticleSystemParameters(),
+                transformationParameters = animationType.toTransformationSystemParameters()
             )
         )
     }
@@ -40,10 +40,11 @@ fun FlyingBirdDemo() {
                 title = "Particle Count:",
                 modifier = modifier,
                 sliderRange = 1f..10f,
+                intOnly = true,
                 defaultSliderValue = parameterSet.generatorParameters.count.toFloat()
             ) { newCount ->
                 parameterSet = parameterSet.copy(
-                    generatorParameters = parameterSet.generatorParameters.copy(count = newCount)
+                    generatorParameters = parameterSet.generatorParameters.copy(count = newCount.toInt())
                 )
             }
 
@@ -82,12 +83,10 @@ fun FlyingBirdDemo() {
                 sliderRange = 0f..359f,
                 defaultSliderValue = DEFAULT_FLYGING_BIRD_ANGLE_FROM.toFloat()
             ) { newFromAngle ->
+                val last = parameterSet.generatorParameters.angleRange.endInclusive
                 parameterSet = parameterSet.copy(
                     generatorParameters = parameterSet.generatorParameters.copy(
-                        angleRange = IntRange(
-                            newFromAngle,
-                            parameterSet.generatorParameters.angleRange.last
-                        )
+                        angleRange = newFromAngle..last
                     )
                 )
             }
@@ -97,12 +96,10 @@ fun FlyingBirdDemo() {
                 sliderRange = 0f..359f,
                 defaultSliderValue = DEFAULT_FLYGING_BIRD_ANGLE_TO.toFloat()
             ) { newToAngle ->
+                val first = parameterSet.generatorParameters.angleRange.start
                 parameterSet = parameterSet.copy(
                     generatorParameters = parameterSet.generatorParameters.copy(
-                        angleRange = IntRange(
-                            parameterSet.generatorParameters.angleRange.first,
-                            newToAngle
-                        )
+                        angleRange = first..newToAngle
                     )
                 )
             }

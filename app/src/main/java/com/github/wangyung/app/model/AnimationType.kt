@@ -20,6 +20,7 @@ import com.github.wangyung.app.ui.screen.animation.TwinkleStarDemo
 import com.github.wangyung.persona.app.R
 import com.github.wangyung.persona.particle.ParticleShape
 import com.github.wangyung.persona.particle.ParticleSystemParameters
+import com.github.wangyung.persona.particle.generator.parameter.InitialConstraints
 import com.github.wangyung.persona.particle.generator.parameter.RandomizeParticleGeneratorParameters
 import com.github.wangyung.persona.particle.generator.parameter.SourceEdge
 import com.github.wangyung.persona.particle.transformation.CompositeTransformation
@@ -27,6 +28,8 @@ import com.github.wangyung.persona.particle.transformation.LinearRotationTransfo
 import com.github.wangyung.persona.particle.transformation.LinearTranslateTransformation
 import com.github.wangyung.persona.particle.transformation.ParticleTransformation
 import com.github.wangyung.persona.particle.transformation.SequenceTransformation
+import com.github.wangyung.persona.particle.transformation.TransformationParameters
+import com.github.wangyung.persona.particle.transformation.TranslateTransformationParameters
 
 private const val RAIN = "Rain"
 private const val SNOW = "Snow"
@@ -43,8 +46,8 @@ internal const val DEFAULT_SNOW_MAX_RADIUS = 10
 
 internal const val DEFAULT_RAIN_MIN_SPEED = 10f
 internal const val DEFAULT_RAIN_MAX_SPEED = 30f
-internal const val DEFAULT_RAIN_ANGLE_FROM = 85
-internal const val DEFAULT_RAIN_ANGLE_TO = 95
+internal const val DEFAULT_RAIN_ANGLE_FROM = 85f
+internal const val DEFAULT_RAIN_ANGLE_TO = 95f
 
 internal const val DEFAULT_POO_MIN_ROTATIONAL_SPEED = 0.5f
 internal const val DEFAULT_POO_MAX_ROTATIONAL_SPEED = 5f
@@ -56,7 +59,12 @@ sealed class AnimationType(val value: String) {
     abstract fun toGeneratorParameters(resources: Resources): RandomizeParticleGeneratorParameters
     abstract fun toTitle(): String
     open fun toParticleSystemParameters(): ParticleSystemParameters = defaultSystemParameters
-    abstract fun toParticleTransformation(): ParticleTransformation
+    open fun toTransformationSystemParameters(): TransformationParameters =
+        defaultTransformationParameters
+
+    abstract fun toParticleTransformation(
+        parameters: TransformationParameters
+    ): ParticleTransformation
     @Composable
     abstract fun DemoScreen()
 
@@ -67,8 +75,9 @@ sealed class AnimationType(val value: String) {
 
         override fun toTitle(): String = "Rain"
 
-        override fun toParticleTransformation(): ParticleTransformation =
-            LinearTranslateTransformation()
+        override fun toParticleTransformation(
+            parameters: TransformationParameters
+        ): ParticleTransformation = LinearTranslateTransformation()
 
         @Composable
         override fun DemoScreen() = RainDemo()
@@ -81,7 +90,9 @@ sealed class AnimationType(val value: String) {
 
         override fun toTitle(): String = "Snow"
 
-        override fun toParticleTransformation(): ParticleTransformation = CompositeTransformation(
+        override fun toParticleTransformation(
+            parameters: TransformationParameters
+        ): ParticleTransformation = CompositeTransformation(
             listOf(
                 HorizontalSpeedWithSinParticleTransformation(),
                 LinearScaleParticleTransformation(),
@@ -102,7 +113,9 @@ sealed class AnimationType(val value: String) {
 
         override fun toTitle(): String = "Sakura (桜吹雪)"
 
-        override fun toParticleTransformation(): ParticleTransformation = CompositeTransformation(
+        override fun toParticleTransformation(
+            parameters: TransformationParameters
+        ): ParticleTransformation = CompositeTransformation(
             listOf(
                 LinearTranslateTransformation(),
                 LinearRotationTransformation(),
@@ -120,7 +133,9 @@ sealed class AnimationType(val value: String) {
 
         override fun toTitle(): String = "Flying Foo"
 
-        override fun toParticleTransformation(): ParticleTransformation = CompositeTransformation(
+        override fun toParticleTransformation(
+            parameters: TransformationParameters
+        ): ParticleTransformation = CompositeTransformation(
             listOf(
                 LinearTranslateTransformation(gravity = 0.1f),
                 LinearRotationTransformation(),
@@ -138,7 +153,9 @@ sealed class AnimationType(val value: String) {
 
         override fun toTitle(): String = "Flying Money"
 
-        override fun toParticleTransformation(): ParticleTransformation = CompositeTransformation(
+        override fun toParticleTransformation(
+            parameters: TransformationParameters
+        ): ParticleTransformation = CompositeTransformation(
             listOf(
                 LinearTranslateTransformation(),
                 LinearRotationTransformation()
@@ -156,7 +173,9 @@ sealed class AnimationType(val value: String) {
 
         override fun toTitle(): String = "Flying Bird"
 
-        override fun toParticleTransformation(): ParticleTransformation = defaultTransformation
+        override fun toParticleTransformation(
+            parameters: TransformationParameters
+        ): ParticleTransformation = defaultTransformation
 
         @Composable
         override fun DemoScreen() = FlyingBirdDemo()
@@ -169,8 +188,9 @@ sealed class AnimationType(val value: String) {
 
         override fun toTitle(): String = "Twinkle Star"
 
-        override fun toParticleTransformation(): ParticleTransformation =
-            BlinkParticleTransformation(frequencyFactorRange = 0.5f..2f)
+        override fun toParticleTransformation(
+            parameters: TransformationParameters
+        ): ParticleTransformation = BlinkParticleTransformation(frequencyFactorRange = 0.5f..2f)
 
         @Composable
         override fun DemoScreen() = TwinkleStarDemo()
@@ -186,7 +206,9 @@ sealed class AnimationType(val value: String) {
 
         override fun toTitle(): String = "Instagram-like emotion"
 
-        override fun toParticleTransformation(): ParticleTransformation =
+        override fun toParticleTransformation(
+            parameters: TransformationParameters
+        ): ParticleTransformation =
             SequenceTransformation().apply {
                 val scaleDuration = 30L
                 add(LinearTranslateTransformation(), 40L)
@@ -209,14 +231,26 @@ sealed class AnimationType(val value: String) {
             resources: Resources
         ): RandomizeParticleGeneratorParameters = confettiParameters
 
+        override fun toTransformationSystemParameters(): TransformationParameters =
+            TranslateTransformationParameters(gravity = 0.15f)
+
         override fun toTitle(): String = "Confetti"
 
-        override fun toParticleTransformation(): ParticleTransformation = CompositeTransformation(
-            listOf(
-                LinearTranslateTransformation(gravity = 0.2f),
-                LinearRotationTransformation(),
+        override fun toParticleTransformation(
+            parameters: TransformationParameters
+        ): ParticleTransformation {
+            val gravity = if (parameters is TranslateTransformationParameters) {
+                parameters.gravity
+            } else {
+                0.2f
+            }
+            return CompositeTransformation(
+                listOf(
+                    LinearTranslateTransformation(gravity = gravity),
+                    LinearRotationTransformation(),
+                )
             )
-        )
+        }
 
         @Composable
         override fun DemoScreen() = ConfettiDemo()
@@ -247,7 +281,7 @@ internal val sakuraParameters = RandomizeParticleGeneratorParameters(
     particleHeightRange = 10..20,
     speedRange = 2f..8f,
     scaleRange = 1.0f..1.0f,
-    angleRange = 95..140,
+    angleRange = 95f..140f,
     xRotationalSpeedRange = 0.1f..0.5f,
     zRotationalSpeedRange = -1f..-0.1f,
     sourceEdges = setOf(SourceEdge.TOP, SourceEdge.RIGHT),
@@ -258,7 +292,7 @@ internal val snowParameters = RandomizeParticleGeneratorParameters(
     randomizeInitialXY = true,
     count = 125,
     speedRange = 1f..2f,
-    angleRange = 80..100,
+    angleRange = 80f..100f,
     zRotationalSpeedRange = 0f..0f,
     sourceEdges = setOf(SourceEdge.TOP),
     shapeProvider = { createShowParticle(DEFAULT_SNOW_MIN_RADIUS..DEFAULT_SNOW_MAX_RADIUS) },
@@ -267,19 +301,19 @@ internal val snowParameters = RandomizeParticleGeneratorParameters(
 internal val rainParameters = RandomizeParticleGeneratorParameters(
     count = 400,
     particleWidthRange = 1..2,
-    particleHeightRange = 10..20,
+    particleHeightRange = 5..15,
     speedRange = DEFAULT_RAIN_MIN_SPEED..DEFAULT_RAIN_MAX_SPEED,
     angleRange = DEFAULT_RAIN_ANGLE_FROM..DEFAULT_RAIN_ANGLE_TO,
     zRotationalSpeedRange = 0f..0f,
     sourceEdges = setOf(SourceEdge.TOP),
-    shapeProvider = { createRainParticle(2..6) },
+    shapeProvider = { createRainParticle(1..2) },
 )
 internal val pooParameters = RandomizeParticleGeneratorParameters(
     count = 30,
     particleWidthRange = 1..10,
     particleHeightRange = 1..10,
     speedRange = 3f..10f,
-    angleRange = 315..330,
+    angleRange = 315f..330f,
     randomizeInitialXY = false,
     xRotationalSpeedRange = 0.1f..0.5f,
     zRotationalSpeedRange = DEFAULT_POO_MIN_ROTATIONAL_SPEED..DEFAULT_POO_MAX_ROTATIONAL_SPEED,
@@ -299,7 +333,7 @@ internal val moneyParameters = RandomizeParticleGeneratorParameters(
     particleWidthRange = 1..10,
     particleHeightRange = 1..10,
     speedRange = 3f..10f,
-    angleRange = 45..135,
+    angleRange = 45f..135f,
     zRotationalSpeedRange = 1f..3f,
     sourceEdges = setOf(SourceEdge.TOP),
     shapeProvider = {
@@ -314,7 +348,7 @@ internal fun createFlyingBirdParameters(resources: Resources) =
         particleWidthRange = 100..200,
         particleHeightRange = 80..100,
         speedRange = 5f..30f,
-        angleRange = 175..185,
+        angleRange = 175f..185f,
         zRotationalSpeedRange = 0f..0f,
         sourceEdges = setOf(SourceEdge.RIGHT),
         shapeProvider = {
@@ -337,7 +371,7 @@ internal val emotionParameters = RandomizeParticleGeneratorParameters(
     particleWidthRange = 1..10,
     particleHeightRange = 1..10,
     speedRange = 10f..15f,
-    angleRange = 265..275,
+    angleRange = 265f..275f,
     sourceEdges = setOf(SourceEdge.BOTTOM),
     startOffsetRange = 0..30,
     shapeProvider = {
@@ -354,19 +388,30 @@ internal val confettiParameters = RandomizeParticleGeneratorParameters(
     count = 200,
     particleWidthRange = 10..20,
     particleHeightRange = 10..20,
-    speedRange = 2f..8f,
-    angleRange = 315..330,
+    speedRange = 2f..10f,
+    angleRange = 280f..315f,
+    randomizeInitialXY = false,
     xRotationalSpeedRange = 0.1f..0.5f,
     zRotationalSpeedRange = 0.1f..1f,
     sourceEdges = setOf(SourceEdge.LEFT),
+    constraints = listOf(InitialConstraints(limitRange = 0.3f..0.7f)),
     shapeProvider = {
         createConfettiParticle(
-            colors = listOf(Color.Red, Color.Green, Color.Blue, Color.Yellow)
+            colors = listOf(
+                Color.Red,
+                /* Orange */ Color(0xFFFFA500),
+                Color.Yellow,
+                Color.Green,
+                Color.Blue,
+                /* Indigo */ Color(0xFF4B0082),
+                /* Violet */ Color(0xFF8F00FF)
+            )
         )
     },
 )
 
 internal val defaultSystemParameters = ParticleSystemParameters()
+internal val defaultTransformationParameters = TranslateTransformationParameters()
 internal val sakuraSystemParameters = ParticleSystemParameters(fps = 60)
 internal val emotionSystemParameters = ParticleSystemParameters(
     autoResetParticles = false,

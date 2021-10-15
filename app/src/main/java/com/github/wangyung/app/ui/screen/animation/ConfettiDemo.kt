@@ -14,6 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.github.wangyung.app.model.AnimationParameterSet
 import com.github.wangyung.app.model.AnimationType
+import com.github.wangyung.persona.particle.transformation.TranslateTransformationParameters
 
 @Composable
 fun ConfettiDemo() {
@@ -23,7 +24,8 @@ fun ConfettiDemo() {
         mutableStateOf(
             AnimationParameterSet(
                 generatorParameters = generatorParameters,
-                particleSystemParameters = animationType.toParticleSystemParameters()
+                particleSystemParameters = animationType.toParticleSystemParameters(),
+                transformationParameters = animationType.toTransformationSystemParameters()
             )
         )
     }
@@ -38,10 +40,11 @@ fun ConfettiDemo() {
                 title = "Particle Count:",
                 modifier = modifier,
                 sliderRange = 1f..400f,
+                intOnly = true,
                 defaultSliderValue = parameterSet.generatorParameters.count.toFloat()
             ) { newCount ->
                 parameterSet = parameterSet.copy(
-                    generatorParameters = parameterSet.generatorParameters.copy(count = newCount)
+                    generatorParameters = parameterSet.generatorParameters.copy(count = newCount.toInt())
                 )
             }
 
@@ -73,6 +76,21 @@ fun ConfettiDemo() {
                     )
                 )
             }
+
+            SliderWithValueText(
+                title = "Gravity:",
+                modifier = modifier,
+                sliderRange = 0f..1f,
+                defaultSliderValue =
+                (parameterSet.transformationParameters as TranslateTransformationParameters).gravity
+            ) { newGravity ->
+                parameterSet = parameterSet.copy(
+                    transformationParameters = TranslateTransformationParameters(
+                        gravity = newGravity
+                    )
+                )
+            }
+
             val sourceEdges = parameterSet.generatorParameters.sourceEdges.toMutableSet()
             StartEdgeCheckBoxes(
                 modifier = modifier,

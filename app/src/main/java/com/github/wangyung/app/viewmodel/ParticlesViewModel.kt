@@ -1,6 +1,7 @@
 package com.github.wangyung.app.viewmodel
 
 import android.util.Size
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.lifecycle.ViewModel
 import com.github.wangyung.persona.particle.ParticleSystem
 import com.github.wangyung.persona.particle.ParticleSystemParameters
@@ -8,6 +9,7 @@ import com.github.wangyung.persona.particle.generator.RandomizeParticleGenerator
 import com.github.wangyung.persona.particle.generator.parameter.RandomizeParticleGeneratorParameters
 import com.github.wangyung.persona.particle.particleSystem
 import com.github.wangyung.persona.particle.transformation.ParticleTransformation
+import com.github.wangyung.persona.particle.transformation.TransformationParameters
 
 class ParticlesViewModel : ViewModel() {
     var particleSystem: ParticleSystem? = null
@@ -16,6 +18,9 @@ class ParticlesViewModel : ViewModel() {
     var generatorParameters: RandomizeParticleGeneratorParameters? = null
         private set
     var particleSystemParameters: ParticleSystemParameters? = null
+        private set
+
+    var transoformationParameters: TransformationParameters? = null
         private set
 
     fun startNewParticlesSystem(
@@ -27,6 +32,7 @@ class ParticlesViewModel : ViewModel() {
         particleSystem?.stop()
         this.generatorParameters = generatorParameters
         this.particleSystemParameters = systemParameters
+        this.transoformationParameters = transoformationParameters
         particleSystem =
             particleSystem(
                 dimension = dimension,

@@ -65,8 +65,8 @@ data class Instinct(
     @FloatRange(from = 0.0)
     val speed: Float = 0f,
 
-    @IntRange(from = 0, to = 360)
-    val angle: Int = 0,
+    @FloatRange(from = 0.0, to = 360.0)
+    val angle: Float = 0f,
 
     @FloatRange(from = 0.0)
     val xRotationalSpeed: Float = 0f,

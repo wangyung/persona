@@ -26,7 +26,8 @@ fun SnowDemo() {
         mutableStateOf(
             AnimationParameterSet(
                 generatorParameters = generatorParameters,
-                particleSystemParameters = animationType.toParticleSystemParameters()
+                particleSystemParameters = animationType.toParticleSystemParameters(),
+                transformationParameters = animationType.toTransformationSystemParameters()
             )
         )
     }
@@ -46,10 +47,11 @@ fun SnowDemo() {
                 title = "Particle Count:",
                 modifier = modifier,
                 sliderRange = 25f..200f,
+                intOnly = true,
                 defaultSliderValue = parameterSet.generatorParameters.count.toFloat()
             ) { newCount ->
                 parameterSet = parameterSet.copy(
-                    generatorParameters = parameterSet.generatorParameters.copy(count = newCount)
+                    generatorParameters = parameterSet.generatorParameters.copy(count = newCount.toInt())
                 )
             }
 
@@ -59,7 +61,7 @@ fun SnowDemo() {
                 sliderRange = 1f..10f,
                 defaultSliderValue = DEFAULT_SNOW_MIN_RADIUS.toFloat()
             ) { newMinRadius ->
-                minSnowRadius = newMinRadius
+                minSnowRadius = newMinRadius.toInt()
                 parameterSet = parameterSet.copy(
                     generatorParameters = parameterSet.generatorParameters.copy(
                         shapeProvider = {
@@ -79,14 +81,14 @@ fun SnowDemo() {
                 sliderRange = 1f..10f,
                 defaultSliderValue = DEFAULT_SNOW_MAX_RADIUS.toFloat()
             ) { newMaxRadius ->
-                maxSnowRadius = newMaxRadius
+                maxSnowRadius = newMaxRadius.toInt()
                 parameterSet = parameterSet.copy(
                     generatorParameters = parameterSet.generatorParameters.copy(
                         shapeProvider = {
                             createShowParticle(
                                 IntRange(
                                     minSnowRadius,
-                                    newMaxRadius
+                                    newMaxRadius.toInt()
                                 )
                             )
                         }

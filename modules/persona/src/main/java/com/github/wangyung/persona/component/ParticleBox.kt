@@ -215,7 +215,7 @@ fun ParticleBoxPreview() {
                 width = 100,
                 height = 100,
                 speed = 5f,
-                angle = 80,
+                angle = 80f,
                 zRotationalSpeed = 2f,
                 shape = ParticleShape.Circle(
                     color = Color.White,

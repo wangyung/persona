@@ -20,16 +20,14 @@ fun TwinkleStarDemo() {
         mutableStateOf(
             AnimationParameterSet(
                 generatorParameters = generatorParameters,
-                particleSystemParameters = animationType.toParticleSystemParameters()
+                particleSystemParameters = animationType.toParticleSystemParameters(),
+                transformationParameters = animationType.toTransformationSystemParameters()
             )
         )
     }
     AnimationDemo(
         animationType = animationType,
-        parameterSet = AnimationParameterSet(
-            generatorParameters = parameterSet.generatorParameters,
-            particleSystemParameters = parameterSet.particleSystemParameters
-        ),
+        parameterSet = parameterSet,
         showMoon = true,
         showLandscape = false,
     ) {
@@ -39,10 +37,11 @@ fun TwinkleStarDemo() {
                 title = "Particle Count:",
                 modifier = modifier,
                 sliderRange = 10f..500f,
+                intOnly = true,
                 defaultSliderValue = parameterSet.generatorParameters.count.toFloat()
             ) { newCount ->
                 parameterSet = parameterSet.copy(
-                    generatorParameters = parameterSet.generatorParameters.copy(count = newCount)
+                    generatorParameters = parameterSet.generatorParameters.copy(count = newCount.toInt())
                 )
             }
 
@@ -56,10 +55,7 @@ fun TwinkleStarDemo() {
             ) { newMinStartOffset ->
                 parameterSet = parameterSet.copy(
                     generatorParameters = parameterSet.generatorParameters.copy(
-                        startOffsetRange = IntRange(
-                            newMinStartOffset,
-                            maxStartOffset
-                        )
+                        startOffsetRange = newMinStartOffset.toInt()..maxStartOffset
                     )
                 )
             }
@@ -71,10 +67,7 @@ fun TwinkleStarDemo() {
             ) { newMaxStartOffset ->
                 parameterSet = parameterSet.copy(
                     generatorParameters = parameterSet.generatorParameters.copy(
-                        startOffsetRange = IntRange(
-                            minStartOffset,
-                            newMaxStartOffset
-                        )
+                        startOffsetRange = minStartOffset..newMaxStartOffset.toInt()
                     )
                 )
             }
