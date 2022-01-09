@@ -9,8 +9,9 @@ ext {
             minSdkVersion        : 21,
 
             // Kotlin
-            kotlin              : '1.5.21',
-            coroutines          : '1.5.1',
+            kotlin                : '1.5.31',
+            coroutines            : '1.6.0',
+            kotlinxSerializations : '1.3.2',
 
             // AndroidX
             androidx            : [
@@ -31,7 +32,7 @@ ext {
             ],
 
             // Jetpack Compose
-            compose                      : '1.0.1',
+            compose                      : '1.0.5',
             composeActivity              : '1.3.1',
             composeConstraintLayout      : '1.0.0-beta02',
             composeLifecycleViewModel    : '1.0.0-alpha07',

@@ -1,0 +1,48 @@
+plugins {
+    id "com.android.library"
+    id "kotlin-android"
+    id "org.jetbrains.kotlin.plugin.serialization" version "1.6.10"
+}
+
+android {
+    compileSdkVersion versions.compileSdkVersion
+    defaultConfig {
+        minSdkVersion versions.minSdkVersion
+        targetSdkVersion versions.targetSdkVersion
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
+    }
+
+    // Configure only for each module that uses Java 8
+    // language features (either in its source code or
+    // through dependencies).
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+}
+
+dependencies {
+    implementation project(":persona")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}")
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutines}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${versions.kotlinxSerializations}")
+
+    testImplementation "androidx.test.ext:junit:${versions.androidx.junit}"
+    testImplementation "junit:junit:${versions.jUnit}"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:${versions.kotlin}"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.coroutines}"
+}
