@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.github.wangyung.persona.particle.ParticleSystem
 import com.github.wangyung.persona.particle.ParticleSystemParameters
 import com.github.wangyung.persona.particle.generator.RandomizeParticleGenerator
+import com.github.wangyung.persona.particle.generator.ShapeProvider
 import com.github.wangyung.persona.particle.generator.parameter.RandomizeParticleGeneratorParameters
 import com.github.wangyung.persona.particle.particleSystem
 import com.github.wangyung.persona.particle.transformation.ParticleTransformation
@@ -19,7 +20,7 @@ class ParticlesViewModel : ViewModel() {
     var particleSystemParameters: ParticleSystemParameters? = null
         private set
 
-    var transoformationParameters: TransformationParameters? = null
+    var transformationParameters: TransformationParameters? = null
         private set
 
     fun startNewParticlesSystem(
@@ -27,11 +28,12 @@ class ParticlesViewModel : ViewModel() {
         generatorParameters: RandomizeParticleGeneratorParameters,
         transformation: ParticleTransformation,
         dimension: Size,
+        shapeProvider: ShapeProvider
     ) {
         particleSystem?.stop()
         this.generatorParameters = generatorParameters
         this.particleSystemParameters = systemParameters
-        this.transoformationParameters = transoformationParameters
+        this.transformationParameters = transformationParameters
         particleSystem =
             particleSystem(
                 dimension = dimension,
@@ -39,6 +41,7 @@ class ParticlesViewModel : ViewModel() {
                 generator = RandomizeParticleGenerator(
                     parameters = generatorParameters,
                     dimension = dimension,
+                    shapeProvider = shapeProvider
                 ),
                 autoStart = true,
                 transformation = transformation
