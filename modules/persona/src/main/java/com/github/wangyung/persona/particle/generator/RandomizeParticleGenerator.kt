@@ -17,6 +17,7 @@ import kotlin.random.nextInt
 class RandomizeParticleGenerator(
     private val parameters: RandomizeParticleGeneratorParameters,
     private val dimension: Size,
+    private val shapeProvider: ShapeProvider,
 ) : ParticleGenerator {
 
     private val sourceEdgeSet: List<SourceEdge> = parameters.sourceEdges.toList()
@@ -54,7 +55,7 @@ class RandomizeParticleGenerator(
     }
 
     private fun createParticle(randomizeInitialXY: Boolean): MutableParticle {
-        val shape = parameters.shapeProvider.invoke()
+        val shape = shapeProvider.provide()
         val instinct = Instinct(
             width = getRandomWidth(shape),
             height = getRandomHeight(shape),
@@ -184,14 +185,6 @@ class RandomizeParticleGenerator(
             }
             else -> Random.nextInt(parameters.particleHeightRange)
         }
-
-//    @Suppress("SwallowedException")
-//    private fun getRandomAngle(angleRange: IntRange): Float =
-//        try {
-//            Random.nextInt(angleRange)
-//        } catch (e: IllegalArgumentException) {
-//            Random.nextInt(IntRange(angleRange.first, parameters.angleRange.first))
-//        }
 
     @Suppress("SwallowedException")
     private fun getRandomFloatSafely(floatRange: ClosedFloatingPointRange<Float>): Float =

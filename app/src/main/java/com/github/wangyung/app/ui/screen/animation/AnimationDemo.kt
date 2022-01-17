@@ -23,12 +23,14 @@ import androidx.compose.ui.unit.dp
 import com.github.wangyung.app.model.AnimationParameterSet
 import com.github.wangyung.app.model.AnimationType
 import com.github.wangyung.app.ui.components.WeatherAnimationBox
+import com.github.wangyung.persona.particle.generator.ShapeProvider
 import com.google.accompanist.insets.LocalWindowInsets
 
 @Composable
 fun AnimationDemo(
     animationType: AnimationType,
     parameterSet: AnimationParameterSet,
+    shapeProvider: ShapeProvider,
     showMoon: Boolean = false,
     showLandscape: Boolean = true,
     content: @Composable () -> Unit
@@ -53,6 +55,7 @@ fun AnimationDemo(
             showMoon = showMoon,
             showLandscape = showLandscape,
             showDebugLayer = showDebugLayer,
+            shapeProvider = shapeProvider
         )
         Spacer(modifier = Modifier.height(16.dp))
 

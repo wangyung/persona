@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Constraints
@@ -24,6 +25,7 @@ import com.github.wangyung.persona.component.ParticleBox
 import com.github.wangyung.app.model.AnimationType
 import com.github.wangyung.app.viewmodel.ParticlesViewModel
 import com.github.wangyung.persona.app.R
+import com.github.wangyung.persona.particle.generator.ShapeProvider
 import kotlin.math.sin
 
 private const val MOON_WIDTH = 64
@@ -36,6 +38,7 @@ fun WeatherAnimationBox(
     modifier: Modifier,
     animationType: AnimationType,
     parameterSet: AnimationParameterSet,
+    shapeProvider: ShapeProvider,
     showMoon: Boolean = false,
     showLandscape: Boolean = true,
     showDebugLayer: Boolean = false,
@@ -47,7 +50,8 @@ fun WeatherAnimationBox(
             showMoon = showMoon,
             showLandscape = showLandscape,
             parameterSet = parameterSet,
-            showDebugLayer = showDebugLayer
+            showDebugLayer = showDebugLayer,
+            shapeProvider = shapeProvider,
         )
     }
 }
@@ -61,6 +65,7 @@ private fun WeatherAnimationInternal(
     showMoon: Boolean,
     showLandscape: Boolean,
     showDebugLayer: Boolean,
+    shapeProvider: ShapeProvider
 ) {
     ConstraintLayout(
         modifier = Modifier
@@ -117,7 +122,7 @@ private fun WeatherAnimationInternal(
         if (viewModel.particleSystem?.isRunning == false ||
             viewModel.generatorParameters != parameterSet.generatorParameters ||
             viewModel.particleSystemParameters != parameterSet.particleSystemParameters ||
-            viewModel.transoformationParameters != parameterSet.transformationParameters
+            viewModel.transformationParameters != parameterSet.transformationParameters
         ) {
             val theWidth = constraints.maxWidth
             val theHeight: Int = when (animationType) {
@@ -132,6 +137,7 @@ private fun WeatherAnimationInternal(
                     parameterSet.transformationParameters
                 ),
                 dimension = Size(theWidth, theHeight),
+                shapeProvider = shapeProvider
             )
         }
         val particleModifier = when (animationType) {

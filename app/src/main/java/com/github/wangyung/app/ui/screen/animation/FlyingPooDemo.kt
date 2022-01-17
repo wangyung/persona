@@ -20,7 +20,7 @@ import com.github.wangyung.app.model.DEFAULT_POO_MIN_ROTATIONAL_SPEED
 @Composable
 fun FlyingPooDemo() {
     val animationType = AnimationType.FlyingPoo
-    val generatorParameters = animationType.toGeneratorParameters(LocalContext.current.resources)
+    val generatorParameters = animationType.toGeneratorParameters()
     var parameterSet by remember {
         mutableStateOf(
             AnimationParameterSet(
@@ -32,7 +32,8 @@ fun FlyingPooDemo() {
     }
     AnimationDemo(
         animationType = animationType,
-        parameterSet = parameterSet
+        parameterSet = parameterSet,
+        shapeProvider = animationType.toShapeProvider(LocalContext.current.resources)
     ) {
         val modifier = Modifier.fillMaxWidth()
         Column(modifier = modifier) {

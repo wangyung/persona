@@ -19,7 +19,7 @@ import com.github.wangyung.persona.particle.transformation.TranslateTransformati
 @Composable
 fun ConfettiDemo() {
     val animationType = AnimationType.Confetti
-    val generatorParameters = animationType.toGeneratorParameters(LocalContext.current.resources)
+    val generatorParameters = animationType.toGeneratorParameters()
     var parameterSet by remember {
         mutableStateOf(
             AnimationParameterSet(
@@ -32,7 +32,8 @@ fun ConfettiDemo() {
     AnimationDemo(
         animationType = animationType,
         showMoon = false,
-        parameterSet = parameterSet
+        parameterSet = parameterSet,
+        shapeProvider = animationType.toShapeProvider(LocalContext.current.resources)
     ) {
         val modifier = Modifier.fillMaxWidth()
         Column(modifier = modifier) {

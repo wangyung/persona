@@ -17,11 +17,13 @@ import com.github.wangyung.app.model.AnimationType
 import com.github.wangyung.app.model.DEFAULT_SNOW_MAX_RADIUS
 import com.github.wangyung.app.model.DEFAULT_SNOW_MIN_RADIUS
 import com.github.wangyung.app.model.createShowParticle
+import com.github.wangyung.persona.particle.generator.ShapeProvider
 
 @Composable
 fun SnowDemo() {
     val animationType = AnimationType.Snow
-    val generatorParameters = animationType.toGeneratorParameters(LocalContext.current.resources)
+    val generatorParameters = animationType.toGeneratorParameters()
+    val resources = LocalContext.current.resources
     var parameterSet by remember {
         mutableStateOf(
             AnimationParameterSet(
@@ -31,9 +33,15 @@ fun SnowDemo() {
             )
         )
     }
+
+    var shapeProvider by remember {
+        mutableStateOf(animationType.toShapeProvider(resources))
+    }
+
     AnimationDemo(
         animationType = animationType,
-        parameterSet = parameterSet
+        parameterSet = parameterSet,
+        shapeProvider = shapeProvider
     ) {
         val modifier = Modifier.fillMaxWidth()
         var minSnowRadius by remember {
@@ -62,18 +70,14 @@ fun SnowDemo() {
                 defaultSliderValue = DEFAULT_SNOW_MIN_RADIUS.toFloat()
             ) { newMinRadius ->
                 minSnowRadius = newMinRadius.toInt()
-                parameterSet = parameterSet.copy(
-                    generatorParameters = parameterSet.generatorParameters.copy(
-                        shapeProvider = {
-                            createShowParticle(
-                                IntRange(
-                                    minSnowRadius,
-                                    maxSnowRadius
-                                )
-                            )
-                        }
+                shapeProvider = ShapeProvider {
+                    createShowParticle(
+                        IntRange(
+                            minSnowRadius,
+                            maxSnowRadius
+                        )
                     )
-                )
+                }
             }
             SliderWithValueText(
                 title = "Max radius:",
@@ -82,18 +86,14 @@ fun SnowDemo() {
                 defaultSliderValue = DEFAULT_SNOW_MAX_RADIUS.toFloat()
             ) { newMaxRadius ->
                 maxSnowRadius = newMaxRadius.toInt()
-                parameterSet = parameterSet.copy(
-                    generatorParameters = parameterSet.generatorParameters.copy(
-                        shapeProvider = {
-                            createShowParticle(
-                                IntRange(
-                                    minSnowRadius,
-                                    newMaxRadius.toInt()
-                                )
-                            )
-                        }
+                shapeProvider = ShapeProvider {
+                    createShowParticle(
+                        IntRange(
+                            minSnowRadius,
+                            maxSnowRadius
+                        )
                     )
-                )
+                }
             }
 
             SwitchWithText(

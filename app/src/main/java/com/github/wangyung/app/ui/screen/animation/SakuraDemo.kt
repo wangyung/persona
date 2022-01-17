@@ -18,7 +18,7 @@ import com.github.wangyung.app.model.AnimationType
 @Composable
 fun SakuraDemo() {
     val animationType = AnimationType.Sakura
-    val generatorParameters = animationType.toGeneratorParameters(LocalContext.current.resources)
+    val generatorParameters = animationType.toGeneratorParameters()
     var parameterSet by remember {
         mutableStateOf(
             AnimationParameterSet(
@@ -31,7 +31,8 @@ fun SakuraDemo() {
     AnimationDemo(
         animationType = animationType,
         showMoon = true,
-        parameterSet = parameterSet
+        parameterSet = parameterSet,
+        shapeProvider = animationType.toShapeProvider(LocalContext.current.resources)
     ) {
         val modifier = Modifier.fillMaxWidth()
         Column(modifier = modifier) {

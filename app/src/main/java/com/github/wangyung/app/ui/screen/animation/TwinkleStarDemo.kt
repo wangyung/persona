@@ -15,7 +15,7 @@ import com.github.wangyung.app.model.AnimationType
 @Composable
 fun TwinkleStarDemo() {
     val animationType = AnimationType.TwinkleStar
-    val generatorParameters = animationType.toGeneratorParameters(LocalContext.current.resources)
+    val generatorParameters = animationType.toGeneratorParameters()
     var parameterSet by remember {
         mutableStateOf(
             AnimationParameterSet(
@@ -28,6 +28,7 @@ fun TwinkleStarDemo() {
     AnimationDemo(
         animationType = animationType,
         parameterSet = parameterSet,
+        shapeProvider = animationType.toShapeProvider(LocalContext.current.resources),
         showMoon = true,
         showLandscape = false,
     ) {

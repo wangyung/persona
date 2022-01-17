@@ -20,6 +20,7 @@ import com.github.wangyung.app.ui.screen.animation.TwinkleStarDemo
 import com.github.wangyung.persona.app.R
 import com.github.wangyung.persona.particle.ParticleShape
 import com.github.wangyung.persona.particle.ParticleSystemParameters
+import com.github.wangyung.persona.particle.generator.ShapeProvider
 import com.github.wangyung.persona.particle.generator.parameter.InitialConstraints
 import com.github.wangyung.persona.particle.generator.parameter.RandomizeParticleGeneratorParameters
 import com.github.wangyung.persona.particle.generator.parameter.SourceEdge
@@ -56,7 +57,7 @@ internal const val DEFAULT_FLYGING_BIRD_ANGLE_FROM = 175
 internal const val DEFAULT_FLYGING_BIRD_ANGLE_TO = 185
 
 sealed class AnimationType(val value: String) {
-    abstract fun toGeneratorParameters(resources: Resources): RandomizeParticleGeneratorParameters
+    abstract fun toGeneratorParameters(): RandomizeParticleGeneratorParameters
     abstract fun toTitle(): String
     open fun toParticleSystemParameters(): ParticleSystemParameters = defaultSystemParameters
     open fun toTransformationSystemParameters(): TransformationParameters =
@@ -65,13 +66,14 @@ sealed class AnimationType(val value: String) {
     abstract fun toParticleTransformation(
         parameters: TransformationParameters
     ): ParticleTransformation
+
     @Composable
     abstract fun DemoScreen()
 
+    abstract fun toShapeProvider(resources: Resources): ShapeProvider
+
     object Rain : AnimationType(RAIN) {
-        override fun toGeneratorParameters(
-            resources: Resources
-        ): RandomizeParticleGeneratorParameters = rainParameters
+        override fun toGeneratorParameters(): RandomizeParticleGeneratorParameters = rainParameters
 
         override fun toTitle(): String = "Rain"
 
@@ -81,12 +83,14 @@ sealed class AnimationType(val value: String) {
 
         @Composable
         override fun DemoScreen() = RainDemo()
+
+        override fun toShapeProvider(resources: Resources): ShapeProvider = ShapeProvider {
+            createRainParticle(1..2)
+        }
     }
 
     object Snow : AnimationType(SNOW) {
-        override fun toGeneratorParameters(
-            resources: Resources
-        ): RandomizeParticleGeneratorParameters = snowParameters
+        override fun toGeneratorParameters(): RandomizeParticleGeneratorParameters = snowParameters
 
         override fun toTitle(): String = "Snow"
 
@@ -101,12 +105,15 @@ sealed class AnimationType(val value: String) {
 
         @Composable
         override fun DemoScreen() = SnowDemo()
+
+        override fun toShapeProvider(resources: Resources): ShapeProvider = ShapeProvider {
+            createShowParticle(DEFAULT_SNOW_MIN_RADIUS..DEFAULT_SNOW_MAX_RADIUS)
+        }
     }
 
     object Sakura : AnimationType(SAKURA) {
-        override fun toGeneratorParameters(
-            resources: Resources
-        ): RandomizeParticleGeneratorParameters = sakuraParameters
+        override fun toGeneratorParameters(): RandomizeParticleGeneratorParameters =
+            sakuraParameters
 
         override fun toParticleSystemParameters(): ParticleSystemParameters =
             sakuraSystemParameters
@@ -124,12 +131,14 @@ sealed class AnimationType(val value: String) {
 
         @Composable
         override fun DemoScreen() = SakuraDemo()
+
+        override fun toShapeProvider(resources: Resources): ShapeProvider = ShapeProvider {
+            createSakuraParticle(strokeRange = 1..3)
+        }
     }
 
     object FlyingPoo : AnimationType(FLYING_POO) {
-        override fun toGeneratorParameters(
-            resources: Resources
-        ): RandomizeParticleGeneratorParameters = pooParameters
+        override fun toGeneratorParameters(): RandomizeParticleGeneratorParameters = pooParameters
 
         override fun toTitle(): String = "Flying Foo"
 
@@ -144,12 +153,19 @@ sealed class AnimationType(val value: String) {
 
         @Composable
         override fun DemoScreen() = FlyingPooDemo()
+
+        override fun toShapeProvider(resources: Resources): ShapeProvider = ShapeProvider {
+            ParticleShape.Text(
+                text = "\uD83D\uDCA9", // poopoo
+                fontSize = 14.sp,
+                borderWidth = 1.dp,
+                color = Color.Black,
+            )
+        }
     }
 
     object FlyingMoney : AnimationType(FLYING_MONEY) {
-        override fun toGeneratorParameters(
-            resources: Resources
-        ): RandomizeParticleGeneratorParameters = moneyParameters
+        override fun toGeneratorParameters(): RandomizeParticleGeneratorParameters = moneyParameters
 
         override fun toTitle(): String = "Flying Money"
 
@@ -164,12 +180,15 @@ sealed class AnimationType(val value: String) {
 
         @Composable
         override fun DemoScreen() = TODO("Not yet implemented")
+
+        override fun toShapeProvider(resources: Resources): ShapeProvider = ShapeProvider {
+            createMoneyParticle(fontSizeRange = 9..24)
+        }
     }
 
     object FlyingBird : AnimationType(FLYING_BIRD) {
-        override fun toGeneratorParameters(
-            resources: Resources
-        ): RandomizeParticleGeneratorParameters = createFlyingBirdParameters(resources)
+        override fun toGeneratorParameters(): RandomizeParticleGeneratorParameters =
+            createFlyingBirdParameters()
 
         override fun toTitle(): String = "Flying Bird"
 
@@ -179,12 +198,15 @@ sealed class AnimationType(val value: String) {
 
         @Composable
         override fun DemoScreen() = FlyingBirdDemo()
+
+        override fun toShapeProvider(resources: Resources): ShapeProvider = ShapeProvider {
+            createBirdParticle(resources, R.drawable.flying_bird)
+        }
     }
 
     object TwinkleStar : AnimationType(TWINKLE_STAR) {
-        override fun toGeneratorParameters(
-            resources: Resources
-        ): RandomizeParticleGeneratorParameters = twinkleStarParameters
+        override fun toGeneratorParameters(): RandomizeParticleGeneratorParameters =
+            twinkleStarParameters
 
         override fun toTitle(): String = "Twinkle Star"
 
@@ -194,12 +216,15 @@ sealed class AnimationType(val value: String) {
 
         @Composable
         override fun DemoScreen() = TwinkleStarDemo()
+
+        override fun toShapeProvider(resources: Resources): ShapeProvider = ShapeProvider {
+            createStarParticle(Color(0xFFFAFFFF), 1..4)
+        }
     }
 
     object Emotion : AnimationType(EMOTION) {
-        override fun toGeneratorParameters(
-            resources: Resources
-        ): RandomizeParticleGeneratorParameters = emotionParameters
+        override fun toGeneratorParameters(): RandomizeParticleGeneratorParameters =
+            emotionParameters
 
         override fun toParticleSystemParameters(): ParticleSystemParameters =
             emotionSystemParameters
@@ -224,12 +249,20 @@ sealed class AnimationType(val value: String) {
 
         @Composable
         override fun DemoScreen() = EmotionDemo()
+
+        override fun toShapeProvider(resources: Resources): ShapeProvider = ShapeProvider {
+            ParticleShape.Text(
+                text = "\uD83D\uDE0D", // heart-eyes emoji
+                fontSize = 20.sp,
+                borderWidth = 1.dp,
+                color = Color.White.copy(alpha = 1f),
+            )
+        }
     }
 
     object Confetti : AnimationType(CONFETTI) {
-        override fun toGeneratorParameters(
-            resources: Resources
-        ): RandomizeParticleGeneratorParameters = confettiParameters
+        override fun toGeneratorParameters(): RandomizeParticleGeneratorParameters =
+            confettiParameters
 
         override fun toTransformationSystemParameters(): TransformationParameters =
             TranslateTransformationParameters(gravity = 0.15f)
@@ -254,6 +287,20 @@ sealed class AnimationType(val value: String) {
 
         @Composable
         override fun DemoScreen() = ConfettiDemo()
+
+        override fun toShapeProvider(resources: Resources): ShapeProvider = ShapeProvider {
+            createConfettiParticle(
+                colors = listOf(
+                    Color.Red,
+                    /* Orange */ Color(0xFFFFA500),
+                    Color.Yellow,
+                    Color.Green,
+                    Color.Blue,
+                    /* Indigo */ Color(0xFF4B0082),
+                    /* Violet */ Color(0xFF8F00FF)
+                )
+            )
+        }
     }
 
     override fun toString(): String = this.value
@@ -285,7 +332,6 @@ internal val sakuraParameters = RandomizeParticleGeneratorParameters(
     xRotationalSpeedRange = 0.1f..0.5f,
     zRotationalSpeedRange = -1f..-0.1f,
     sourceEdges = setOf(SourceEdge.TOP, SourceEdge.RIGHT),
-    shapeProvider = { createSakuraParticle(strokeRange = 1..3) },
 )
 
 internal val snowParameters = RandomizeParticleGeneratorParameters(
@@ -295,7 +341,6 @@ internal val snowParameters = RandomizeParticleGeneratorParameters(
     angleRange = 80f..100f,
     zRotationalSpeedRange = 0f..0f,
     sourceEdges = setOf(SourceEdge.TOP),
-    shapeProvider = { createShowParticle(DEFAULT_SNOW_MIN_RADIUS..DEFAULT_SNOW_MAX_RADIUS) },
 )
 
 internal val rainParameters = RandomizeParticleGeneratorParameters(
@@ -306,7 +351,6 @@ internal val rainParameters = RandomizeParticleGeneratorParameters(
     angleRange = DEFAULT_RAIN_ANGLE_FROM..DEFAULT_RAIN_ANGLE_TO,
     zRotationalSpeedRange = 0f..0f,
     sourceEdges = setOf(SourceEdge.TOP),
-    shapeProvider = { createRainParticle(1..2) },
 )
 internal val pooParameters = RandomizeParticleGeneratorParameters(
     count = 30,
@@ -318,14 +362,6 @@ internal val pooParameters = RandomizeParticleGeneratorParameters(
     xRotationalSpeedRange = 0.1f..0.5f,
     zRotationalSpeedRange = DEFAULT_POO_MIN_ROTATIONAL_SPEED..DEFAULT_POO_MAX_ROTATIONAL_SPEED,
     sourceEdges = setOf(SourceEdge.LEFT),
-    shapeProvider = {
-        ParticleShape.Text(
-            text = "\uD83D\uDCA9", // poopoo
-            fontSize = 14.sp,
-            borderWidth = 1.dp,
-            color = Color.Black,
-        )
-    },
 )
 
 internal val moneyParameters = RandomizeParticleGeneratorParameters(
@@ -336,12 +372,9 @@ internal val moneyParameters = RandomizeParticleGeneratorParameters(
     angleRange = 45f..135f,
     zRotationalSpeedRange = 1f..3f,
     sourceEdges = setOf(SourceEdge.TOP),
-    shapeProvider = {
-        createMoneyParticle(fontSizeRange = 9..24)
-    },
 )
 
-internal fun createFlyingBirdParameters(resources: Resources) =
+internal fun createFlyingBirdParameters() =
     RandomizeParticleGeneratorParameters(
         count = 5,
         randomizeInitialXY = false,
@@ -351,9 +384,6 @@ internal fun createFlyingBirdParameters(resources: Resources) =
         angleRange = 175f..185f,
         zRotationalSpeedRange = 0f..0f,
         sourceEdges = setOf(SourceEdge.RIGHT),
-        shapeProvider = {
-            createBirdParticle(resources, R.drawable.flying_bird)
-        },
     )
 
 internal val twinkleStarParameters = RandomizeParticleGeneratorParameters(
@@ -362,7 +392,6 @@ internal val twinkleStarParameters = RandomizeParticleGeneratorParameters(
     particleHeightRange = 1..4,
     sourceEdges = setOf(SourceEdge.TOP),
     startOffsetRange = 0..60,
-    shapeProvider = { createStarParticle(Color(0xFFFAFFFF), 1..4) },
 )
 
 internal val emotionParameters = RandomizeParticleGeneratorParameters(
@@ -374,14 +403,6 @@ internal val emotionParameters = RandomizeParticleGeneratorParameters(
     angleRange = 265f..275f,
     sourceEdges = setOf(SourceEdge.BOTTOM),
     startOffsetRange = 0..30,
-    shapeProvider = {
-        ParticleShape.Text(
-            text = "\uD83D\uDE0D", // heart-eyes emoji
-            fontSize = 20.sp,
-            borderWidth = 1.dp,
-            color = Color.White.copy(alpha = 1f),
-        )
-    },
 )
 
 internal val confettiParameters = RandomizeParticleGeneratorParameters(
@@ -395,19 +416,6 @@ internal val confettiParameters = RandomizeParticleGeneratorParameters(
     zRotationalSpeedRange = 0.1f..1f,
     sourceEdges = setOf(SourceEdge.LEFT),
     constraints = listOf(InitialConstraints(limitRange = 0.3f..0.7f)),
-    shapeProvider = {
-        createConfettiParticle(
-            colors = listOf(
-                Color.Red,
-                /* Orange */ Color(0xFFFFA500),
-                Color.Yellow,
-                Color.Green,
-                Color.Blue,
-                /* Indigo */ Color(0xFF4B0082),
-                /* Violet */ Color(0xFF8F00FF)
-            )
-        )
-    },
 )
 
 internal val defaultSystemParameters = ParticleSystemParameters()
