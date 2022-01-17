@@ -3,7 +3,7 @@ package com.github.wangyung.persona.particle.generator
 import android.util.Size
 import androidx.compose.ui.graphics.Color
 import com.github.wangyung.persona.particle.ParticleShape
-import com.github.wangyung.persona.particle.generator.parameter.RandomizeParticleGeneratorParameters
+import com.github.wangyung.persona.particle.generator.parameter.ParticleGeneratorParameters
 import com.github.wangyung.persona.particle.generator.parameter.SourceEdge
 import org.junit.Before
 import org.junit.Test
@@ -22,7 +22,7 @@ class RandomizeParticleGeneratorTest {
     @Before
     fun setUp() {
         randomizeParticleGenerator = RandomizeParticleGenerator(
-            parameters = RandomizeParticleGeneratorParameters(
+            parameters = ParticleGeneratorParameters(
                 count = 10,
                 randomizeInitialXY = true,
                 shapeProvider = { ParticleShape.Circle(color = Color.White, radius = 1) }
@@ -48,7 +48,7 @@ class RandomizeParticleGeneratorTest {
     fun `The y would be the same after reset if randomizeInitialXY is false with source edge top and bottom`() {
         // given
         randomizeParticleGenerator = RandomizeParticleGenerator(
-            parameters = RandomizeParticleGeneratorParameters(
+            parameters = ParticleGeneratorParameters(
                 count = 10,
                 randomizeInitialXY = false,
                 sourceEdges = setOf(SourceEdge.TOP, SourceEdge.BOTTOM),
@@ -68,7 +68,7 @@ class RandomizeParticleGeneratorTest {
     fun `The x would be the same after reset if randomizeInitialXY is false with source edge left and right`() {
         // given
         randomizeParticleGenerator = RandomizeParticleGenerator(
-            parameters = RandomizeParticleGeneratorParameters(
+            parameters = ParticleGeneratorParameters(
                 count = 10,
                 randomizeInitialXY = false,
                 sourceEdges = setOf(SourceEdge.LEFT, SourceEdge.RIGHT),

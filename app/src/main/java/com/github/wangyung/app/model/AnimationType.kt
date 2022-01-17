@@ -22,7 +22,7 @@ import com.github.wangyung.persona.particle.ParticleShape
 import com.github.wangyung.persona.particle.ParticleSystemParameters
 import com.github.wangyung.persona.particle.generator.ShapeProvider
 import com.github.wangyung.persona.particle.generator.parameter.InitialConstraints
-import com.github.wangyung.persona.particle.generator.parameter.RandomizeParticleGeneratorParameters
+import com.github.wangyung.persona.particle.generator.parameter.ParticleGeneratorParameters
 import com.github.wangyung.persona.particle.generator.parameter.SourceEdge
 import com.github.wangyung.persona.particle.transformation.CompositeTransformation
 import com.github.wangyung.persona.particle.transformation.LinearRotationTransformation
@@ -57,7 +57,7 @@ internal const val DEFAULT_FLYGING_BIRD_ANGLE_FROM = 175
 internal const val DEFAULT_FLYGING_BIRD_ANGLE_TO = 185
 
 sealed class AnimationType(val value: String) {
-    abstract fun toGeneratorParameters(): RandomizeParticleGeneratorParameters
+    abstract fun toGeneratorParameters(): ParticleGeneratorParameters
     abstract fun toTitle(): String
     open fun toParticleSystemParameters(): ParticleSystemParameters = defaultSystemParameters
     open fun toTransformationSystemParameters(): TransformationParameters =
@@ -73,7 +73,7 @@ sealed class AnimationType(val value: String) {
     abstract fun toShapeProvider(resources: Resources): ShapeProvider
 
     object Rain : AnimationType(RAIN) {
-        override fun toGeneratorParameters(): RandomizeParticleGeneratorParameters = rainParameters
+        override fun toGeneratorParameters(): ParticleGeneratorParameters = rainParameters
 
         override fun toTitle(): String = "Rain"
 
@@ -90,7 +90,7 @@ sealed class AnimationType(val value: String) {
     }
 
     object Snow : AnimationType(SNOW) {
-        override fun toGeneratorParameters(): RandomizeParticleGeneratorParameters = snowParameters
+        override fun toGeneratorParameters(): ParticleGeneratorParameters = snowParameters
 
         override fun toTitle(): String = "Snow"
 
@@ -112,7 +112,7 @@ sealed class AnimationType(val value: String) {
     }
 
     object Sakura : AnimationType(SAKURA) {
-        override fun toGeneratorParameters(): RandomizeParticleGeneratorParameters =
+        override fun toGeneratorParameters(): ParticleGeneratorParameters =
             sakuraParameters
 
         override fun toParticleSystemParameters(): ParticleSystemParameters =
@@ -138,7 +138,7 @@ sealed class AnimationType(val value: String) {
     }
 
     object FlyingPoo : AnimationType(FLYING_POO) {
-        override fun toGeneratorParameters(): RandomizeParticleGeneratorParameters = pooParameters
+        override fun toGeneratorParameters(): ParticleGeneratorParameters = pooParameters
 
         override fun toTitle(): String = "Flying Foo"
 
@@ -165,7 +165,7 @@ sealed class AnimationType(val value: String) {
     }
 
     object FlyingMoney : AnimationType(FLYING_MONEY) {
-        override fun toGeneratorParameters(): RandomizeParticleGeneratorParameters = moneyParameters
+        override fun toGeneratorParameters(): ParticleGeneratorParameters = moneyParameters
 
         override fun toTitle(): String = "Flying Money"
 
@@ -187,7 +187,7 @@ sealed class AnimationType(val value: String) {
     }
 
     object FlyingBird : AnimationType(FLYING_BIRD) {
-        override fun toGeneratorParameters(): RandomizeParticleGeneratorParameters =
+        override fun toGeneratorParameters(): ParticleGeneratorParameters =
             createFlyingBirdParameters()
 
         override fun toTitle(): String = "Flying Bird"
@@ -205,7 +205,7 @@ sealed class AnimationType(val value: String) {
     }
 
     object TwinkleStar : AnimationType(TWINKLE_STAR) {
-        override fun toGeneratorParameters(): RandomizeParticleGeneratorParameters =
+        override fun toGeneratorParameters(): ParticleGeneratorParameters =
             twinkleStarParameters
 
         override fun toTitle(): String = "Twinkle Star"
@@ -223,7 +223,7 @@ sealed class AnimationType(val value: String) {
     }
 
     object Emotion : AnimationType(EMOTION) {
-        override fun toGeneratorParameters(): RandomizeParticleGeneratorParameters =
+        override fun toGeneratorParameters(): ParticleGeneratorParameters =
             emotionParameters
 
         override fun toParticleSystemParameters(): ParticleSystemParameters =
@@ -261,7 +261,7 @@ sealed class AnimationType(val value: String) {
     }
 
     object Confetti : AnimationType(CONFETTI) {
-        override fun toGeneratorParameters(): RandomizeParticleGeneratorParameters =
+        override fun toGeneratorParameters(): ParticleGeneratorParameters =
             confettiParameters
 
         override fun toTransformationSystemParameters(): TransformationParameters =
@@ -322,7 +322,7 @@ fun String.toAnimationType(): AnimationType? =
 
 private val defaultTransformation = LinearTranslateTransformation()
 
-internal val sakuraParameters = RandomizeParticleGeneratorParameters(
+internal val sakuraParameters = ParticleGeneratorParameters(
     count = 40,
     particleWidthRange = 10..20,
     particleHeightRange = 10..20,
@@ -334,7 +334,7 @@ internal val sakuraParameters = RandomizeParticleGeneratorParameters(
     sourceEdges = setOf(SourceEdge.TOP, SourceEdge.RIGHT),
 )
 
-internal val snowParameters = RandomizeParticleGeneratorParameters(
+internal val snowParameters = ParticleGeneratorParameters(
     randomizeInitialXY = true,
     count = 125,
     speedRange = 1f..2f,
@@ -343,7 +343,7 @@ internal val snowParameters = RandomizeParticleGeneratorParameters(
     sourceEdges = setOf(SourceEdge.TOP),
 )
 
-internal val rainParameters = RandomizeParticleGeneratorParameters(
+internal val rainParameters = ParticleGeneratorParameters(
     count = 400,
     particleWidthRange = 1..2,
     particleHeightRange = 5..15,
@@ -352,7 +352,7 @@ internal val rainParameters = RandomizeParticleGeneratorParameters(
     zRotationalSpeedRange = 0f..0f,
     sourceEdges = setOf(SourceEdge.TOP),
 )
-internal val pooParameters = RandomizeParticleGeneratorParameters(
+internal val pooParameters = ParticleGeneratorParameters(
     count = 30,
     particleWidthRange = 1..10,
     particleHeightRange = 1..10,
@@ -364,7 +364,7 @@ internal val pooParameters = RandomizeParticleGeneratorParameters(
     sourceEdges = setOf(SourceEdge.LEFT),
 )
 
-internal val moneyParameters = RandomizeParticleGeneratorParameters(
+internal val moneyParameters = ParticleGeneratorParameters(
     count = 30,
     particleWidthRange = 1..10,
     particleHeightRange = 1..10,
@@ -375,7 +375,7 @@ internal val moneyParameters = RandomizeParticleGeneratorParameters(
 )
 
 internal fun createFlyingBirdParameters() =
-    RandomizeParticleGeneratorParameters(
+    ParticleGeneratorParameters(
         count = 5,
         randomizeInitialXY = false,
         particleWidthRange = 100..200,
@@ -386,7 +386,7 @@ internal fun createFlyingBirdParameters() =
         sourceEdges = setOf(SourceEdge.RIGHT),
     )
 
-internal val twinkleStarParameters = RandomizeParticleGeneratorParameters(
+internal val twinkleStarParameters = ParticleGeneratorParameters(
     count = 250,
     particleWidthRange = 1..4,
     particleHeightRange = 1..4,
@@ -394,7 +394,7 @@ internal val twinkleStarParameters = RandomizeParticleGeneratorParameters(
     startOffsetRange = 0..60,
 )
 
-internal val emotionParameters = RandomizeParticleGeneratorParameters(
+internal val emotionParameters = ParticleGeneratorParameters(
     count = 16,
     randomizeInitialXY = false,
     particleWidthRange = 1..10,
@@ -405,7 +405,7 @@ internal val emotionParameters = RandomizeParticleGeneratorParameters(
     startOffsetRange = 0..30,
 )
 
-internal val confettiParameters = RandomizeParticleGeneratorParameters(
+internal val confettiParameters = ParticleGeneratorParameters(
     count = 200,
     particleWidthRange = 10..20,
     particleHeightRange = 10..20,

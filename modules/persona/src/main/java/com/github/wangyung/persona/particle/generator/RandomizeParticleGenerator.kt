@@ -5,7 +5,7 @@ import com.github.wangyung.persona.particle.Instinct
 import com.github.wangyung.persona.particle.MutableParticle
 import com.github.wangyung.persona.particle.ParticleShape
 import com.github.wangyung.persona.particle.generator.parameter.InitialConstraints
-import com.github.wangyung.persona.particle.generator.parameter.RandomizeParticleGeneratorParameters
+import com.github.wangyung.persona.particle.generator.parameter.ParticleGeneratorParameters
 import com.github.wangyung.persona.particle.generator.parameter.SourceEdge
 import java.util.concurrent.atomic.AtomicLong
 import kotlin.random.Random
@@ -15,7 +15,7 @@ import kotlin.random.nextInt
  * The particle generator that generates the particle randomly in the given [Size].
  */
 class RandomizeParticleGenerator(
-    private val parameters: RandomizeParticleGeneratorParameters,
+    private val parameters: ParticleGeneratorParameters,
     private val dimension: Size,
     private val shapeProvider: ShapeProvider,
 ) : ParticleGenerator {

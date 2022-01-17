@@ -6,7 +6,7 @@ import com.github.wangyung.persona.particle.ParticleSystem
 import com.github.wangyung.persona.particle.ParticleSystemParameters
 import com.github.wangyung.persona.particle.generator.RandomizeParticleGenerator
 import com.github.wangyung.persona.particle.generator.ShapeProvider
-import com.github.wangyung.persona.particle.generator.parameter.RandomizeParticleGeneratorParameters
+import com.github.wangyung.persona.particle.generator.parameter.ParticleGeneratorParameters
 import com.github.wangyung.persona.particle.particleSystem
 import com.github.wangyung.persona.particle.transformation.ParticleTransformation
 import com.github.wangyung.persona.particle.transformation.TransformationParameters
@@ -15,7 +15,7 @@ class ParticlesViewModel : ViewModel() {
     var particleSystem: ParticleSystem? = null
         private set
 
-    var generatorParameters: RandomizeParticleGeneratorParameters? = null
+    var generatorParameters: ParticleGeneratorParameters? = null
         private set
     var particleSystemParameters: ParticleSystemParameters? = null
         private set
@@ -25,7 +25,7 @@ class ParticlesViewModel : ViewModel() {
 
     fun startNewParticlesSystem(
         systemParameters: ParticleSystemParameters,
-        generatorParameters: RandomizeParticleGeneratorParameters,
+        generatorParameters: ParticleGeneratorParameters,
         transformation: ParticleTransformation,
         dimension: Size,
         shapeProvider: ShapeProvider

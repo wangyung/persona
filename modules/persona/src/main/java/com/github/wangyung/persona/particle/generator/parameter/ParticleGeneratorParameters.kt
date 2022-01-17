@@ -30,7 +30,7 @@ private const val DEFAULT_HEIGHT = 12
  * @property shapeProvider A lambda for creating the [ParticleShape]
  */
 @Suppress("ForbiddenComment")
-data class RandomizeParticleGeneratorParameters(
+data class ParticleGeneratorParameters(
     val count: Int,
     val particleWidthRange: IntRange = IntRange(DEFAULT_WIDTH, DEFAULT_WIDTH),
     val particleHeightRange: IntRange = IntRange(DEFAULT_HEIGHT, DEFAULT_HEIGHT),

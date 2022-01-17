@@ -3,7 +3,7 @@ package com.github.wangyung.persona.particle
 import android.util.Size
 import androidx.compose.ui.graphics.Color
 import com.github.wangyung.persona.particle.generator.RandomizeParticleGenerator
-import com.github.wangyung.persona.particle.generator.parameter.RandomizeParticleGeneratorParameters
+import com.github.wangyung.persona.particle.generator.parameter.ParticleGeneratorParameters
 import com.github.wangyung.persona.particle.mock.NotAliveTransformation
 import com.github.wangyung.persona.particle.transformation.ParticleTransformation
 import kotlinx.coroutines.Dispatchers
@@ -32,7 +32,7 @@ class ParticleSystemTest {
     private val mockParameters: ParticleSystemParameters = ParticleSystemParameters()
     private val mockGenerator: RandomizeParticleGenerator = RandomizeParticleGenerator(
         dimension = Size(10, 10),
-        parameters = RandomizeParticleGeneratorParameters(
+        parameters = ParticleGeneratorParameters(
             count = 10,
             shapeProvider = { ParticleShape.Circle(color = Color.White, radius = 1) }
         )
