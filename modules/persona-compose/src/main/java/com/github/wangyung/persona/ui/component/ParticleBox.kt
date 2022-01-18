@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -13,8 +14,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.clipRect
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.util.fastForEach
@@ -26,6 +27,12 @@ import com.github.wangyung.persona.particle.Particle
 import com.github.wangyung.persona.particle.ParticleShape
 import com.github.wangyung.persona.particle.ParticleSystem
 import com.github.wangyung.persona.particle.particleOf
+import com.github.wangyung.persona.render.drawCircle
+import com.github.wangyung.persona.render.drawImage
+import com.github.wangyung.persona.render.drawLine
+import com.github.wangyung.persona.render.drawPath
+import com.github.wangyung.persona.render.drawRectangle
+import com.github.wangyung.persona.render.drawText
 
 @Composable
 fun ParticleBox(
@@ -80,8 +87,6 @@ private class ParticleBoxLifecycleObserver(
         particleSystemState.value.start()
     }
 }
-
-private val debugBorderStroke = Stroke(width = 1f)
 
 private fun DrawScope.drawParticles(particles: List<Particle>?) {
     particles?.fastForEach { particle ->

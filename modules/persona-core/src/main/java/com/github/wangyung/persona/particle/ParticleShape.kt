@@ -55,7 +55,7 @@ sealed class ParticleShape {
         val borderWidth: Dp,
         val color: Color,
     ) : ParticleShape() {
-        internal val textBounds: Rect = Rect()
+        val textBounds: Rect = Rect()
         val nativePaint: NativePaint = NativePaint().apply {
             color = this@Text.color.toArgb()
         }
