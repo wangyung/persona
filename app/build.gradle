@@ -69,8 +69,8 @@ android {
 
 dependencies {
 
-    implementation project(":persona")
     implementation project(":persona-json-serialization-kotlinx")
+    implementation project(":persona-compose")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
     implementation "org.jetbrains.kotlin:kotlin-reflect:${versions.kotlin}"

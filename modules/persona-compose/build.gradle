@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    resourcePrefix "persona-ui-compose"
+    resourcePrefix "persona-compose"
 
     compileSdkVersion versions.compileSdkVersion
     defaultConfig {
@@ -36,6 +36,9 @@ android {
 }
 
 dependencies {
+    implementation project(":persona-core")
+    implementation project(":persona-shape-render-android")
+
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}")
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutines}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
