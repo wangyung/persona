@@ -27,7 +27,6 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun PersonaDemoApp() {
-    val json = testJson.toJsonString()
     PersonaDemoAppTheme {
         ProvideWindowInsets {
             val systemUiController = rememberSystemUiController()

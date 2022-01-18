@@ -21,11 +21,11 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.wangyung.app.model.AnimationParameterSet
-import com.github.wangyung.persona.component.ParticleBox
 import com.github.wangyung.app.model.AnimationType
 import com.github.wangyung.app.viewmodel.ParticlesViewModel
 import com.github.wangyung.persona.app.R
 import com.github.wangyung.persona.particle.generator.ShapeProvider
+import com.github.wangyung.persona.ui.component.ParticleBox
 import kotlin.math.sin
 
 private const val MOON_WIDTH = 64

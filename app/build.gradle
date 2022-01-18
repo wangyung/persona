@@ -71,6 +71,7 @@ dependencies {
 
     implementation project(":persona-json-serialization-kotlinx")
     implementation project(":persona-compose")
+    implementation project(":persona-core")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
     implementation "org.jetbrains.kotlin:kotlin-reflect:${versions.kotlin}"
