@@ -27,4 +27,3 @@ interface ParticleShape {
         const val SAME_AS_PARTICLE = -1
     }
 }
-

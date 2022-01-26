@@ -24,7 +24,6 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import com.github.wangyung.persona.particle.Instinct
 import com.github.wangyung.persona.particle.Particle
-import com.github.wangyung.persona.particle.ParticleShape
 import com.github.wangyung.persona.particle.ParticleSystem
 import com.github.wangyung.persona.particle.particleOf
 import com.github.wangyung.persona.render.ComposeParticleShape
