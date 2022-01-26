@@ -12,11 +12,10 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import com.github.wangyung.persona.particle.Particle
-import com.github.wangyung.persona.particle.ParticleShape
 
 private val debugBorderStroke = Stroke(width = 1f)
 
-fun Particle.drawCircle(drawScope: DrawScope, circle: ParticleShape.Circle) {
+fun Particle.drawCircle(drawScope: DrawScope, circle: ComposeParticleShape.Circle) {
     val center = Offset(x, y)
     drawScope.withTransform(transformBlock = {
         scale(scaleX = scaleX, scaleY = scaleY, pivot = center)
@@ -29,7 +28,7 @@ fun Particle.drawCircle(drawScope: DrawScope, circle: ParticleShape.Circle) {
     }
 }
 
-fun Particle.drawLine(drawScope: DrawScope, line: ParticleShape.Line) =
+fun Particle.drawLine(drawScope: DrawScope, line: ComposeParticleShape.Line) =
     drawScope.drawLine(
         color = line.color,
         strokeWidth = line.strokeWidth,
@@ -41,7 +40,7 @@ fun Particle.drawLine(drawScope: DrawScope, line: ParticleShape.Line) =
 fun Particle.drawText(
     drawScope: DrawScope,
     nativePaint: NativePaint,
-    textShape: ParticleShape.Text
+    textShape: ComposeParticleShape.Text
 ) {
     nativePaint.getTextBounds(textShape.text, 0, textShape.text.count(), textShape.textBounds)
     val textBounds = textShape.textBounds
@@ -66,7 +65,7 @@ fun Particle.drawText(
 
 fun Particle.drawPath(
     drawScope: DrawScope,
-    pathShape: ParticleShape.Path,
+    pathShape: ComposeParticleShape.Path,
     drawDebugBorder: Boolean = false
 ) {
     val pathBound = pathShape.path.getBounds()
@@ -83,7 +82,7 @@ fun Particle.drawPath(
     }
 }
 
-fun Particle.drawImage(drawScope: DrawScope, imageShape: ParticleShape.Image) {
+fun Particle.drawImage(drawScope: DrawScope, imageShape: ComposeParticleShape.Image) {
     val topLeft = IntOffset((x - instinct.width / 2).toInt(), (y - instinct.height / 2).toInt())
     drawScope.drawImage(
         image = imageShape.image,
@@ -93,7 +92,7 @@ fun Particle.drawImage(drawScope: DrawScope, imageShape: ParticleShape.Image) {
     )
 }
 
-fun Particle.drawRectangle(drawScope: DrawScope, rectangleShape: ParticleShape.Rectangle) {
+fun Particle.drawRectangle(drawScope: DrawScope, rectangleShape: ComposeParticleShape.Rectangle) {
     drawScope.withTransform(transformBlock = {
         val pivot = Offset(instinct.width / 2f, instinct.height / 2f)
         translate(left = x, top = y)

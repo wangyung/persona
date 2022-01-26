@@ -50,7 +50,7 @@ android {
 
 dependencies {
     implementation project(":persona-core")
-    implementation project(":persona-shape-render-android")
+    api project(":persona-shape-render-android")
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}")
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutines}"

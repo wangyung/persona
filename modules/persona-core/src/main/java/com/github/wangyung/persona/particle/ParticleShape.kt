@@ -1,70 +1,30 @@
 package com.github.wangyung.persona.particle
 
-import android.graphics.Rect
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.NativePaint
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.graphics.Path as ComposePath
-
 /**
  * The group of particle shapes
  */
-sealed class ParticleShape {
+interface ParticleShape {
+    val width: Int
+    val height: Int
 
-    /**
-     * The path style.
-     */
-    data class Path(
-        val strokeWidth: Int,
-        val color: Color,
-        val path: ComposePath,
-    ) : ParticleShape()
+    interface Path : ParticleShape
 
-    /**
-     * The circle style.
-     */
-    data class Circle(val color: Color, val radius: Int) : ParticleShape()
+    interface Line : ParticleShape
 
-    /**
-     * The line style.
-     */
-    data class Line(
-        val strokeWidth: Float,
-        val color: Color,
-    ) : ParticleShape()
+    interface Image : ParticleShape
 
-    /**
-     * The image style.
-     */
-    data class Image(
-        val image: ImageBitmap,
-        val useImageSize: Boolean = true,
-        val colorFilter: ColorFilter? = null,
-    ) : ParticleShape()
+    interface Text : ParticleShape
 
-    /**
-     * The text style. It uses [NativePaint] inside.
-     */
-    data class Text(
-        val text: String,
-        val fontSize: TextUnit,
-        val borderWidth: Dp,
-        val color: Color,
-    ) : ParticleShape() {
-        val textBounds: Rect = Rect()
-        val nativePaint: NativePaint = NativePaint().apply {
-            color = this@Text.color.toArgb()
-        }
+    interface Rectangle : ParticleShape
+
+    interface Circle : ParticleShape
+
+    companion object {
+        /**
+         * For width and height, if the width or height is [SAME_AS_PARTICLE], drawing the shape by
+         * particle's width and height.
+         */
+        const val SAME_AS_PARTICLE = -1
     }
-
-    /**
-     * The rectangle style.
-     */
-    data class Rectangle(
-        val backgroundColor: Color
-    ) : ParticleShape()
 }
+

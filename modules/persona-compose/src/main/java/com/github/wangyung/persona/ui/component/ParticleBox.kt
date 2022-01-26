@@ -27,6 +27,7 @@ import com.github.wangyung.persona.particle.Particle
 import com.github.wangyung.persona.particle.ParticleShape
 import com.github.wangyung.persona.particle.ParticleSystem
 import com.github.wangyung.persona.particle.particleOf
+import com.github.wangyung.persona.render.ComposeParticleShape
 import com.github.wangyung.persona.render.drawCircle
 import com.github.wangyung.persona.render.drawImage
 import com.github.wangyung.persona.render.drawLine
@@ -92,10 +93,10 @@ private fun DrawScope.drawParticles(particles: List<Particle>?) {
     particles?.fastForEach { particle ->
         if (!particle.shouldBeDraw) return@fastForEach
 
-        when (val shape = particle.instinct.shape) {
-            is ParticleShape.Circle -> particle.drawCircle(this, shape)
-            is ParticleShape.Line -> particle.drawLine(this, shape)
-            is ParticleShape.Text -> {
+        when (val shape = particle.instinct.shape as ComposeParticleShape) {
+            is ComposeParticleShape.Circle -> particle.drawCircle(this, shape)
+            is ComposeParticleShape.Line -> particle.drawLine(this, shape)
+            is ComposeParticleShape.Text -> {
                 val paint = shape.nativePaint.apply {
                     strokeWidth = shape.borderWidth.toPx()
                     color = shape.color.toArgb()
@@ -103,9 +104,9 @@ private fun DrawScope.drawParticles(particles: List<Particle>?) {
                 }
                 particle.drawText(this, paint, shape)
             }
-            is ParticleShape.Path -> particle.drawPath(this, shape)
-            is ParticleShape.Image -> particle.drawImage(this, shape)
-            is ParticleShape.Rectangle -> particle.drawRectangle(this, shape)
+            is ComposeParticleShape.Path -> particle.drawPath(this, shape)
+            is ComposeParticleShape.Image -> particle.drawImage(this, shape)
+            is ComposeParticleShape.Rectangle -> particle.drawRectangle(this, shape)
         }
     }
 }
@@ -124,7 +125,7 @@ fun ParticleBoxPreview() {
                 speed = 5f,
                 angle = 80f,
                 zRotationalSpeed = 2f,
-                shape = ParticleShape.Circle(
+                shape = ComposeParticleShape.Circle(
                     color = Color.White,
                     radius = 10,
                 ),

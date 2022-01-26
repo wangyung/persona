@@ -2,7 +2,6 @@ package com.github.wangyung.persona.particle
 
 import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
-import androidx.compose.ui.graphics.Color
 
 /**
  * The particle is the basic unit that represents in the [ParticleSystem].
@@ -47,8 +46,8 @@ class MutableParticle(
     override var scaleY: Float = 1f,
     override var alpha: Float = 1f,
     override var color: Color = Color.Transparent,
-    override var instinct: Instinct = Instinct(),
-    override var xRotationWidth: Float = instinct.width.toFloat(),
+    override var instinct: Instinct,
+    override var xRotationWidth: Float = instinct.shape.width.toFloat(),
 ) : Particle {
     override var isAlive: Boolean = true
 }
@@ -87,7 +86,7 @@ data class Instinct(
     @IntRange(from = 0)
     val startOffset: Int = 0,
 
-    val shape: ParticleShape = ParticleShape.Circle(color = Color.White, radius = 1),
+    val shape: ParticleShape,
 )
 
 /**
@@ -105,7 +104,7 @@ fun particleOf(
     scaleY: Float = 1f,
     alpha: Float = 1f,
     color: Color = Color.Transparent,
-    instinct: Instinct = Instinct()
+    instinct: Instinct
 ): Particle = MutableParticle(
     id = id,
     initialIteration = initialIteration,

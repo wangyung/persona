@@ -29,19 +29,6 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    kotlinOptions {
-        jvmTarget = '1.8'
-        useIR = true
-    }
-
-    buildFeatures {
-        compose true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion versions.compose
-    }
-
     testOptions {
         unitTests {
             includeAndroidResources = true
@@ -63,15 +50,16 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutines}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
 
+    implementation "androidx.annotation:annotation:${versions.androidx.annotation}"
     // Jetpack Compose
-    implementation "androidx.activity:activity-compose:${versions.composeActivity}"
-    implementation "androidx.compose.ui:ui:${versions.compose}"
-    implementation "androidx.compose.ui:ui-util:${versions.compose}"
-    implementation "androidx.compose.material:material:${versions.compose}"
-    implementation "androidx.compose.ui:ui-tooling:${versions.compose}"
-    implementation "androidx.constraintlayout:constraintlayout-compose:${versions.composeConstraintLayout}"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:${versions.composeLifecycleViewModel}"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:${versions.androidx.lifecycle}"
+//    implementation "androidx.activity:activity-compose:${versions.composeActivity}"
+//    implementation "androidx.compose.ui:ui:${versions.compose}"
+//    implementation "androidx.compose.ui:ui-util:${versions.compose}"
+//    implementation "androidx.compose.material:material:${versions.compose}"
+//    implementation "androidx.compose.ui:ui-tooling:${versions.compose}"
+//    implementation "androidx.constraintlayout:constraintlayout-compose:${versions.composeConstraintLayout}"
+//    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:${versions.composeLifecycleViewModel}"
+//    implementation "androidx.lifecycle:lifecycle-runtime-ktx:${versions.androidx.lifecycle}"
 
     testImplementation "androidx.test.ext:junit:${versions.androidx.junit}"
     testImplementation "junit:junit:${versions.jUnit}"

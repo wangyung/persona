@@ -42,7 +42,7 @@ class RandomizeParticleGenerator(
             shape = shape
         )
         particle.rotation = 0f
-        particle.xRotationWidth = particleInstinct.width.toFloat()
+        particle.xRotationWidth = particleInstinct.shape.width.toFloat()
         particle.instinct = particleInstinct
     }
 
@@ -144,44 +144,22 @@ class RandomizeParticleGenerator(
 
     private fun getRandomWidth(shape: ParticleShape): Int =
         when (shape) {
-            is ParticleShape.Text -> {
-                shape.nativePaint.getTextBounds(shape.text, 0, shape.text.count(), shape.textBounds)
-                shape.textBounds.width()
-            }
-            is ParticleShape.Path -> {
-                shape.path.getBounds().width.toInt()
-            }
-            is ParticleShape.Image -> {
-                if (shape.useImageSize) {
-                    shape.image.width
-                } else {
-                    Random.nextInt(parameters.particleWidthRange)
-                }
-            }
+            is ParticleShape.Text,
+            is ParticleShape.Path,
+            is ParticleShape.Image,
             is ParticleShape.Circle -> {
-                shape.radius
+                shape.width
             }
             else -> Random.nextInt(parameters.particleWidthRange)
         }
 
     private fun getRandomHeight(shape: ParticleShape): Int =
         when (shape) {
-            is ParticleShape.Text -> {
-                shape.nativePaint.getTextBounds(shape.text, 0, shape.text.count(), shape.textBounds)
-                shape.textBounds.height()
-            }
-            is ParticleShape.Path -> {
-                shape.path.getBounds().height.toInt()
-            }
-            is ParticleShape.Image -> {
-                if (shape.useImageSize) {
-                    shape.image.height
-                } else {
-                    Random.nextInt(parameters.particleWidthRange)
-                }
-            }
+            is ParticleShape.Text,
+            is ParticleShape.Path,
+            is ParticleShape.Image,
             is ParticleShape.Circle -> {
-                shape.radius
+                shape.height
             }
             else -> Random.nextInt(parameters.particleHeightRange)
         }

@@ -18,7 +18,6 @@ import com.github.wangyung.app.ui.screen.animation.SakuraDemo
 import com.github.wangyung.app.ui.screen.animation.SnowDemo
 import com.github.wangyung.app.ui.screen.animation.TwinkleStarDemo
 import com.github.wangyung.persona.app.R
-import com.github.wangyung.persona.particle.ParticleShape
 import com.github.wangyung.persona.particle.ParticleSystemParameters
 import com.github.wangyung.persona.particle.generator.ShapeProvider
 import com.github.wangyung.persona.particle.generator.parameter.InitialConstraints
@@ -31,6 +30,7 @@ import com.github.wangyung.persona.particle.transformation.ParticleTransformatio
 import com.github.wangyung.persona.particle.transformation.SequenceTransformation
 import com.github.wangyung.persona.particle.transformation.TransformationParameters
 import com.github.wangyung.persona.particle.transformation.TranslateTransformationParameters
+import com.github.wangyung.persona.render.ComposeParticleShape
 
 private const val RAIN = "Rain"
 private const val SNOW = "Snow"
@@ -85,7 +85,7 @@ sealed class AnimationType(val value: String) {
         override fun DemoScreen() = RainDemo()
 
         override fun toShapeProvider(resources: Resources): ShapeProvider = ShapeProvider {
-            createRainParticle(1..2)
+            createRainParticleShape(1..2)
         }
     }
 
@@ -155,7 +155,7 @@ sealed class AnimationType(val value: String) {
         override fun DemoScreen() = FlyingPooDemo()
 
         override fun toShapeProvider(resources: Resources): ShapeProvider = ShapeProvider {
-            ParticleShape.Text(
+            ComposeParticleShape.Text(
                 text = "\uD83D\uDCA9", // poopoo
                 fontSize = 14.sp,
                 borderWidth = 1.dp,
@@ -251,7 +251,7 @@ sealed class AnimationType(val value: String) {
         override fun DemoScreen() = EmotionDemo()
 
         override fun toShapeProvider(resources: Resources): ShapeProvider = ShapeProvider {
-            ParticleShape.Text(
+            ComposeParticleShape.Text(
                 text = "\uD83D\uDE0D", // heart-eyes emoji
                 fontSize = 20.sp,
                 borderWidth = 1.dp,

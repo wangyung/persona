@@ -1,5 +1,6 @@
 package com.github.wangyung.persona.json.model
 
+import androidx.annotation.Keep
 import com.github.wangyung.persona.particle.ParticleSystemParameters
 import com.github.wangyung.persona.particle.generator.parameter.ParticleGeneratorParameters
 import com.github.wangyung.persona.particle.transformation.TransformationParameters
@@ -11,6 +12,7 @@ import kotlinx.serialization.json.Json
 /**
  * The particle parameters for serialize/deserialize.
  */
+@Keep
 @Serializable
 data class ParticleParameters(
     val name: String,

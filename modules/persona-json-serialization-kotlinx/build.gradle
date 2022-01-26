@@ -1,7 +1,6 @@
-plugins {
-    id "com.android.library"
-    id "org.jetbrains.kotlin.plugin.serialization" version "1.6.10"
-}
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+apply plugin: "org.jetbrains.kotlin.plugin.serialization"
 
 android {
     compileSdkVersion versions.compileSdkVersion
@@ -34,11 +33,13 @@ android {
 }
 
 dependencies {
-    implementation project(":persona")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}")
+    implementation project(":persona-core")
+
+    implementation "androidx.annotation:annotation:${versions.androidx.annotation}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutines}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${versions.kotlinxSerializations}")
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:${versions.kotlinxSerializations}"
 
     testImplementation "androidx.test.ext:junit:${versions.androidx.junit}"
     testImplementation "junit:junit:${versions.jUnit}"

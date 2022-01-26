@@ -3,7 +3,6 @@ package com.github.wangyung.persona.particle
 import android.util.Log
 import android.util.Size
 import androidx.annotation.VisibleForTesting
-import androidx.compose.ui.util.fastForEach
 import com.github.wangyung.persona.particle.generator.ParticleGenerator
 import com.github.wangyung.persona.particle.transformation.LinearTranslateTransformation
 import com.github.wangyung.persona.particle.transformation.ParticleTransformation
@@ -15,6 +14,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 import kotlin.system.measureTimeMillis
 
 private const val TAG = "ParticlesSystem"
@@ -187,5 +188,14 @@ class DefaultParticleSystem internal constructor(
                 x - halfWidth > width ||
                 y + halfHeight < 0 ||
                 y - halfHeight > height
+    }
+}
+
+@OptIn(ExperimentalContracts::class)
+internal inline fun <T> List<T>.fastForEach(action: (T) -> Unit) {
+    contract { callsInPlace(action) }
+    for (index in indices) {
+        val item = get(index)
+        action(item)
     }
 }
