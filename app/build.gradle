@@ -80,7 +80,6 @@ dependencies {
 
     implementation "androidx.appcompat:appcompat:${versions.androidx.appcompat}"
     implementation "androidx.core:core-ktx:${versions.androidx.core}"
-    implementation "androidx.lifecycle:lifecycle-extensions:${versions.androidx.lifecycle}"
     implementation "com.google.accompanist:accompanist-insets:${versions.accompanist}"
     implementation "com.google.accompanist:accompanist-systemuicontroller:${versions.accompanist}"
     implementation "com.google.android.material:material:${versions.materialComponents}"

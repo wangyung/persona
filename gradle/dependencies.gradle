@@ -2,15 +2,15 @@ apply from: "$rootDir/gradle/common_methods.gradle"
 
 ext {
     versions = [
-            androidGradlePlugin  : '7.0.3',
+            androidGradlePlugin  : '7.1.3',
             androidBuildTool     : '30.0.3',
             compileSdkVersion    : 31,
             targetSdkVersion     : 30,
             minSdkVersion        : 21,
 
             // Kotlin
-            kotlin                : '1.5.31',
-            coroutines            : '1.6.0',
+            kotlin                : '1.6.10',
+            coroutines            : '1.6.1',
             kotlinxSerializations : '1.3.2',
 
             // AndroidX
@@ -19,11 +19,11 @@ ext {
                     coordinatorlayout : '2.0.4',
                     fragment          : '1.3.5',
                     annotation        : '1.3.0',
-                    lifecycle         : '2.2.0',
+                    lifecycle         : '2.4.1',
                     lifecycleRuntime  : '2.3.1',
                     test              : '1.4.0',
-                    core              : '1.6.0',
-                    appcompat         : '1.3.1',
+                    core              : '1.7.0',
+                    appcompat         : '1.4.1',
                     room              : '2.2.5',
                     arch              : [
                         core    : '2.1.0',
@@ -32,15 +32,15 @@ ext {
             ],
 
             // Jetpack Compose
-            compose                      : '1.0.5',
-            composeActivity              : '1.3.1',
-            composeConstraintLayout      : '1.0.0-beta02',
-            composeLifecycleViewModel    : '1.0.0-alpha07',
-            composeNavigation            : '2.4.0-alpha07',
+            compose                      : '1.1.1',
+            composeActivity              : '1.4.0',
+            composeConstraintLayout      : '1.0.0',
+            composeLifecycleViewModel    : '2.4.1',
+            composeNavigation            : '2.4.2',
             accompanist                  : '0.16.0',
 
             // Google material design library
-            materialComponents  : '1.4.0',
+            materialComponents  : '1.5.0',
 
             // Square's type-safe http client
             // https://github.com/https://github.com/square/retrofit
