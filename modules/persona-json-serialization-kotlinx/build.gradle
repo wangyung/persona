@@ -3,6 +3,7 @@ apply plugin: "kotlin-android"
 apply plugin: "org.jetbrains.kotlin.plugin.serialization"
 
 android {
+    namespace "com.github.wangyung.persona"
     compileSdkVersion versions.compileSdkVersion
     defaultConfig {
         minSdkVersion versions.minSdkVersion
@@ -21,8 +22,12 @@ android {
     // language features (either in its source code or
     // through dependencies).
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    kotlinOptions {
+        jvmTarget = '11'
     }
 
     testOptions {

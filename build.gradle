@@ -25,7 +25,6 @@ allprojects {
 }
 
 subprojects {
-    apply from: "$rootDir/gradle/jacoco.gradle"
     apply from: "$rootDir/gradle/detekt.gradle"
 }
 
