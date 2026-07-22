@@ -91,7 +91,8 @@ fun SakuraDemo() {
                             sourceEdges = sourceEdges
                         )
                     )
-                })
+                }
+            )
 
             SwitchWithText(
                 title = "Random initial X&Y:",

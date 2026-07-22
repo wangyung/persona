@@ -6,11 +6,13 @@ import com.github.wangyung.persona.particle.generator.parameter.ParticleGenerato
 import com.github.wangyung.persona.particle.transformation.TransformationParameters
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
 
 /**
- * The particle parameters for serialize/deserialize.
+ * The particle parameters for serialize/deserialize. It describes an animation without the shape.
+ * The shape is renderer specific, so the caller provides the `ShapeProvider` when creating the
+ * particle system. The [shapeParameters] can carry arbitrary json for the caller to create the
+ * shapes.
  */
 @Keep
 @Serializable
@@ -22,8 +24,5 @@ data class ParticleParameters(
     val generatorParameters: ParticleGeneratorParameters,
     @Contextual
     val transformationParameters: TransformationParameters,
-    val shapeParameters: Map<String, @Contextual Any>? = null
+    val shapeParameters: JsonObject? = null,
 )
-
-private val json = Json { ignoreUnknownKeys = true }
-fun ParticleParameters.toJsonString(): String = json.encodeToString(this)

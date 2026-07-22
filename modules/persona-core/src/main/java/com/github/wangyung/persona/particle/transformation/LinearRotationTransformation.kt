@@ -3,6 +3,9 @@ package com.github.wangyung.persona.particle.transformation
 import com.github.wangyung.persona.particle.MutableParticle
 import java.lang.Math.abs
 
+private const val FULL_ROTATION_DEGREE = 360f
+private const val HALF_RATIO = 0.5f
+
 /**
  * The transformation that updates the rotation by the rotational speed. It only modifies the
  * current particle state when everytime the [transform] is invoked.
@@ -16,10 +19,10 @@ class LinearRotationTransformation : ParticleTransformation {
                 xRotationWidth = instinct.width.toFloat()
             }
             rotation += instinct.zRotationalSpeed
-            if (rotation >= 360) {
-                rotation -= 360
+            if (rotation >= FULL_ROTATION_DEGREE) {
+                rotation -= FULL_ROTATION_DEGREE
             }
-            scaleY = abs(xRotationWidth / instinct.width - 0.5f) * 2
+            scaleY = abs(xRotationWidth / instinct.width - HALF_RATIO) * 2
         }
     }
 }

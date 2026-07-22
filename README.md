@@ -69,6 +69,49 @@ val particleSystem = particleSystem(
 ParticleBox(modifier = Modifier.fillMaxSize(), particleSystem = particleSystem)
 ```
 
+## Create the animation from JSON
+The `persona-json-serialization-kotlinx` module can create the `ParticleSystem` from a json string
+(powered by kotlinx-serialization). The shape can't be described in json because it is renderer
+specific, so provide the `ShapeProvider` when creating the particle system. Use the optional
+`shapeParameters` json object to carry your own shape settings.
+
+```kotlin
+val jsonString = """
+{
+  "name": "Snow",
+  "systemParameters": { "fps": 60, "autoResetParticles": true, "restartWhenAllDead": true },
+  "generatorParameters": {
+    "count": 125,
+    "randomizeInitialXY": true,
+    "speedRange": { "from": 1.0, "to": 2.0 },
+    "angleRange": { "from": 80.0, "to": 100.0 },
+    "sourceEdges": ["TOP"]
+  },
+  "transformationParameters": { "type": "translate", "gravity": 0.1 }
+}
+"""
+
+val particleSystem = particleSystemFromJson(
+    jsonString = jsonString,
+    dimension = Size(100, 100),
+    shapeProvider = { createShowParticle(IntRange(DEFAULT_SNOW_MIN_RADIUS, DEFAULT_SNOW_MAX_RADIUS)) },
+)
+```
+
+The `transformationParameters` supports `translate`, `rotation`, `composite` and `sequence`:
+```json
+{
+  "type": "sequence",
+  "steps": [
+    { "transformation": { "type": "translate", "gravity": 0.1 }, "duration": 40 },
+    { "transformation": { "type": "rotation" }, "duration": 30 }
+  ]
+}
+```
+
+You can also serialize the parameters with `ParticleParameters.toJsonString()` and parse them with
+`particleParametersFromJson()` then create the system via `ParticleParameters.toParticleSystem()`.
+
 ## Known Issues
 - If the `ParticlBox` is in the a scrollable content, the animation would disappear. 
 

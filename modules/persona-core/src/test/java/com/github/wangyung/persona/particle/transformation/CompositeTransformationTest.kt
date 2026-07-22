@@ -1,6 +1,8 @@
 package com.github.wangyung.persona.particle.transformation
 
+import com.github.wangyung.persona.particle.Instinct
 import com.github.wangyung.persona.particle.MutableParticle
+import com.github.wangyung.persona.particle.mock.FakeCircleShape
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,11 +21,13 @@ class CompositeTransformationTest {
 
     @Before
     fun setUp() {
-        compositeTransformation = CompositeTransformation(listOf(
-            mockAlphaTransformation,
-            mockRotationTransformation
-        ))
-        mockParticle = MutableParticle(id = 100)
+        compositeTransformation = CompositeTransformation(
+            listOf(
+                mockAlphaTransformation,
+                mockRotationTransformation
+            )
+        )
+        mockParticle = MutableParticle(id = 100, instinct = Instinct(shape = FakeCircleShape()))
     }
 
     @Test

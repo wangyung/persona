@@ -1,6 +1,8 @@
 package com.github.wangyung.persona.particle.transformation
 
+import com.github.wangyung.persona.particle.Instinct
 import com.github.wangyung.persona.particle.MutableParticle
+import com.github.wangyung.persona.particle.mock.FakeCircleShape
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -17,7 +19,7 @@ class SequenceTransformationTest {
     @Before
     fun setUp() {
         sequenceTransformation = SequenceTransformation()
-        mockParticle = MutableParticle(id = 101)
+        mockParticle = MutableParticle(id = 101, instinct = Instinct(shape = FakeCircleShape()))
     }
 
     @Test

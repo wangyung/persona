@@ -2,6 +2,7 @@ package com.github.wangyung.persona.particle.transformation
 
 import com.github.wangyung.persona.particle.Instinct
 import com.github.wangyung.persona.particle.MutableParticle
+import com.github.wangyung.persona.particle.mock.FakeCircleShape
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -13,7 +14,10 @@ class LinearRotationTransformationTest {
 
     @Before
     fun setUp() {
-        mockParticle = MutableParticle(id = 300, instinct = Instinct(zRotationalSpeed = 10f))
+        mockParticle = MutableParticle(
+            id = 300,
+            instinct = Instinct(zRotationalSpeed = 10f, shape = FakeCircleShape()),
+        )
         linearRotationTransformation = LinearRotationTransformation()
     }
 

@@ -6,7 +6,7 @@ import com.github.wangyung.persona.particle.Particle
 /**
  * The contractor of updating [Particle].
  */
-interface ParticleTransformation {
+fun interface ParticleTransformation {
     /**
      * Updates [MutableParticle] at the given iteration.
      */

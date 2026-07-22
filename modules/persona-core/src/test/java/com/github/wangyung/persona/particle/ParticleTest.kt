@@ -1,5 +1,6 @@
 package com.github.wangyung.persona.particle
 
+import com.github.wangyung.persona.particle.mock.FakeCircleShape
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -7,8 +8,14 @@ class ParticleTest {
     @Test
     fun `Create particle correctly via particleOf`() {
         // given
-        val particle =
-            particleOf(id = 101, initialIteration = 100, x = 100f, y = 101f, rotation = 90f)
+        val particle = particleOf(
+            id = 101,
+            initialIteration = 100,
+            x = 100f,
+            y = 101f,
+            rotation = 90f,
+            instinct = Instinct(shape = FakeCircleShape()),
+        )
 
         // then
         assertEquals(101, particle.id)

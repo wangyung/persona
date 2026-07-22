@@ -65,6 +65,7 @@ interface ParticleSystem {
 /**
  * Creates the particle system.
  */
+@Suppress("LongParameterList")
 fun particleSystem(
     dimension: Size,
     parameters: ParticleSystemParameters,
@@ -100,6 +101,7 @@ class DefaultParticleSystem internal constructor(
         get() = mutableParticles
 
     private var mutableParticles: List<MutableParticle> = generator.createParticles()
+
     @VisibleForTesting
     internal val notAliveParticleIds: MutableSet<Long> = mutableSetOf()
 
@@ -185,9 +187,9 @@ class DefaultParticleSystem internal constructor(
         val halfWidth: Int = (this.instinct.width / 2).coerceAtLeast(1)
         val halfHeight: Int = (this.instinct.height / 2).coerceAtLeast(1)
         return x + halfWidth < 0 ||
-                x - halfWidth > width ||
-                y + halfHeight < 0 ||
-                y - halfHeight > height
+            x - halfWidth > width ||
+            y + halfHeight < 0 ||
+            y - halfHeight > height
     }
 }
 

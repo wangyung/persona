@@ -140,9 +140,10 @@ private fun WeatherAnimationInternal(
             )
         }
         val particleModifier = when (animationType) {
-            is AnimationType.FlyingBird, is AnimationType.TwinkleStar -> Modifier
-                .fillMaxWidth()
-                .height(with(LocalDensity.current) { constraints.maxHeight.toDp() / 1.5f })
+            is AnimationType.FlyingBird, is AnimationType.TwinkleStar ->
+                Modifier
+                    .fillMaxWidth()
+                    .height(with(LocalDensity.current) { constraints.maxHeight.toDp() / 1.5f })
             else -> Modifier.fillMaxSize()
         }
         if (showDebugLayer) {

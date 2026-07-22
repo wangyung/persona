@@ -107,7 +107,8 @@ fun ConfettiDemo() {
                             sourceEdges = sourceEdges
                         )
                     )
-                })
+                }
+            )
 
             SwitchWithText(
                 title = "Random initial X&Y:",

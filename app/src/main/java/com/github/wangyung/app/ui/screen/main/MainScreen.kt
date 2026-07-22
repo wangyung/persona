@@ -1,8 +1,13 @@
 package com.github.wangyung.app.ui.screen.main
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Divider
@@ -16,8 +21,6 @@ import com.github.wangyung.app.model.AnimationInfo
 import com.github.wangyung.app.model.AnimationType
 import com.github.wangyung.app.model.animationDemos
 import com.github.wangyung.app.ui.theme.PersonaDemoAppTheme
-import com.google.accompanist.insets.LocalWindowInsets
-import com.google.accompanist.insets.rememberInsetsPaddingValues
 
 @Composable
 fun MainScreen(navigateToAnimationDemo: (AnimationType) -> Unit) {
@@ -26,10 +29,9 @@ fun MainScreen(navigateToAnimationDemo: (AnimationType) -> Unit) {
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentWidth(align = Alignment.CenterHorizontally),
-            contentPadding = rememberInsetsPaddingValues(
-                insets = LocalWindowInsets.current.systemBars,
-                applyTop = false
-            )
+            contentPadding = WindowInsets.systemBars
+                .only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom)
+                .asPaddingValues()
         ) {
             item {
                 AnimationCardSection(

@@ -1,10 +1,9 @@
 package com.github.wangyung.persona.particle.generator
 
 import android.util.Size
-import androidx.compose.ui.graphics.Color
-import com.github.wangyung.persona.particle.ParticleShape
 import com.github.wangyung.persona.particle.generator.parameter.ParticleGeneratorParameters
 import com.github.wangyung.persona.particle.generator.parameter.SourceEdge
+import com.github.wangyung.persona.particle.mock.FakeCircleShape
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,9 +24,9 @@ class RandomizeParticleGeneratorTest {
             parameters = ParticleGeneratorParameters(
                 count = 10,
                 randomizeInitialXY = true,
-                shapeProvider = { ParticleShape.Circle(color = Color.White, radius = 1) }
             ),
-            dimension = Size(10, 10)
+            dimension = Size(10, 10),
+            shapeProvider = { FakeCircleShape(radius = 1) },
         )
     }
 
@@ -52,9 +51,9 @@ class RandomizeParticleGeneratorTest {
                 count = 10,
                 randomizeInitialXY = false,
                 sourceEdges = setOf(SourceEdge.TOP, SourceEdge.BOTTOM),
-                shapeProvider = { ParticleShape.Circle(color = Color.White, radius = 1) }
             ),
-            dimension = Size(10, 10)
+            dimension = Size(10, 10),
+            shapeProvider = { FakeCircleShape(radius = 1) },
         )
         val particles = randomizeParticleGenerator.createParticles()
         // when
@@ -72,9 +71,9 @@ class RandomizeParticleGeneratorTest {
                 count = 10,
                 randomizeInitialXY = false,
                 sourceEdges = setOf(SourceEdge.LEFT, SourceEdge.RIGHT),
-                shapeProvider = { ParticleShape.Circle(color = Color.White, radius = 1) }
             ),
-            dimension = Size(10, 10)
+            dimension = Size(10, 10),
+            shapeProvider = { FakeCircleShape(radius = 1) },
         )
         val particles = randomizeParticleGenerator.createParticles()
 

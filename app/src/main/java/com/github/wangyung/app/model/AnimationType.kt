@@ -292,12 +292,15 @@ sealed class AnimationType(val value: String) {
             createConfettiParticle(
                 colors = listOf(
                     Color.Red,
-                    /* Orange */ Color(0xFFFFA500),
+                    /* Orange */
+                    Color(0xFFFFA500),
                     Color.Yellow,
                     Color.Green,
                     Color.Blue,
-                    /* Indigo */ Color(0xFF4B0082),
-                    /* Violet */ Color(0xFF8F00FF)
+                    /* Indigo */
+                    Color(0xFF4B0082),
+                    /* Violet */
+                    Color(0xFF8F00FF)
                 )
             )
         }

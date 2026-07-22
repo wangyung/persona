@@ -1,5 +1,11 @@
 package com.github.wangyung.app.ui
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -9,34 +15,22 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.contentColorFor
 import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.wangyung.app.ui.theme.PersonaDemoAppTheme
 import com.github.wangyung.persona.app.R
-import com.google.accompanist.insets.ProvideWindowInsets
-import com.google.accompanist.insets.navigationBarsPadding
-import com.google.accompanist.insets.statusBarsPadding
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun PersonaDemoApp() {
     PersonaDemoAppTheme {
-        ProvideWindowInsets {
-            val systemUiController = rememberSystemUiController()
-            SideEffect {
-                systemUiController.setSystemBarsColor(Color.Transparent, darkIcons = false)
-            }
-            Scaffold(topBar = {
-                val title = stringResource(id = R.string.app_name)
-                TopBar(title = title)
-            }) {
-                PersonaDemoNavGraph()
-            }
+        Scaffold(topBar = {
+            val title = stringResource(id = R.string.app_name)
+            TopBar(title = title)
+        }) {
+            PersonaDemoNavGraph()
         }
     }
 }
@@ -59,7 +53,7 @@ fun TopBar(title: String) {
             elevation = 0.dp,
             modifier = Modifier
                 .statusBarsPadding()
-                .navigationBarsPadding(bottom = false)
+                .windowInsetsPadding(WindowInsets.navigationBars.only(WindowInsetsSides.Horizontal))
         )
     }
 }

@@ -20,7 +20,7 @@ class HorizontalSpeedWithSinParticleTransformation(
         val rotationalSpeed = particle.instinct.zRotationalSpeed
         val horizontalVelocity =
             speed * amplitude * (sin(Math.toRadians(interval.toDouble() * frequencyFactor))).toFloat() *
-                    cos(Math.toRadians(angle.toDouble())).toFloat()
+                cos(Math.toRadians(angle.toDouble())).toFloat()
         val verticalVelocity =
             speed * sin(Math.toRadians(angle.toDouble())).toFloat()
 

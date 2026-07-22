@@ -16,12 +16,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.util.fastForEach
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.github.wangyung.persona.particle.Instinct
 import com.github.wangyung.persona.particle.Particle
 import com.github.wangyung.persona.particle.ParticleSystem
@@ -70,20 +69,17 @@ fun ParticleBox(
 }
 
 /**
- * A custom [LifecycleObserver] that handles OnPause and OnResume.
+ * A custom [DefaultLifecycleObserver] that handles OnPause and OnResume.
  */
 private class ParticleBoxLifecycleObserver(
     private val particleSystemState: State<ParticleSystem>
-) : LifecycleObserver {
+) : DefaultLifecycleObserver {
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    fun onPause() {
+    override fun onPause(owner: LifecycleOwner) {
         particleSystemState.value.stop()
-        particleSystemState.value.iterationFlow
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    fun onResume() {
+    override fun onResume(owner: LifecycleOwner) {
         particleSystemState.value.start()
     }
 }

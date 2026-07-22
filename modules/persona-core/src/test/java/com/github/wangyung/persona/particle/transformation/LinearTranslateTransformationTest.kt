@@ -2,6 +2,7 @@ package com.github.wangyung.persona.particle.transformation
 
 import com.github.wangyung.persona.particle.Instinct
 import com.github.wangyung.persona.particle.MutableParticle
+import com.github.wangyung.persona.particle.mock.FakeCircleShape
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -14,14 +15,20 @@ class LinearTranslateTransformationTest {
 
     @Before
     fun setUp() {
-        mockParticle = MutableParticle(id = 200, instinct = Instinct(speed = 10f, angle = 45f))
+        mockParticle = MutableParticle(
+            id = 200,
+            instinct = Instinct(speed = 10f, angle = 45f, shape = FakeCircleShape()),
+        )
         linearTranslateTransformation = LinearTranslateTransformation()
     }
 
     @Test
     fun `The x, y are updated correctly at angle 45`() {
         // when
-        mockParticle = MutableParticle(id = 200, instinct = Instinct(speed = 10f, angle = 45f))
+        mockParticle = MutableParticle(
+            id = 200,
+            instinct = Instinct(speed = 10f, angle = 45f, shape = FakeCircleShape()),
+        )
         linearTranslateTransformation.transform(mockParticle, 1)
 
         // then
@@ -32,7 +39,10 @@ class LinearTranslateTransformationTest {
     @Test
     fun `The x, y are updated correctly at angle 90`() {
         // when
-        mockParticle = MutableParticle(id = 200, instinct = Instinct(speed = 10f, angle = 90f))
+        mockParticle = MutableParticle(
+            id = 200,
+            instinct = Instinct(speed = 10f, angle = 90f, shape = FakeCircleShape()),
+        )
         linearTranslateTransformation.transform(mockParticle, 1)
 
         // then

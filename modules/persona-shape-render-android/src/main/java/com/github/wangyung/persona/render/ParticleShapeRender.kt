@@ -57,7 +57,12 @@ fun Particle.drawText(
         nativePaint.alpha = (this@drawText.alpha * 255).toInt()
         drawIntoCanvas { canvas ->
             canvas.nativeCanvas.drawText(
-                textShape.text, 0, textShape.text.count(), 0f, 0f, nativePaint
+                textShape.text,
+                0,
+                textShape.text.count(),
+                0f,
+                0f,
+                nativePaint
             )
         }
     }
