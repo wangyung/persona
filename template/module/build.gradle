@@ -1,22 +1,21 @@
 plugins {
     id "com.android.library"
-    id "kotlin-android"
 }
 
 android {
     resourcePrefix "%RESOURCE_PREFIX%"
 
-    compileSdkVersion versions.compileSdkVersion
+    compileSdk libs.versions.compileSdk.get().toInteger()
     defaultConfig {
-        minSdkVersion versions.minSdkVersion
-        targetSdkVersion versions.targetSdkVersion
+        minSdk libs.versions.minSdk.get().toInteger()
+        targetSdk libs.versions.targetSdk.get().toInteger()
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
 
@@ -24,8 +23,8 @@ android {
     // language features (either in its source code or
     // through dependencies).
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     testOptions {
@@ -35,13 +34,19 @@ android {
     }
 }
 
-dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}")
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutines}"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
+    }
+}
 
-    testImplementation "androidx.test.ext:junit:${versions.androidx.junit}"
-    testImplementation "junit:junit:${versions.jUnit}"
-    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:${versions.kotlin}"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.coroutines}"
+dependencies {
+    implementation libs.kotlin.stdlib
+    implementation libs.coroutines.core
+    implementation libs.coroutines.android
+
+    testImplementation libs.androidx.test.junit
+    testImplementation libs.junit
+    testImplementation libs.kotlin.test.junit
+    testImplementation libs.coroutines.test
 }

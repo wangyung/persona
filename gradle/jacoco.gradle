@@ -20,8 +20,14 @@ def excludedClasses = [
         '**/EpoxyModelKotlinExtensionsKt.*'
 ]
 
+// The type-safe accessors (libs.xxx) are not available in the script plugins, use the
+// VersionCatalogsExtension instead.
+def libsCatalog = project.rootProject.extensions
+    .getByType(org.gradle.api.artifacts.VersionCatalogsExtension)
+    .named("libs")
+
 jacoco {
-    toolVersion = versions.jacoco
+    toolVersion = libsCatalog.findVersion("jacoco").get().requiredVersion
     reportsDir = file("${project.rootDir}/build/reports/jacoco")
 }
 

@@ -1,5 +1,5 @@
 jdk:
-  - openjdk11
+  - openjdk21
 install:
    - echo "Running lib module only"
-   - ./gradlew :persona:detekt :persona:assembleRelease :persona:publishReleasePublicationToMavenLocal
+   - ./gradlew :persona-core:detekt :persona-core:assembleRelease :persona-core:publishReleasePublicationToMavenLocal

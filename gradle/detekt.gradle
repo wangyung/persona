@@ -1,47 +1,38 @@
 apply plugin: "io.gitlab.arturbosch.detekt"
 
-def reportsDir = file("$rootDir/build/reports/detekt")
+// The type-safe accessors (libs.xxx) are not available in the script plugins, use the
+// VersionCatalogsExtension instead.
+def libsCatalog = project.rootProject.extensions
+    .getByType(org.gradle.api.artifacts.VersionCatalogsExtension)
+    .named("libs")
 
 detekt {
-    input = files("src")
+    source.setFrom(files("src"))
 
-    // Use default config with build.maxIssues = 1
-    // See: https://github.com/arturbosch/detekt/blob/master/detekt-cli/src/main/resources/default-detekt-config.yml
-    config = files("$rootDir/config/detekt/detekt-config.yml")
+    // Use the default config as the baseline and apply the project specific overrides on top.
+    buildUponDefaultConfig = true
+    config.setFrom(files("$rootDir/config/detekt/detekt-config.yml"))
 
     // Prevent the build to fail if the threshold set by build.maxIssues is exceeded, when the
     // property detektIgnoreFailures is available. This should be used when running a sanity check
     // on all the modules.
     ignoreFailures = project.hasProperty("detektIgnoreFailures")
 
-    reports {
-        xml {
-            enabled = true
-            destination = file("$project.buildDir/reports/detekt/detekt.xml")
-        }
-
-        html {
-            enabled = true
-            destination = file("$project.buildDir/reports/detekt/detekt.html")
-        }
-
-        custom {
-            reportId = "JsonOutputReport"
-            destination = file("$reportsDir/${project.name}.json")
-        }
-    }
+    // Apply the auto-correction of the formatting rules when the property is available.
+    autoCorrect = project.hasProperty("detektAutoCorrect")
 }
 
 dependencies {
-    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:${versions.detekt}"
+    detektPlugins libsCatalog.findLibrary("detekt-formatting").get()
 }
 
-tasks.getByName("detekt") {
+tasks.named("detekt") {
     exclude("resources/")
     exclude("build/")
     exclude("tmp/")
-}
 
-tasks.withType(Delete) {
-    delete reportsDir
+    reports {
+        xml.required = true
+        html.required = true
+    }
 }

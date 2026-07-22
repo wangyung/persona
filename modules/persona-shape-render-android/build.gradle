@@ -1,23 +1,22 @@
 plugins {
     id "com.android.library"
-    id "kotlin-android"
 }
 
 android {
     namespace "com.github.wangyung.persona.render"
     resourcePrefix "persona-shape-render-android"
 
-    compileSdkVersion versions.compileSdkVersion
+    compileSdk libs.versions.compileSdk.get().toInteger()
     defaultConfig {
-        minSdkVersion versions.minSdkVersion
-        targetSdkVersion versions.targetSdkVersion
+        minSdk libs.versions.minSdk.get().toInteger()
+        targetSdk libs.versions.targetSdk.get().toInteger()
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
 
@@ -29,9 +28,7 @@ android {
         targetCompatibility JavaVersion.VERSION_11
     }
 
-    kotlinOptions {
-        jvmTarget = '11'
-    }
+
 
     testOptions {
         unitTests {
@@ -40,18 +37,24 @@ android {
     }
 }
 
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
+    }
+}
+
 dependencies {
     implementation project(":persona-core")
 
-    implementation platform("androidx.compose:compose-bom:${versions.composeBom}")
-    implementation "androidx.compose.ui:ui"
+    implementation platform(libs.compose.bom)
+    implementation libs.compose.ui
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}")
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutines}"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
+    implementation libs.kotlin.stdlib
+    implementation libs.coroutines.core
+    implementation libs.coroutines.android
 
-    testImplementation "androidx.test.ext:junit:${versions.androidx.junit}"
-    testImplementation "junit:junit:${versions.jUnit}"
-    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:${versions.kotlin}"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.coroutines}"
+    testImplementation libs.androidx.test.junit
+    testImplementation libs.junit
+    testImplementation libs.kotlin.test.junit
+    testImplementation libs.coroutines.test
 }

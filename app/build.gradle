@@ -1,7 +1,6 @@
 plugins {
     id "com.android.application"
-    id "kotlin-android"
-    id "kotlin-kapt"
+    alias(libs.plugins.kotlin.compose)
 }
 
 class AppVersions {
@@ -21,13 +20,12 @@ def appVersions = loadAppVersions()
 
 android {
     namespace "com.github.wangyung.persona.app"
-    compileSdkVersion versions.compileSdkVersion
-    buildToolsVersion versions.androidBuildTool
+    compileSdk libs.versions.compileSdk.get().toInteger()
 
     defaultConfig {
         applicationId "com.github.wangyung.persona.app"
-        minSdkVersion versions.minSdkVersion
-        targetSdkVersion versions.targetSdkVersion
+        minSdk libs.versions.minSdk.get().toInteger()
+        targetSdk libs.versions.targetSdk.get().toInteger()
         versionCode appVersions.versionCode
         versionName appVersions.versionName
 
@@ -53,17 +51,18 @@ android {
         targetCompatibility JavaVersion.VERSION_11
     }
 
-    kotlinOptions {
-        jvmTarget = '11'
-    }
+
 
     buildFeatures {
         viewBinding true
         compose true
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion versions.composeCompiler
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
     }
 }
 
@@ -73,33 +72,30 @@ dependencies {
     implementation project(":persona-compose")
     implementation project(":persona-core")
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
-    implementation "org.jetbrains.kotlin:kotlin-reflect:${versions.kotlin}"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutines}"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
+    implementation libs.kotlin.stdlib
+    implementation libs.kotlin.reflect
+    implementation libs.coroutines.core
+    implementation libs.coroutines.android
 
-    implementation "androidx.appcompat:appcompat:${versions.androidx.appcompat}"
-    implementation "androidx.core:core-ktx:${versions.androidx.core}"
-    implementation "androidx.lifecycle:lifecycle-extensions:${versions.androidx.lifecycle}"
-    implementation "com.google.accompanist:accompanist-insets:${versions.accompanist}"
-    implementation "com.google.accompanist:accompanist-systemuicontroller:${versions.accompanist}"
-    implementation "com.google.android.material:material:${versions.materialComponents}"
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.core.ktx
+    implementation libs.google.material
 
     // Jetpack Compose
-    implementation "androidx.activity:activity-compose:${versions.composeActivity}"
-    implementation platform("androidx.compose:compose-bom:${versions.composeBom}")
-    implementation "androidx.compose.material:material"
-    implementation "androidx.compose.ui:ui"
-    implementation "androidx.compose.ui:ui-tooling"
-    implementation "androidx.constraintlayout:constraintlayout-compose:${versions.composeConstraintLayout}"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:${versions.composeLifecycleViewModel}"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:${versions.androidx.lifecycle}"
-    implementation "androidx.navigation:navigation-compose:${versions.composeNavigation}"
+    implementation libs.compose.activity
+    implementation platform(libs.compose.bom)
+    implementation libs.compose.material
+    implementation libs.compose.ui
+    implementation libs.compose.uiTooling
+    implementation libs.compose.constraintlayout
+    implementation libs.androidx.lifecycle.viewmodel.compose
+    implementation libs.androidx.lifecycle.runtime.ktx
+    implementation libs.compose.navigation
 
-    testImplementation "androidx.test.ext:junit:${versions.androidx.junit}"
-    testImplementation "junit:junit:${versions.jUnit}"
-    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:${versions.kotlin}"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.coroutines}"
-    testImplementation "androidx.compose.ui:ui-test-junit4:${versions.compose}"
+    testImplementation libs.androidx.test.junit
+    testImplementation libs.junit
+    testImplementation libs.kotlin.test.junit
+    testImplementation libs.coroutines.test
+    testImplementation libs.compose.uiTestJunit4
 }
 

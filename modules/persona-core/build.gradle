@@ -1,6 +1,5 @@
 plugins {
     id "com.android.library"
-    id "kotlin-android"
     id "maven-publish"
 }
 
@@ -15,10 +14,10 @@ android {
     namespace "com.github.wangyung.persona"
     resourcePrefix "persona"
 
-    compileSdkVersion versions.compileSdkVersion
+    compileSdk libs.versions.compileSdk.get().toInteger()
     defaultConfig {
-        minSdkVersion versions.minSdkVersion
-        targetSdkVersion versions.targetSdkVersion
+        minSdk libs.versions.minSdk.get().toInteger()
+        targetSdk libs.versions.targetSdk.get().toInteger()
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -30,9 +29,7 @@ android {
         targetCompatibility JavaVersion.VERSION_11
     }
 
-    kotlinOptions {
-        jvmTarget = '11'
-    }
+
 
     testOptions {
         unitTests {
@@ -40,29 +37,32 @@ android {
         }
     }
 
-    android.libraryVariants.all { variant ->
-        variant.outputs.all { output ->
-            if (output.outputFile != null && output.outputFileName.endsWith(".aar")) {
-                outputFileName = "${archivesBaseName}-${libVersion}-${variant.name}.aar"
-            }
-        }
+    // The variants that can be consumed by the maven publications below.
+    publishing {
+        singleVariant("release")
+        singleVariant("debug")
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
     }
 }
 
 dependencies {
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutines}"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
+    implementation libs.kotlin.stdlib
+    implementation libs.coroutines.core
+    implementation libs.coroutines.android
 
-    implementation "androidx.annotation:annotation:${versions.androidx.annotation}"
+    implementation libs.androidx.annotation
 
-    testImplementation "androidx.test.ext:junit:${versions.androidx.junit}"
-    testImplementation "junit:junit:${versions.jUnit}"
-    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:${versions.kotlin}"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.coroutines}"
-    testImplementation "org.robolectric:robolectric:${versions.robolectric}"
-    testImplementation "org.mockito.kotlin:mockito-kotlin:${versions.mockitoKotlin}"
+    testImplementation libs.androidx.test.junit
+    testImplementation libs.junit
+    testImplementation libs.kotlin.test.junit
+    testImplementation libs.coroutines.test
+    testImplementation libs.robolectric
 }
 
 // Because the components are created only during the afterEvaluate phase, you must
