@@ -7,10 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
@@ -41,19 +39,19 @@ fun ParticleBox(
     val particleSystemState = remember {
         mutableStateOf(particleSystem)
     }
-    var iteration by remember {
-        mutableStateOf(0L)
-    }
     val iterationState = particleSystem.iterationFlow.collectAsState()
-    // trigger the recomposition
-    iteration = iterationState.value
     particleSystemState.value = particleSystem
     Box(modifier = modifier) {
         Canvas(
             modifier = modifier,
             // Only draw the particles inside the Box. PartcileSystem may have bigger size than
             // the Box.
-            onDraw = { clipRect { drawParticles(particleSystem.particles) } }
+            onDraw = {
+                // Read the iteration state inside the draw block so that every new iteration
+                // invalidates the draw phase and the particles are redrawn.
+                iterationState.value
+                clipRect { drawParticles(particleSystem.particles) }
+            }
         )
     }
 

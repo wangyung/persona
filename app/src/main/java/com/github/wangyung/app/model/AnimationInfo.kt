@@ -72,8 +72,18 @@ val animationDemos: List<AnimationInfo> = listOf(
         thumbnailId = R.drawable.confetti_animation,
         title = AnimationType.Confetti.toTitle(),
         description = """
-            The confetti effects. 
+            The confetti effects.
         """.trimIndent(),
         animationType = AnimationType.Confetti,
+    ),
+
+    AnimationInfo(
+        thumbnailId = R.drawable.text_morph_animation,
+        title = AnimationType.TextMorph.toTitle(),
+        description = """
+            The particles form a text and morph into another one.
+            It demonstrates how to use PointsParticleGenerator and MoveToTargetTransformation.
+        """.trimIndent(),
+        animationType = AnimationType.TextMorph,
     ),
 )

@@ -16,6 +16,7 @@ import com.github.wangyung.app.ui.screen.animation.FlyingPooDemo
 import com.github.wangyung.app.ui.screen.animation.RainDemo
 import com.github.wangyung.app.ui.screen.animation.SakuraDemo
 import com.github.wangyung.app.ui.screen.animation.SnowDemo
+import com.github.wangyung.app.ui.screen.animation.TextMorphDemo
 import com.github.wangyung.app.ui.screen.animation.TwinkleStarDemo
 import com.github.wangyung.persona.app.R
 import com.github.wangyung.persona.particle.ParticleSystemParameters
@@ -41,6 +42,7 @@ private const val FLYING_BIRD = "FlyingBird"
 private const val TWINKLE_STAR = "TwinkleStart"
 private const val EMOTION = "Emotion"
 private const val CONFETTI = "Confetti"
+private const val TEXT_MORPH = "TextMorph"
 
 internal const val DEFAULT_SNOW_MIN_RADIUS = 5
 internal const val DEFAULT_SNOW_MAX_RADIUS = 10
@@ -306,6 +308,26 @@ sealed class AnimationType(val value: String) {
         }
     }
 
+    object TextMorph : AnimationType(TEXT_MORPH) {
+        // The demo creates its own PointsParticleGenerator and MoveToTargetTransformation from
+        // the input texts, so the parameters below are placeholders that aren't used by it.
+        override fun toGeneratorParameters(): ParticleGeneratorParameters =
+            ParticleGeneratorParameters(count = 600)
+
+        override fun toTitle(): String = "Text Morph"
+
+        override fun toParticleTransformation(
+            parameters: TransformationParameters
+        ): ParticleTransformation = LinearTranslateTransformation()
+
+        @Composable
+        override fun DemoScreen() = TextMorphDemo()
+
+        override fun toShapeProvider(resources: Resources): ShapeProvider = ShapeProvider {
+            ComposeParticleShape.Circle(color = Color.White, radius = 3)
+        }
+    }
+
     override fun toString(): String = this.value
 }
 
@@ -320,6 +342,7 @@ fun String.toAnimationType(): AnimationType? =
         TWINKLE_STAR -> AnimationType.TwinkleStar
         EMOTION -> AnimationType.Emotion
         CONFETTI -> AnimationType.Confetti
+        TEXT_MORPH -> AnimationType.TextMorph
         else -> null
     }
 

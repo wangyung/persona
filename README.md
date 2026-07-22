@@ -112,6 +112,20 @@ The `transformationParameters` supports `translate`, `rotation`, `composite` and
 You can also serialize the parameters with `ParticleParameters.toJsonString()` and parse them with
 `particleParametersFromJson()` then create the system via `ParticleParameters.toParticleSystem()`.
 
+## Morph the particles to target points
+`PointsParticleGenerator` creates one particle at each given `ParticlePoint`, and
+`MoveToTargetTransformation` moves every particle to the target point provided by the
+`ParticleTargetProvider` within the duration (shaped by an `Easing`). Combining them with
+`SequenceTransformation` creates the morphing animations, ex: the text morph in the demo app that
+samples two texts into points and morphs between them:
+
+```kotlin
+val generator = PointsParticleGenerator(points = fromPoints, shapeProvider = { myDotShape() })
+val transformation = SequenceTransformation().apply {
+    add(MoveToTargetTransformation({ particle -> toPoints[particle.id.toInt()] }, duration = 90), 90)
+}
+```
+
 ## Known Issues
 - If the `ParticlBox` is in the a scrollable content, the animation would disappear. 
 
