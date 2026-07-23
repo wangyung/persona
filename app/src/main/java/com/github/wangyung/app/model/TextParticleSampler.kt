@@ -31,20 +31,7 @@ fun sampleTextParticlePoints(
     if (text.isBlank() || count <= 0) return emptyList()
     if (dimension.width <= 0 || dimension.height <= 0) return emptyList()
 
-    val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        typeface = Typeface.DEFAULT_BOLD
-        textSize = BASE_TEXT_SIZE
-        color = Color.WHITE
-    }
-    val baseTextWidth = paint.measureText(text)
-    if (baseTextWidth <= 0f) return emptyList()
-
-    // Scale the text to fit the dimension.
-    val scale = minOf(
-        dimension.width * MAX_TEXT_WIDTH_RATIO / baseTextWidth,
-        dimension.height * MAX_TEXT_HEIGHT_RATIO / BASE_TEXT_SIZE,
-    )
-    paint.textSize = BASE_TEXT_SIZE * scale
+    val paint = createFittedTextPaint(text, dimension) ?: return emptyList()
     val textBounds = Rect()
     paint.getTextBounds(text, 0, text.length, textBounds)
     if (textBounds.isEmpty) return emptyList()
@@ -64,6 +51,27 @@ fun sampleTextParticlePoints(
 
     points.shuffle()
     return List(count) { points[it % points.size] }
+}
+
+/**
+ * Creates a [Paint] whose text size is scaled so the given single line [text] fits the
+ * [dimension], or null if the text isn't measurable.
+ */
+internal fun createFittedTextPaint(text: String, dimension: Size): Paint? {
+    val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        typeface = Typeface.DEFAULT_BOLD
+        textSize = BASE_TEXT_SIZE
+        color = Color.WHITE
+    }
+    val baseTextWidth = paint.measureText(text)
+    if (baseTextWidth <= 0f) return null
+
+    val scale = minOf(
+        dimension.width * MAX_TEXT_WIDTH_RATIO / baseTextWidth,
+        dimension.height * MAX_TEXT_HEIGHT_RATIO / BASE_TEXT_SIZE,
+    )
+    paint.textSize = BASE_TEXT_SIZE * scale
+    return paint
 }
 
 private fun sampleOpaquePixels(

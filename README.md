@@ -126,6 +126,22 @@ val transformation = SequenceTransformation().apply {
 }
 ```
 
+## Morph the shape of a path
+Besides the particles, the `PathSystem` animates shapes that are described by the points of a
+path. A `MorphablePath` holds the sampled points of a contour and a `PathTransformation` moves the
+points every iteration, so the shape looks like it is changing. `WavePathTransformation` is the
+built-in transformation that displaces the points with a traveling sine wave. The Composable
+`MorphablePathBox` draws all paths of the system. The demo app samples a text outline into
+`MorphablePath`s (via `Paint.getTextPath` + `PathMeasure`) to make a text wobble:
+
+```kotlin
+val pathSystem = pathSystem(
+    paths = morphablePaths, // ex: the contours sampled from a text outline
+    transformation = WavePathTransformation(amplitude = 6f, angularSpeed = 0.15f, waveCount = 4),
+)
+MorphablePathBox(modifier = Modifier.fillMaxSize(), pathSystem = pathSystem, color = Color.Cyan)
+```
+
 ## Known Issues
 - If the `ParticlBox` is in the a scrollable content, the animation would disappear. 
 

@@ -88,6 +88,17 @@ val animationDemos: List<AnimationInfo> = listOf(
     ),
 
     AnimationInfo(
+        thumbnailId = R.drawable.text_path_animation,
+        title = AnimationType.TextPathMorph.toTitle(),
+        description = """
+            The text is converted into a path and the points of the path keep moving, so the text
+            looks like it is changing its shape.
+            It demonstrates the PathSystem with the WavePathTransformation.
+        """.trimIndent(),
+        animationType = AnimationType.TextPathMorph,
+    ),
+
+    AnimationInfo(
         thumbnailId = R.drawable.circle_explosion_animation,
         title = AnimationType.CircleExplosion.toTitle(),
         description = """

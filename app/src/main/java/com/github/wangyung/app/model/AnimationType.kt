@@ -18,6 +18,7 @@ import com.github.wangyung.app.ui.screen.animation.RainDemo
 import com.github.wangyung.app.ui.screen.animation.SakuraDemo
 import com.github.wangyung.app.ui.screen.animation.SnowDemo
 import com.github.wangyung.app.ui.screen.animation.TextMorphDemo
+import com.github.wangyung.app.ui.screen.animation.TextPathDemo
 import com.github.wangyung.app.ui.screen.animation.TwinkleStarDemo
 import com.github.wangyung.persona.app.R
 import com.github.wangyung.persona.particle.ParticleSystemParameters
@@ -44,6 +45,7 @@ private const val TWINKLE_STAR = "TwinkleStart"
 private const val EMOTION = "Emotion"
 private const val CONFETTI = "Confetti"
 private const val TEXT_MORPH = "TextMorph"
+private const val TEXT_PATH_MORPH = "TextPathMorph"
 private const val CIRCLE_EXPLOSION = "CircleExplosion"
 
 internal const val DEFAULT_SNOW_MIN_RADIUS = 5
@@ -350,6 +352,26 @@ sealed class AnimationType(val value: String) {
         }
     }
 
+    object TextPathMorph : AnimationType(TEXT_PATH_MORPH) {
+        // The demo uses the PathSystem instead of the ParticleSystem, so the parameters below are
+        // placeholders that aren't used by it.
+        override fun toGeneratorParameters(): ParticleGeneratorParameters =
+            ParticleGeneratorParameters(count = 1)
+
+        override fun toTitle(): String = "Text Path Morph"
+
+        override fun toParticleTransformation(
+            parameters: TransformationParameters
+        ): ParticleTransformation = LinearTranslateTransformation()
+
+        @Composable
+        override fun DemoScreen() = TextPathDemo()
+
+        override fun toShapeProvider(resources: Resources): ShapeProvider = ShapeProvider {
+            ComposeParticleShape.Circle(color = Color.White, radius = 3)
+        }
+    }
+
     override fun toString(): String = this.value
 }
 
@@ -365,6 +387,7 @@ fun String.toAnimationType(): AnimationType? =
         EMOTION -> AnimationType.Emotion
         CONFETTI -> AnimationType.Confetti
         TEXT_MORPH -> AnimationType.TextMorph
+        TEXT_PATH_MORPH -> AnimationType.TextPathMorph
         CIRCLE_EXPLOSION -> AnimationType.CircleExplosion
         else -> null
     }
