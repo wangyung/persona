@@ -24,4 +24,15 @@ class EasingTest {
         assertEquals(0.0625f, Easing.EaseInOutCubic.ease(0.25f))
         assertEquals(0.9375f, Easing.EaseInOutCubic.ease(0.75f))
     }
+
+    @Test
+    fun `The ease-out cubic easing starts at 0 and ends at 1`() {
+        assertEquals(0f, Easing.EaseOutCubic.ease(0f))
+        assertEquals(1f, Easing.EaseOutCubic.ease(1f))
+    }
+
+    @Test
+    fun `The ease-out cubic easing starts fast and decelerates`() {
+        assertEquals(0.875f, Easing.EaseOutCubic.ease(0.5f))
+    }
 }

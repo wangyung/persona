@@ -86,4 +86,15 @@ val animationDemos: List<AnimationInfo> = listOf(
         """.trimIndent(),
         animationType = AnimationType.TextMorph,
     ),
+
+    AnimationInfo(
+        thumbnailId = R.drawable.circle_explosion_animation,
+        title = AnimationType.CircleExplosion.toTitle(),
+        description = """
+            A solid circle bursts into the point particles that explode radially outward.
+            It combines a custom generator with SequenceTransformation, MoveToTargetTransformation
+            and the ease-out easing.
+        """.trimIndent(),
+        animationType = AnimationType.CircleExplosion,
+    ),
 )

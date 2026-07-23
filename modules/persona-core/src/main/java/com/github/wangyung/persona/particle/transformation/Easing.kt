@@ -29,5 +29,13 @@ fun interface Easing {
                 1f - (-2f * fraction + 2f).pow(CUBIC) / 2f
             }
         }
+
+        /**
+         * The cubic easing that starts fast and decelerates at the end, ex: for the explosion
+         * that bursts then slows down.
+         */
+        val EaseOutCubic: Easing = Easing { fraction ->
+            1f - (1f - fraction).pow(CUBIC)
+        }
     }
 }

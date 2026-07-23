@@ -9,6 +9,7 @@ import com.github.wangyung.app.transformation.BlinkParticleTransformation
 import com.github.wangyung.app.transformation.HorizontalSpeedWithSinParticleTransformation
 import com.github.wangyung.app.transformation.LinearScaleParticleTransformation
 import com.github.wangyung.app.transformation.ScaleAndDimParticleTransformation
+import com.github.wangyung.app.ui.screen.animation.CircleExplosionDemo
 import com.github.wangyung.app.ui.screen.animation.ConfettiDemo
 import com.github.wangyung.app.ui.screen.animation.EmotionDemo
 import com.github.wangyung.app.ui.screen.animation.FlyingBirdDemo
@@ -43,6 +44,7 @@ private const val TWINKLE_STAR = "TwinkleStart"
 private const val EMOTION = "Emotion"
 private const val CONFETTI = "Confetti"
 private const val TEXT_MORPH = "TextMorph"
+private const val CIRCLE_EXPLOSION = "CircleExplosion"
 
 internal const val DEFAULT_SNOW_MIN_RADIUS = 5
 internal const val DEFAULT_SNOW_MAX_RADIUS = 10
@@ -328,6 +330,26 @@ sealed class AnimationType(val value: String) {
         }
     }
 
+    object CircleExplosion : AnimationType(CIRCLE_EXPLOSION) {
+        // The demo creates its own PointsParticleGenerator and MoveToTargetTransformation from
+        // the circle geometry, so the parameters below are placeholders that aren't used by it.
+        override fun toGeneratorParameters(): ParticleGeneratorParameters =
+            ParticleGeneratorParameters(count = 240)
+
+        override fun toTitle(): String = "Circle Explosion"
+
+        override fun toParticleTransformation(
+            parameters: TransformationParameters
+        ): ParticleTransformation = LinearTranslateTransformation()
+
+        @Composable
+        override fun DemoScreen() = CircleExplosionDemo()
+
+        override fun toShapeProvider(resources: Resources): ShapeProvider = ShapeProvider {
+            ComposeParticleShape.Circle(color = Color.White, radius = 3)
+        }
+    }
+
     override fun toString(): String = this.value
 }
 
@@ -343,6 +365,7 @@ fun String.toAnimationType(): AnimationType? =
         EMOTION -> AnimationType.Emotion
         CONFETTI -> AnimationType.Confetti
         TEXT_MORPH -> AnimationType.TextMorph
+        CIRCLE_EXPLOSION -> AnimationType.CircleExplosion
         else -> null
     }
 

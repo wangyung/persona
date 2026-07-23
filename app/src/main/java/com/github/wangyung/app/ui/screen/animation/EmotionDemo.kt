@@ -10,7 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.unit.dp
 import com.github.wangyung.app.model.AnimationParameterSet
 import com.github.wangyung.app.model.AnimationType
@@ -31,7 +31,7 @@ fun EmotionDemo() {
     AnimationDemo(
         animationType = animationType,
         parameterSet = parameterSet,
-        shapeProvider = animationType.toShapeProvider(LocalContext.current.resources)
+        shapeProvider = animationType.toShapeProvider(LocalResources.current)
     ) {
         val modifier = Modifier.fillMaxWidth()
         Column(modifier = modifier) {
