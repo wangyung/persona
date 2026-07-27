@@ -1,0 +1,18 @@
+{
+  "name": "Rain",
+  "systemParameters": {},
+  "generatorParameters": {
+    "count": 400,
+    "particleWidthRange": { "from": 1, "to": 2 },
+    "particleHeightRange": { "from": 5, "to": 15 },
+    "speedRange": { "from": 10.0, "to": 30.0 },
+    "angleRange": { "from": 85.0, "to": 95.0 },
+    "sourceEdges": ["TOP"]
+  },
+  "transformationParameters": { "type": "translate" },
+  "shapeParameters": {
+    "type": "line",
+    "strokeWidthRange": { "from": 1, "to": 2 },
+    "color": "#CCCCCC"
+  }
+}

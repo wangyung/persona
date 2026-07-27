@@ -54,7 +54,7 @@ Module dependency graph (all under package `com.github.wangyung.persona`):
 - **persona-shape-render-android** — depends on `persona-core`; Compose `DrawScope` extension functions that render each shape.
 - **persona-compose** — depends on `persona-core`, `api`-exposes `persona-shape-render-android`; provides the `ParticleBox` composable.
 - **persona-json-serialization-kotlinx** — depends on `persona-core`; creates animations from JSON via kotlinx.serialization. Entry points in `PersonaJson.kt`: `particleSystemFromJson()`, `particleParametersFromJson()`, `ParticleParameters.toJsonString()/toParticleSystem()`. Core parameter classes are serialized through surrogate `KSerializer`s registered as `@Contextual` in `personaJson`; shapes are never serialized — callers pass a `ShapeProvider` (the optional `shapeParameters` JsonObject carries custom shape settings).
-- **app** — demo, depends on the three consumer modules above.
+- **app** — demo, depends on the three consumer modules above. Every `AnimationType` is also described by a json asset (`app/src/main/assets/animations/<value>.json`, loaded via `AnimationTypeJson.kt`); the app-side `shapeParameters` schema lives in `ShapeParameters.kt` (`line`, `circle`, `text`, `image`, `rectangle`, `path`). A unit test (`AnimationTypeJsonAssetTest`) keeps the json assets in parity with the Kotlin definitions — update both together.
 
 ## Architecture
 

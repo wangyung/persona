@@ -1,0 +1,11 @@
+{
+  "name": "CircleExplosion",
+  "systemParameters": {},
+  "generatorParameters": { "count": 240 },
+  "transformationParameters": { "type": "translate" },
+  "shapeParameters": {
+    "type": "circle",
+    "color": "#FFFFFF",
+    "radiusRange": { "from": 3, "to": 3 }
+  }
+}

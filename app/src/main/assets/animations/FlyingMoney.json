@@ -1,0 +1,26 @@
+{
+  "name": "FlyingMoney",
+  "systemParameters": {},
+  "generatorParameters": {
+    "count": 30,
+    "particleWidthRange": { "from": 1, "to": 10 },
+    "particleHeightRange": { "from": 1, "to": 10 },
+    "speedRange": { "from": 3.0, "to": 10.0 },
+    "angleRange": { "from": 45.0, "to": 135.0 },
+    "zRotationalSpeedRange": { "from": 1.0, "to": 3.0 },
+    "sourceEdges": ["TOP"]
+  },
+  "transformationParameters": {
+    "type": "composite",
+    "transformations": [
+      { "type": "translate" },
+      { "type": "rotation" }
+    ]
+  },
+  "shapeParameters": {
+    "type": "text",
+    "text": "💵",
+    "fontSizeRange": { "from": 9, "to": 24 },
+    "color": "#0000FF"
+  }
+}

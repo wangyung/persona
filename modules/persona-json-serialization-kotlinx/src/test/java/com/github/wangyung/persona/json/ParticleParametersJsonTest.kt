@@ -5,9 +5,13 @@ import com.github.wangyung.persona.particle.ParticleSystemParameters
 import com.github.wangyung.persona.particle.generator.parameter.InitialConstraints
 import com.github.wangyung.persona.particle.generator.parameter.ParticleGeneratorParameters
 import com.github.wangyung.persona.particle.generator.parameter.SourceEdge
+import com.github.wangyung.persona.particle.transformation.BlinkTransformationParameters
 import com.github.wangyung.persona.particle.transformation.CompositeTransformationParameters
 import com.github.wangyung.persona.particle.transformation.RotationTransformationParameters
+import com.github.wangyung.persona.particle.transformation.ScaleAndFadeTransformationParameters
+import com.github.wangyung.persona.particle.transformation.ScaleTransformationParameters
 import com.github.wangyung.persona.particle.transformation.SequenceTransformationParameters
+import com.github.wangyung.persona.particle.transformation.SineWaveTranslateTransformationParameters
 import com.github.wangyung.persona.particle.transformation.TranslateTransformationParameters
 import kotlinx.serialization.SerializationException
 import org.junit.Test
@@ -121,6 +125,83 @@ class ParticleParametersJsonTest {
         assertEquals(0.1f, translate.gravity)
         assertTrue(composite.parameters[1] is RotationTransformationParameters)
         assertTrue(sequence.steps[1].parameters is TranslateTransformationParameters)
+    }
+
+    @Test
+    fun `Serialize and deserialize the blink, sineWaveTranslate, scale and scaleAndFade correctly`() {
+        // given
+        val parameters = ParticleParameters(
+            name = "AllTransformations",
+            systemParameters = ParticleSystemParameters(),
+            generatorParameters = ParticleGeneratorParameters(count = 10),
+            transformationParameters = CompositeTransformationParameters(
+                parameters = listOf(
+                    BlinkTransformationParameters(frequencyFactorRange = 0.5f..2f),
+                    SineWaveTranslateTransformationParameters(
+                        frequencyFactor = 3f,
+                        amplitude = 4f,
+                    ),
+                    ScaleTransformationParameters(xDelta = 0.1f, yDelta = 0.2f),
+                    ScaleAndFadeTransformationParameters(
+                        xDelta = 0.3f,
+                        yDelta = 0.4f,
+                        alphaDelta = 0.5f,
+                    ),
+                )
+            ),
+        )
+
+        // when
+        val decoded = particleParametersFromJson(parameters.toJsonString())
+
+        // then
+        val composite = decoded.transformationParameters
+        assertTrue(composite is CompositeTransformationParameters)
+        assertEquals(4, composite.parameters.size)
+
+        val blink = composite.parameters[0]
+        assertTrue(blink is BlinkTransformationParameters)
+        assertEquals(0.5f..2f, blink.frequencyFactorRange)
+
+        val sineWave = composite.parameters[1]
+        assertTrue(sineWave is SineWaveTranslateTransformationParameters)
+        assertEquals(3f, sineWave.frequencyFactor)
+        assertEquals(4f, sineWave.amplitude)
+
+        val scale = composite.parameters[2]
+        assertTrue(scale is ScaleTransformationParameters)
+        assertEquals(0.1f, scale.xDelta)
+        assertEquals(0.2f, scale.yDelta)
+
+        val scaleAndFade = composite.parameters[3]
+        assertTrue(scaleAndFade is ScaleAndFadeTransformationParameters)
+        assertEquals(0.3f, scaleAndFade.xDelta)
+        assertEquals(0.4f, scaleAndFade.yDelta)
+        assertEquals(0.5f, scaleAndFade.alphaDelta)
+    }
+
+    @Test
+    fun `Deserialize the new transformation types from a json string`() {
+        // given
+        val jsonString = """
+            {
+              "name": "TwinkleStar",
+              "systemParameters": {},
+              "generatorParameters": { "count": 250 },
+              "transformationParameters": {
+                "type": "blink",
+                "frequencyFactorRange": { "from": 0.5, "to": 2.0 }
+              }
+            }
+        """.trimIndent()
+
+        // when
+        val decoded = particleParametersFromJson(jsonString)
+
+        // then
+        val blink = decoded.transformationParameters
+        assertTrue(blink is BlinkTransformationParameters)
+        assertEquals(0.5f..2f, blink.frequencyFactorRange)
     }
 
     @Test

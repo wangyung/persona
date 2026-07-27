@@ -1,12 +1,11 @@
-package com.github.wangyung.app.transformation
+package com.github.wangyung.persona.particle.transformation
 
 import com.github.wangyung.persona.particle.MutableParticle
-import com.github.wangyung.persona.particle.transformation.ParticleTransformation
 
 /**
- * That transformation that changes the scale and dimming the alpha in the particle.
+ * The transformation that changes the scale and fades the alpha in the particle.
  */
-class ScaleAndDimParticleTransformation(
+class ScaleAndFadeTransformation(
     private val xDelta: Float = 0f,
     private val yDelta: Float = 0f,
     private val alphaDelta: Float = 0f,

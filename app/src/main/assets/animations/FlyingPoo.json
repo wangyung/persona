@@ -1,0 +1,28 @@
+{
+  "name": "FlyingPoo",
+  "systemParameters": {},
+  "generatorParameters": {
+    "count": 30,
+    "particleWidthRange": { "from": 1, "to": 10 },
+    "particleHeightRange": { "from": 1, "to": 10 },
+    "randomizeInitialXY": false,
+    "speedRange": { "from": 3.0, "to": 10.0 },
+    "angleRange": { "from": 315.0, "to": 330.0 },
+    "xRotationalSpeedRange": { "from": 0.1, "to": 0.5 },
+    "zRotationalSpeedRange": { "from": 0.5, "to": 5.0 },
+    "sourceEdges": ["LEFT"]
+  },
+  "transformationParameters": {
+    "type": "composite",
+    "transformations": [
+      { "type": "translate", "gravity": 0.1 },
+      { "type": "rotation" }
+    ]
+  },
+  "shapeParameters": {
+    "type": "text",
+    "text": "💩",
+    "fontSizeRange": { "from": 14, "to": 14 },
+    "color": "#000000"
+  }
+}

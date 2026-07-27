@@ -1,12 +1,11 @@
-package com.github.wangyung.app.transformation
+package com.github.wangyung.persona.particle.transformation
 
 import com.github.wangyung.persona.particle.MutableParticle
-import com.github.wangyung.persona.particle.transformation.ParticleTransformation
 
 /**
  * The transformation that changes the scale linearly in the particle.
  */
-class LinearScaleParticleTransformation(
+class LinearScaleTransformation(
     private val xDelta: Float = 0f,
     private val yDelta: Float = 0f,
 ) : ParticleTransformation {

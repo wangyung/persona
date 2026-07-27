@@ -5,10 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.github.wangyung.app.transformation.BlinkParticleTransformation
-import com.github.wangyung.app.transformation.HorizontalSpeedWithSinParticleTransformation
-import com.github.wangyung.app.transformation.LinearScaleParticleTransformation
-import com.github.wangyung.app.transformation.ScaleAndDimParticleTransformation
 import com.github.wangyung.app.ui.screen.animation.CircleExplosionDemo
 import com.github.wangyung.app.ui.screen.animation.ConfettiDemo
 import com.github.wangyung.app.ui.screen.animation.EmotionDemo
@@ -26,11 +22,15 @@ import com.github.wangyung.persona.particle.generator.ShapeProvider
 import com.github.wangyung.persona.particle.generator.parameter.InitialConstraints
 import com.github.wangyung.persona.particle.generator.parameter.ParticleGeneratorParameters
 import com.github.wangyung.persona.particle.generator.parameter.SourceEdge
+import com.github.wangyung.persona.particle.transformation.BlinkTransformation
 import com.github.wangyung.persona.particle.transformation.CompositeTransformation
 import com.github.wangyung.persona.particle.transformation.LinearRotationTransformation
+import com.github.wangyung.persona.particle.transformation.LinearScaleTransformation
 import com.github.wangyung.persona.particle.transformation.LinearTranslateTransformation
 import com.github.wangyung.persona.particle.transformation.ParticleTransformation
+import com.github.wangyung.persona.particle.transformation.ScaleAndFadeTransformation
 import com.github.wangyung.persona.particle.transformation.SequenceTransformation
+import com.github.wangyung.persona.particle.transformation.SineWaveTranslateTransformation
 import com.github.wangyung.persona.particle.transformation.TransformationParameters
 import com.github.wangyung.persona.particle.transformation.TranslateTransformationParameters
 import com.github.wangyung.persona.render.ComposeParticleShape
@@ -63,6 +63,12 @@ internal const val DEFAULT_FLYGING_BIRD_ANGLE_FROM = 175
 internal const val DEFAULT_FLYGING_BIRD_ANGLE_TO = 185
 
 sealed class AnimationType(val value: String) {
+    /**
+     * The path of the asset file that describes this animation in json. Use
+     * [AnimationType.toParticleParameters] to create the animation from it.
+     */
+    val jsonAssetPath: String = "animations/$value.json"
+
     abstract fun toGeneratorParameters(): ParticleGeneratorParameters
     abstract fun toTitle(): String
     open fun toParticleSystemParameters(): ParticleSystemParameters = defaultSystemParameters
@@ -104,8 +110,8 @@ sealed class AnimationType(val value: String) {
             parameters: TransformationParameters
         ): ParticleTransformation = CompositeTransformation(
             listOf(
-                HorizontalSpeedWithSinParticleTransformation(),
-                LinearScaleParticleTransformation(),
+                SineWaveTranslateTransformation(),
+                LinearScaleTransformation(),
             )
         )
 
@@ -218,7 +224,7 @@ sealed class AnimationType(val value: String) {
 
         override fun toParticleTransformation(
             parameters: TransformationParameters
-        ): ParticleTransformation = BlinkParticleTransformation(frequencyFactorRange = 0.5f..2f)
+        ): ParticleTransformation = BlinkTransformation(frequencyFactorRange = 0.5f..2f)
 
         @Composable
         override fun DemoScreen() = TwinkleStarDemo()
@@ -244,7 +250,7 @@ sealed class AnimationType(val value: String) {
                 val scaleDuration = 30L
                 add(LinearTranslateTransformation(), 40L)
                 add(
-                    ScaleAndDimParticleTransformation(
+                    ScaleAndFadeTransformation(
                         1f / scaleDuration,
                         1f / scaleDuration,
                         alphaDelta = 1f / scaleDuration

@@ -1,0 +1,20 @@
+{
+  "name": "TwinkleStar",
+  "systemParameters": {},
+  "generatorParameters": {
+    "count": 250,
+    "particleWidthRange": { "from": 1, "to": 4 },
+    "particleHeightRange": { "from": 1, "to": 4 },
+    "sourceEdges": ["TOP"],
+    "startOffsetRange": { "from": 0, "to": 60 }
+  },
+  "transformationParameters": {
+    "type": "blink",
+    "frequencyFactorRange": { "from": 0.5, "to": 2.0 }
+  },
+  "shapeParameters": {
+    "type": "circle",
+    "color": "#FAFFFF",
+    "radiusRange": { "from": 1, "to": 4 }
+  }
+}

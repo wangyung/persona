@@ -24,6 +24,39 @@ class TransformationParametersTest {
     }
 
     @Test
+    fun `Create BlinkTransformation from BlinkTransformationParameters`() {
+        val transformation =
+            BlinkTransformationParameters(frequencyFactorRange = 0.5f..2f).toTransformation()
+        assertTrue(transformation is BlinkTransformation)
+    }
+
+    @Test
+    fun `Create SineWaveTranslateTransformation from SineWaveTranslateTransformationParameters`() {
+        val transformation = SineWaveTranslateTransformationParameters(
+            frequencyFactor = 3f,
+            amplitude = 4f,
+        ).toTransformation()
+        assertTrue(transformation is SineWaveTranslateTransformation)
+    }
+
+    @Test
+    fun `Create LinearScaleTransformation from ScaleTransformationParameters`() {
+        val transformation =
+            ScaleTransformationParameters(xDelta = 0.1f, yDelta = 0.2f).toTransformation()
+        assertTrue(transformation is LinearScaleTransformation)
+    }
+
+    @Test
+    fun `Create ScaleAndFadeTransformation from ScaleAndFadeTransformationParameters`() {
+        val transformation = ScaleAndFadeTransformationParameters(
+            xDelta = 0.1f,
+            yDelta = 0.2f,
+            alphaDelta = 0.3f,
+        ).toTransformation()
+        assertTrue(transformation is ScaleAndFadeTransformation)
+    }
+
+    @Test
     fun `Create CompositeTransformation from CompositeTransformationParameters`() {
         val transformation = CompositeTransformationParameters(
             parameters = listOf(

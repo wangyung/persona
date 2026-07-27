@@ -1,0 +1,41 @@
+{
+  "name": "Emotion",
+  "systemParameters": {
+    "autoResetParticles": false,
+    "restartWhenAllDead": false
+  },
+  "generatorParameters": {
+    "count": 16,
+    "randomizeInitialXY": false,
+    "particleWidthRange": { "from": 1, "to": 10 },
+    "particleHeightRange": { "from": 1, "to": 10 },
+    "speedRange": { "from": 10.0, "to": 15.0 },
+    "angleRange": { "from": 265.0, "to": 275.0 },
+    "sourceEdges": ["BOTTOM"],
+    "startOffsetRange": { "from": 0, "to": 30 }
+  },
+  "transformationParameters": {
+    "type": "sequence",
+    "steps": [
+      {
+        "transformation": { "type": "translate" },
+        "duration": 40
+      },
+      {
+        "transformation": {
+          "type": "scaleAndFade",
+          "xDelta": 0.033333335,
+          "yDelta": 0.033333335,
+          "alphaDelta": 0.033333335
+        },
+        "duration": 30
+      }
+    ]
+  },
+  "shapeParameters": {
+    "type": "text",
+    "text": "😍",
+    "fontSizeRange": { "from": 20, "to": 20 },
+    "color": "#FFFFFF"
+  }
+}

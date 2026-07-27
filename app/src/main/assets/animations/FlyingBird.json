@@ -1,0 +1,18 @@
+{
+  "name": "FlyingBird",
+  "systemParameters": {},
+  "generatorParameters": {
+    "count": 5,
+    "randomizeInitialXY": false,
+    "particleWidthRange": { "from": 100, "to": 200 },
+    "particleHeightRange": { "from": 80, "to": 100 },
+    "speedRange": { "from": 5.0, "to": 30.0 },
+    "angleRange": { "from": 175.0, "to": 185.0 },
+    "sourceEdges": ["RIGHT"]
+  },
+  "transformationParameters": { "type": "translate" },
+  "shapeParameters": {
+    "type": "image",
+    "drawableName": "flying_bird"
+  }
+}

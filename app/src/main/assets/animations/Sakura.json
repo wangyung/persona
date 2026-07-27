@@ -1,0 +1,28 @@
+{
+  "name": "Sakura",
+  "systemParameters": { "fps": 60 },
+  "generatorParameters": {
+    "count": 40,
+    "particleWidthRange": { "from": 10, "to": 20 },
+    "particleHeightRange": { "from": 10, "to": 20 },
+    "speedRange": { "from": 2.0, "to": 8.0 },
+    "scaleRange": { "from": 1.0, "to": 1.0 },
+    "angleRange": { "from": 95.0, "to": 140.0 },
+    "xRotationalSpeedRange": { "from": 0.1, "to": 0.5 },
+    "zRotationalSpeedRange": { "from": -1.0, "to": -0.1 },
+    "sourceEdges": ["TOP", "RIGHT"]
+  },
+  "transformationParameters": {
+    "type": "composite",
+    "transformations": [
+      { "type": "translate" },
+      { "type": "rotation" }
+    ]
+  },
+  "shapeParameters": {
+    "type": "path",
+    "pathData": "M0,25 Q12.5,0 30,15 L20,20 L30,25 Q12.5,40 0,25 Z",
+    "strokeWidthRange": { "from": 1, "to": 3 },
+    "color": "#FA9599"
+  }
+}

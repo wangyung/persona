@@ -1,0 +1,11 @@
+{
+  "name": "TextMorph",
+  "systemParameters": {},
+  "generatorParameters": { "count": 600 },
+  "transformationParameters": { "type": "translate" },
+  "shapeParameters": {
+    "type": "circle",
+    "color": "#FFFFFF",
+    "radiusRange": { "from": 3, "to": 3 }
+  }
+}

@@ -47,7 +47,8 @@ dependencies {
     implementation libs.kotlin.stdlib
     implementation libs.coroutines.core
     implementation libs.coroutines.android
-    implementation libs.kotlinx.serialization.json
+    // api because the public API exposes kotlinx types (Json, JsonObject).
+    api libs.kotlinx.serialization.json
 
     testImplementation libs.androidx.test.junit
     testImplementation libs.junit

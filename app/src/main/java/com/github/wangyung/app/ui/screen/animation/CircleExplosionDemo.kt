@@ -27,7 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.github.wangyung.app.model.AnimationType
-import com.github.wangyung.app.transformation.ScaleAndDimParticleTransformation
 import com.github.wangyung.persona.particle.Instinct
 import com.github.wangyung.persona.particle.MutableParticle
 import com.github.wangyung.persona.particle.ParticlePoint
@@ -40,6 +39,7 @@ import com.github.wangyung.persona.particle.transformation.Easing
 import com.github.wangyung.persona.particle.transformation.MoveToTargetTransformation
 import com.github.wangyung.persona.particle.transformation.ParticleTargetProvider
 import com.github.wangyung.persona.particle.transformation.ParticleTransformation
+import com.github.wangyung.persona.particle.transformation.ScaleAndFadeTransformation
 import com.github.wangyung.persona.particle.transformation.SequenceTransformation
 import com.github.wangyung.persona.render.ComposeParticleShape
 import com.github.wangyung.persona.ui.component.ParticleBox
@@ -247,7 +247,7 @@ private fun createExplosionTransformation(
                         duration = parameters.explodeDuration,
                         easing = Easing.EaseOutCubic,
                     ),
-                    ScaleAndDimParticleTransformation(
+                    ScaleAndFadeTransformation(
                         alphaDelta = 1f / parameters.explodeDuration,
                     ),
                 )

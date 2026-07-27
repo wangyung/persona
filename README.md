@@ -98,19 +98,47 @@ val particleSystem = particleSystemFromJson(
 )
 ```
 
-The `transformationParameters` supports `translate`, `rotation`, `composite` and `sequence`:
+The `transformationParameters` supports `translate`, `rotation`, `blink`, `sineWaveTranslate`,
+`scale`, `scaleAndFade`, `composite` and `sequence`:
 ```json
 {
   "type": "sequence",
   "steps": [
     { "transformation": { "type": "translate", "gravity": 0.1 }, "duration": 40 },
-    { "transformation": { "type": "rotation" }, "duration": 30 }
+    {
+      "transformation": { "type": "scaleAndFade", "xDelta": 0.03, "yDelta": 0.03, "alphaDelta": 0.03 },
+      "duration": 30
+    }
   ]
 }
 ```
+- `translate`: `LinearTranslateTransformation`, moves by the particle speed/angle with an optional
+  `gravity`.
+- `rotation`: `LinearRotationTransformation`.
+- `blink`: `BlinkTransformation`, blinks the alpha with a random frequency from
+  `frequencyFactorRange`.
+- `sineWaveTranslate`: `SineWaveTranslateTransformation`, swings horizontally by a sine wave
+  (`frequencyFactor`, `amplitude`) while falling, ex: snow.
+- `scale`: `LinearScaleTransformation`, scales linearly by `xDelta`/`yDelta` per iteration.
+- `scaleAndFade`: `ScaleAndFadeTransformation`, scales by `xDelta`/`yDelta` and dims the alpha by
+  `alphaDelta` per iteration.
+- `composite`: applies the nested `transformations` at the same time.
+- `sequence`: runs each step for its `duration` (in iterations) sequentially.
 
 You can also serialize the parameters with `ParticleParameters.toJsonString()` and parse them with
 `particleParametersFromJson()` then create the system via `ParticleParameters.toParticleSystem()`.
+
+Every animation of the demo app is also described by a json file in `app/src/main/assets/animations/`.
+The demo app defines its own schema for the `shapeParameters` (see `ShapeParameters.kt`) that
+supports `line`, `circle`, `text`, `image`, `rectangle` and `path` (svg path data), so a whole
+animation — including the shapes — can be created from a single json file:
+
+```kotlin
+val particleSystem = AnimationType.Snow.particleSystemFromJsonAsset(
+    context = context,
+    dimension = Size(width, height),
+)
+```
 
 ## Morph the particles to target points
 `PointsParticleGenerator` creates one particle at each given `ParticlePoint`, and
